@@ -11,8 +11,12 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require jquery
-//= require jquery-ui
-//= require jquery_ujs
+//= require jquery.ui.core
+//= require jquery.ui.autocomplete
+//= require jquery.ui.draggable
+//= require jquery.ui.droppable
+// require jquery-ui
+// require jquery_ujs
 //= require bootstrap-dropdown
 //= require bootstrap-button
 //= require faye_conn

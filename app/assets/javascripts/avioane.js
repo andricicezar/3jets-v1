@@ -1,8 +1,4 @@
 /*
- *=require jquery
- *=require jquery.ui.core
- *=require jquery.ui.draggable
- *=require jquery.ui.droppable
  *=require jqueryuitouch
  *=require avioaneplay
  *=require sonic

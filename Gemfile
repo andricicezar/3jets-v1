@@ -11,7 +11,7 @@ group :assets do
   gem 'therubyracer', :platforms => :ruby
 end
 gem 'uglifier', '>= 1.0.3'
-gem 'jquery-rails', "2.3.0"
+gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'activeadmin'
 gem 'meta_search', '>= 1.1.0.pre'
@@ -22,7 +22,7 @@ gem 'thin'
 gem 'faye'
 gem 'angularjs-rails'
 gem 'active_model_serializers'
-
+# gem 'closure-compiler'
 gem 'rack-mini-profiler'
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
