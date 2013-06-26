@@ -1,0 +1,25 @@
+#search-friend-popover.popover.right{"ng-controller" => "OnlineCtrl"}
+  .arrow
+  .popover-content
+    %input#search_friend_input{:type => "text",
+                               :autofocus => "autofocus", 
+                               "auto-complete" => true,
+                               "ui-items" => "friends"}
+.wrapper
+  .mega-super-awesome-button
+    %ul.colorfull-container
+      %li
+        .btn.btn-block.btn-large.btn-primary.buton
+          .text
+            Play
+          .buton-wrp
+            %a.btn.btn-block.btn-default{:href => play_path}
+              VS Player
+            %a.btn.btn-block.btn-default#search-friend
+              VS Friend
+            = #%a.btn.btn-block.btn-info.disabled
+            = #  VS AI
+      %li
+        %a.btn.btn-block.btn-large{:href => ranking_path(1)}
+          Ranking
+

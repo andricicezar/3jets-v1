@@ -1,0 +1,164 @@
+%header
+  .container#game-id{:game => params[:game]}
+    .col
+      .col
+        %h3
+          - if @opponent
+            VS #{@opponent.name}
+          - else
+            VS Random player
+    .col.alignright
+      .col
+        %a.btn.btn-medium{:href => home_path} Back
+      .col
+        %a#send-button.btn.btn-primary.btn-medium Done
+.w2pac
+  .content
+    .main_grid
+      .top_mark
+        .mark
+        .mark A
+        .mark B
+        .mark C
+        .mark D
+        .mark E
+        .mark F
+        .mark G
+        .mark H
+        .mark I
+        .mark J
+      .clear
+      .left_mark
+        .mark 1
+        .mark 2
+        .mark 3
+        .mark 4
+        .mark 5
+        .mark 6
+        .mark 7
+        .mark 8
+        .mark 9
+        .mark 10
+      .grid.basic-sprite
+        .line
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+        .line
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+        .line
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+        .line
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+        .line
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+        .line
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+        .line
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+        .line
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+        .line
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+        .line
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+          .square
+			
+    .plane_area
+      #plane1.rotation1.airplane.basic-sprite
+      #plane2.rotation1.airplane.basic-sprite
+      #plane3.rotation1.airplane.basic-sprite
+    .information
+      %p You have 3 airplanes at your disposal to place anywhere on the grid, however you can not overlap them.
+      %p To change the rotation of a plane you can simply click on it.
+      %p When you are ready to battle press Done in the upper right corner. Good luck!
+  .footer
+	
+

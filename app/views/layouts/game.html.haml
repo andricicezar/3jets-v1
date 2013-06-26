@@ -1,0 +1,14 @@
+%html{"ng-app" => true}
+  %head
+    %title Airplanes
+    = csrf_meta_tags
+    = stylesheet_link_tag "application", :medial => "all"
+    - if params.has_key? :game
+      - qq = "'?game=" + params[:game] + "'"
+    - else
+      - qq = "''"
+  %body
+    = render "layouts/navbar"
+    .invelis
+      = yield
+    = javascript_include_tag "application"

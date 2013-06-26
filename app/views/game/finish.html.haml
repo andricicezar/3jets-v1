@@ -1,0 +1,14 @@
+.container.finish
+  - if @winner && @loser
+    %h1
+      Winner is
+      = @winner.name
+    %h3
+      Loser is
+      = @loser.name
+    %a.btn.btn-primary.btn-block.btn-large{:href => home_path} Home
+  - else
+    :javascript
+      $(document).ready(function() {
+        location.reload();
+      });

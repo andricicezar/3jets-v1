@@ -1,0 +1,302 @@
+class GameController < ApplicationController
+  include GameHelper
+  include ApplicationHelper
+
+  before_filter :authenticate_user!
+  before_filter :user_online
+  before_filter :is_game_finished, :only => [:validatem, :exit, :play, :wait, :adduser]
+  before_filter :is_in_the_game, :only => [:init, :validatedm, :exit, :play, :wait, :adduser, :asdf]
+
+  def init
+    if params.has_key? :game
+      if currentGame.fst_user == current_user.id
+        @opponent = currentGame.user2
+      else
+        @opponent = currentGame.user1
+      end
+    end
+  end
+
+  def validatedm
+    if currentGame.scd_user == current_user.id
+      currentGame.validated = true
+      currentGame.save
+
+      y = Notification.where(:title => "Game Request", 
+                             :user_id => currentGame.fst_user,
+                             :friend_id => currentGame.scd_user).first
+      if y
+        y.destroy
+      end
+      qasw = currentGame.user1
+      broadcast("/channel/" + current_user.special_key.to_s,
+                '{"type":2, "turn":2, 
+                "game_id":'+qasw.id.to_s+',
+                "enemy_pic": "'+qasw.image_url+'",
+                "enemy_name": "'+qasw.name+'"}')
+      v = 2
+      v = 1 if Airplane.where(:game_id => currentGame.id, :user_id => qasw.id).count > 0
+      broadcast("/channel/" + qasw.special_key.to_s,
+                '{"type":2, "turn":'+v.to_s+', "game_id":'+currentGame.id.to_s+',
+                "enemy_pic": "'+current_user.image_url+'",
+                "enemy_name": "'+current_user.name+'"}')
+
+    end
+    respond_to do |format|
+      format.json { render :json => 1 }
+    end
+  end
+    
+  def finish
+    if currentGame.first_user.num_airplanes == 0
+      @winner = currentGame.user2
+      @loser = currentGame.user1
+    else
+      if currentGame.second_user.num_airplanes == 0
+        @winner = currentGame.user1
+        @loser = currentGame.user2
+      else
+        redirect_to game_wait_path(params[:id])
+        return
+      end
+    end
+
+    if Result.where(:game_id => currentGame.id).count == 0
+      currentGame.finished = true
+      currentGame.save
+
+      return if !currentGame.countable
+
+      # ELO
+      elo_constant = 32
+        # elo winner
+          # probability
+          probability = 1.0/(  1 + 10**(  (@loser.elo - @winner.elo)/400  )  )
+          # recalculate
+          @winner.elo += elo_constant * (1 - probability)
+        # elo loser
+          # probability
+          probability = 1.0/(  1 + 10**(  (@winner.elo - @loser.elo)/400  )  )
+          @loser.elo += elo_constant * (0 - probability)
+        # save
+        @winner.save
+        @loser.save
+
+      Result.create(:user_id => @winner.id,
+                    :game_id => currentGame.id,
+                    :result => 1)
+      Result.create(:user_id => @loser.id,
+                    :game_id => currentGame.id,
+                    :result => 0)
+    end
+  end
+
+  def exit
+    ok = false
+
+    if currentGame.game_users.count < 2
+      currentGame.destroy
+      redirect_to home_path
+      return
+    end
+
+    if currentGame.fst_user == current_user.id
+      aux = currentGame.first_user
+      aux.num_airplanes = 0
+      aux.save
+      ok = true
+    else
+      if currentGame.scd_user == current_user.id
+        aux = currentGame.second_user
+        aux.num_airplanes = 0
+        aux.save
+        ok = true
+      end
+    end
+
+    if ok
+      broadcast_game(params[:id], "move", "4")
+      redirect_to game_victory_path(params[:id])
+      return
+    end
+    redirect_to play_path(params[:id])
+  end
+
+  def play
+    # verific daca sunt setate avioanele
+    if Airplane.where(:user_id => current_user.id, :game_id => currentGame.id).count < 3
+      redirect_to play_path + "?game=" + currentGame.id.to_s
+      return
+    end
+
+
+    # verificam daca are oponent
+    if currentGame.num_players == 1
+      redirect_to game_wait_path(params[:id])
+      return
+    end
+
+    @curr_user = currentGame.user_turn
+    @other_user = currentGame.enemy
+  end
+
+  def wait
+    # in caz ca e al doilea, il anuntam pe primu ca are prieten
+    if currentGame.num_players == 2
+      broadcast_game(params[:id], "add_user", "succes")
+      broadcast("/channel/" + currentGame.user1.special_key.to_s,
+                '{"type":2, "turn":1, "game_id":'+currentGame.id.to_s+',
+                "enemy_pic": "'+current_user.image_url+'",
+                "enemy_name": "'+current_user.name+'"}')
+     redirect_to game_path(params[:id])
+    end
+  end
+
+  def adduser
+    # salvez configuratia jucatorului la jocul curent
+    GameUser.create(:user_id => current_user.id, :game_id => currentGame.id)
+    for i in 0..2 do
+      Airplane.create(:user_id => current_user.id,
+                      :game_id => currentGame.id,
+                      :shape => params[:conf][i*4].to_i,
+                      :top => params[:conf][i*4+1].to_i,
+                      :left => params[:conf][i*4+2].to_i,
+                      :rotation => params[:conf][i*4+3].to_i)
+    end
+
+    # verific daca useri sunt setati dinainte
+    if currentGame.scd_user == 0
+      # daca nu setez
+      if currentGame.num_players == 0
+        currentGame.fst_user = current_user.id
+      else
+        currentGame.scd_user = current_user.id
+      end
+    end
+    # adaug ca a mai intrat o persoana in joc
+    currentGame.num_players += 1
+    currentGame.save
+    redirect_to game_wait_path(currentGame.id)
+  end
+
+  def asdf
+    # verific daca e tura lui, daca nu, returnez 3
+    if currentGame.user_turn.id != current_user.id
+      broadcast_game(currentGame.id.to_s, "move", "3")
+      respond_to do |format|
+        format.json { render :json => 3 }
+      end
+      return
+    end
+
+    topA = params[:top]
+    leftA = params[:left]
+
+    # verific daca nu cumva meciul e gata
+    if currentGame.finished
+      broadcast_game(currentGame.id.to_s, "move", "4")
+      respond_to do |format|
+        format.json { render :json => 4 }
+      end
+    end
+
+    # verific daca nu a mai facut cumva aceeasi tura
+    if Move.where(:user_id => current_user.id, :game_id => params[:id], :top => topA.to_i, :left => leftA.to_i).count == 1
+      broadcast_game(currentGame.id.to_s, "move", "5")
+      respond_to do |format|
+        format.json { render :json => 5 }
+      end
+      return
+    end
+
+    # creez harta inamicului
+    enemyMap = create_map(currentGame.enemyMap, true)
+
+    # 0 - nu a nimerit 
+    # 1 - a nimerit
+    # 2 - a nimerit cap
+    # 3 - nu e tura lui
+    # 4 - a distrus toate cele 3 avioane
+    # 5 - a mai lovit o data in acelasi loc
+
+    # memorez ce a nimerit
+    message = enemyMap[ topA.to_i ][ leftA.to_i ]
+
+    # daca a nimerit cap, scad numarul de avioane ale inamicului
+    if message == 2
+      aux = currentGame.enemyTurn
+      aux.num_airplanes -= 1
+      aux.save
+    end
+    x = 1
+    x = 0 if message == 1 || message == 2
+
+    broadcast("/channel/" + currentGame.enemy.special_key.to_s, 
+              '{"type":2, "turn":'+x.to_s+', "game_id":'+currentGame.id.to_s+'}')
+    broadcast("/channel/" + current_user.special_key.to_s,
+              '{"type":2, "turn":'+(1-x).to_s+', "game_id":'+currentGame.id.to_s+'}')
+
+    # inregistrez miscarea
+    Move.create(:user_id => current_user.id,
+                :game_id => params[:id],
+                :top => topA.to_i,
+                :left => leftA.to_i,
+                :hit => message)
+
+    # trimit mesaj cu atacul facut
+    data = current_user.id.to_s + topA + leftA + message.to_s
+    broadcast_game(currentGame.id.to_s, "move", data)
+    # daca inamicul nu mai are nici un avion
+    # trimit mesaj ca jocul s-a terminat
+    if currentGame.enemyTurn.num_airplanes == 0
+      broadcast_game(currentGame.id.to_s, "move", "4")
+      broadcast("/channel/" + currentGame.user1.special_key.to_s, 
+                '{"type":2, "turn": 3, "game_id":'+currentGame.id.to_s+'}')
+      broadcast("/channel/" + currentGame.user2.special_key.to_s, 
+                '{"type":2, "turn": 3, "game_id":'+currentGame.id.to_s+'}')
+    end
+
+    respond_to do |format|
+      format.json { render :json => message }
+    end
+  end
+
+  def search
+    games = Game.where(:num_players => 1, :countable => true)
+
+    if games.count > 0
+      games.each do |game|
+        if game.fst_user != current_user.id
+          redirect_to game_adduser_path(games.first.id, params[:conf])
+          return
+        end
+      end
+    end
+
+    newGame = Game.create(:num_players => 0)
+    redirect_to game_adduser_path(newGame.id, params[:conf])
+  end
+
+  def match
+    harta = create_map(params[:conf])
+    x = ""
+    if params.has_key? :game
+      x = "&game=" + params[:game]
+    end
+    for i in 0..9 do
+      for j in 0..9 do
+        if harta[i][j] > 1
+          redirect_to play_path + "/?error=fail" + x
+	        return
+        end
+      end
+    end
+    
+    if params.has_key? :game
+      redirect_to game_adduser_path(params[:game].to_i, params[:conf])
+      return
+    end
+
+    redirect_to search_game_path(params[:conf])
+  end
+end

@@ -1,0 +1,53 @@
+%html{"ng-app" => "MyModule"}
+  %head
+    %title Airplanes
+    = stylesheet_link_tag    "application", :media => "all"
+    %link{:href=>"http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css", :media => "all", :type => "text/css"}
+    = csrf_meta_tags
+    %meta{:property => "og:title", :content => "Airplanes"}
+    %meta{:property => "og:description", :content => "By Andrici Cezar & Stolniceanu Stefan"}
+    %meta{:property => "og:site_name", :content => "Airplanes"}
+    %meta{:property => "og:image", :content => "http://avioanele.androidul.com/assets/background-1.jpg"}
+
+  %body
+    .container-image-1
+    - if user_signed_in?
+      = render "layouts/navbar"
+      .invelis
+        %header
+          .container
+            .col.alignright
+              .col.elo
+                %a{:href => user_position_path(current_user.id)}
+                  ELO: #{current_user.elo}
+              .col
+                .account
+                  .dropdown
+                    %a.dropdown-toggle{:href => home_path}
+                      %i.icon-home
+              .col
+                .account
+                  .dropdown
+                    %a.dropdown-toggle{:id => "dLabel", :role => "button", "data-toggle" => "dropdown", "data-target" => "#"}
+                      %i.icon-user
+                    %ul.dropdown-menu.pull-right{:role => "menu", "aria-labelledby" => "dLabel"}
+                      %li
+                        = link_to "Profile", user_profile_path(current_user.id)
+                      %li
+                        = link_to "Settings", edit_user_registration_path
+                      %li
+                        = link_to "Logout", destroy_user_session_path, method: :delete
+
+            -#  .col
+            -#    .settings
+            -#      .dropdown
+            -#        %a.dropdown-toggle{:id => "dLabel2", :role => "button", "data-toggle" => "dropdown", "data-target" => "#"}
+            -#          %i.icon-ellipsis-vertical
+            -#        %ul.dropdown-menu.pull-right{:role => "menu", "aria-labelledby" => "dLabel2"}
+            -#          %li
+
+        = yield
+    - else
+      = yield
+    = javascript_include_tag "application"
+

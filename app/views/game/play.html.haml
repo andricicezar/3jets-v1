@@ -1,0 +1,291 @@
+%header
+	.container
+		.col
+			.col.game-users
+				%h3
+					%span.current_user
+						= @curr_user.name
+					vs
+					%span
+						= @other_user.name
+		.col.alignright
+			.col
+				%a.btn.btn-medium{:href => home_path} Back
+			.col
+				%a.btn.btn-medium.btn-danger{:href => game_exit_path} Exit
+
+.w50cent
+	.content
+		.play_grid#main_grid1{:av => current_user.mapFromGame(params[:id]), :game => params[:id], :user => current_user.id, :lov => current_user.concatMovesVS(params[:id], @curr_user.id + @other_user.id - current_user.id)}
+			.top_mark
+				.mark
+				.mark A
+				.mark B
+				.mark C
+				.mark D
+				.mark E
+				.mark F
+				.mark G
+				.mark H
+				.mark I
+				.mark J
+			.clear
+			.left_mark
+				.mark 1
+				.mark 2
+				.mark 3
+				.mark 4
+				.mark 5
+				.mark 6
+				.mark 7
+				.mark 8
+				.mark 9
+				.mark 10
+			.grid.basic-sprite
+				.line
+					.square.casuta0-0
+					.square.casuta0-1
+					.square.casuta0-2
+					.square.casuta0-3
+					.square.casuta0-4
+					.square.casuta0-5
+					.square.casuta0-6
+					.square.casuta0-7
+					.square.casuta0-8
+					.square.casuta0-9
+				.line
+					.square.casuta1-0
+					.square.casuta1-1
+					.square.casuta1-2
+					.square.casuta1-3
+					.square.casuta1-4
+					.square.casuta1-5
+					.square.casuta1-6
+					.square.casuta1-7
+					.square.casuta1-8
+					.square.casuta1-9
+				.line
+					.square.casuta2-0
+					.square.casuta2-1
+					.square.casuta2-2
+					.square.casuta2-3
+					.square.casuta2-4
+					.square.casuta2-5
+					.square.casuta2-6
+					.square.casuta2-7
+					.square.casuta2-8
+					.square.casuta2-9
+				.line
+					.square.casuta3-0
+					.square.casuta3-1
+					.square.casuta3-2
+					.square.casuta3-3
+					.square.casuta3-4
+					.square.casuta3-5
+					.square.casuta3-6
+					.square.casuta3-7
+					.square.casuta3-8
+					.square.casuta3-9
+				.line
+					.square.casuta4-0
+					.square.casuta4-1
+					.square.casuta4-2
+					.square.casuta4-3
+					.square.casuta4-4
+					.square.casuta4-5
+					.square.casuta4-6
+					.square.casuta4-7
+					.square.casuta4-8
+					.square.casuta4-9
+				.line
+					.square.casuta5-0
+					.square.casuta5-1
+					.square.casuta5-2
+					.square.casuta5-3
+					.square.casuta5-4
+					.square.casuta5-5
+					.square.casuta5-6
+					.square.casuta5-7
+					.square.casuta5-8
+					.square.casuta5-9
+				.line
+					.square.casuta6-0
+					.square.casuta6-1
+					.square.casuta6-2
+					.square.casuta6-3
+					.square.casuta6-4
+					.square.casuta6-5
+					.square.casuta6-6
+					.square.casuta6-7
+					.square.casuta6-8
+					.square.casuta6-9
+				.line
+					.square.casuta7-0
+					.square.casuta7-1
+					.square.casuta7-2
+					.square.casuta7-3
+					.square.casuta7-4
+					.square.casuta7-5
+					.square.casuta7-6
+					.square.casuta7-7
+					.square.casuta7-8
+					.square.casuta7-9
+				.line
+					.square.casuta8-0
+					.square.casuta8-1
+					.square.casuta8-2
+					.square.casuta8-3
+					.square.casuta8-4
+					.square.casuta8-5
+					.square.casuta8-6
+					.square.casuta8-7
+					.square.casuta8-8
+					.square.casuta8-9
+				.line
+					.square.casuta9-0
+					.square.casuta9-1
+					.square.casuta9-2
+					.square.casuta9-3
+					.square.casuta9-4
+					.square.casuta9-5
+					.square.casuta9-6
+					.square.casuta9-7
+					.square.casuta9-8
+					.square.casuta9-9
+		.play_grid#main_grid2{:lov => current_user.concatMovesVS(params[:id], current_user.id), :class => ("not-your-turn" if current_user.id != @curr_user.id)}
+			.top_mark
+				.mark
+				.mark A
+				.mark B
+				.mark C
+				.mark D
+				.mark E
+				.mark F
+				.mark G
+				.mark H
+				.mark I
+				.mark J
+			.clear
+			.left_mark
+				.mark 1
+				.mark 2
+				.mark 3
+				.mark 4
+				.mark 5
+				.mark 6
+				.mark 7
+				.mark 8
+				.mark 9
+				.mark 10
+			.grid.basic-sprite
+				.line
+					.square.casuta0-0
+					.square.casuta0-1
+					.square.casuta0-2
+					.square.casuta0-3
+					.square.casuta0-4
+					.square.casuta0-5
+					.square.casuta0-6
+					.square.casuta0-7
+					.square.casuta0-8
+					.square.casuta0-9
+				.line
+					.square.casuta1-0
+					.square.casuta1-1
+					.square.casuta1-2
+					.square.casuta1-3
+					.square.casuta1-4
+					.square.casuta1-5
+					.square.casuta1-6
+					.square.casuta1-7
+					.square.casuta1-8
+					.square.casuta1-9
+				.line
+					.square.casuta2-0
+					.square.casuta2-1
+					.square.casuta2-2
+					.square.casuta2-3
+					.square.casuta2-4
+					.square.casuta2-5
+					.square.casuta2-6
+					.square.casuta2-7
+					.square.casuta2-8
+					.square.casuta2-9
+				.line
+					.square.casuta3-0
+					.square.casuta3-1
+					.square.casuta3-2
+					.square.casuta3-3
+					.square.casuta3-4
+					.square.casuta3-5
+					.square.casuta3-6
+					.square.casuta3-7
+					.square.casuta3-8
+					.square.casuta3-9
+				.line
+					.square.casuta4-0
+					.square.casuta4-1
+					.square.casuta4-2
+					.square.casuta4-3
+					.square.casuta4-4
+					.square.casuta4-5
+					.square.casuta4-6
+					.square.casuta4-7
+					.square.casuta4-8
+					.square.casuta4-9
+				.line
+					.square.casuta5-0
+					.square.casuta5-1
+					.square.casuta5-2
+					.square.casuta5-3
+					.square.casuta5-4
+					.square.casuta5-5
+					.square.casuta5-6
+					.square.casuta5-7
+					.square.casuta5-8
+					.square.casuta5-9
+				.line
+					.square.casuta6-0
+					.square.casuta6-1
+					.square.casuta6-2
+					.square.casuta6-3
+					.square.casuta6-4
+					.square.casuta6-5
+					.square.casuta6-6
+					.square.casuta6-7
+					.square.casuta6-8
+					.square.casuta6-9
+				.line
+					.square.casuta7-0
+					.square.casuta7-1
+					.square.casuta7-2
+					.square.casuta7-3
+					.square.casuta7-4
+					.square.casuta7-5
+					.square.casuta7-6
+					.square.casuta7-7
+					.square.casuta7-8
+					.square.casuta7-9
+				.line
+					.square.casuta8-0
+					.square.casuta8-1
+					.square.casuta8-2
+					.square.casuta8-3
+					.square.casuta8-4
+					.square.casuta8-5
+					.square.casuta8-6
+					.square.casuta8-7
+					.square.casuta8-8
+					.square.casuta8-9
+				.line
+					.square.casuta9-0
+					.square.casuta9-1
+					.square.casuta9-2
+					.square.casuta9-3
+					.square.casuta9-4
+					.square.casuta9-5
+					.square.casuta9-6
+					.square.casuta9-7
+					.square.casuta9-8
+					.square.casuta9-9
+	.footer

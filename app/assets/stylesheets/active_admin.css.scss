@@ -1,0 +1,192 @@
+// SASS variable overrides must be declared before loading up Active Admin's styles.
+//
+// To view the variables that Active Admin provides, take a look at
+// `app/assets/stylesheets/active_admin/mixins/_variables.css.scss` in the
+// Active Admin source.
+//
+// For example, to change the sidebar width:
+// $sidebar-width: 242px;
+
+// Active Admin's got SASS!
+@import "active_admin/mixins";
+@import "active_admin/base";
+
+// Overriding any non-variable SASS must be done after the fact.
+// For example, to change the default status-tag color:
+//
+//   body.active_admin {
+//      .status_tag { background: #6090DB; }
+//   }
+//
+// Notice that Active Admin CSS rules are nested within a
+// 'body.active_admin' selector to prevent conflicts with
+// other pages in the app. It is best to wrap your changes in a 
+// namespace so they are properly recognized. You have options
+// if you e.g. want different styles for different namespaces:
+//
+// .active_admin       applies to any Active Admin namespace
+// .admin_namespace    applies to the admin namespace (eg: /admin)
+// .other_namespace    applies to a custom namespace named other (eg: /other)
+.winner {
+  font-weight: bold !important;
+  color: green;
+}
+.looser {
+  color: red;
+}
+#game-show {
+.line{
+	width:400px;
+	height:40px;
+}
+.square{
+	width:38px;
+	height:38px;
+	border:1px solid whitesmoke;
+	float:left;
+	opacity: 0.8;
+}
+.grid{
+	width:400px;
+	height:400px;
+	background:url(cloud.png) no-repeat;
+	float:left;
+}
+.main_grid{
+	width:450px;
+	float:left;
+	margin-top: 50px;
+}
+.rotation1{
+	background:url(avion.png);
+	width:200px;
+	height:160px;
+	
+}
+.rotation4{
+	background:url(avion4.png);
+	width:160px;
+	height:200px;
+
+}
+.rotation2{
+	background:url(avion2.png);
+	height:200px;
+	width:160px;
+
+}	
+.rotation3{
+	background:url(avion3.png);
+	height:160px;
+	width:200px;
+	
+}
+
+.buton1{
+	width:45px;
+	height:45px;
+	background-color: red;
+	overflow: hidden;
+	background: url(redo.png);
+	background-size: 45px 45px;
+	position: absolute;
+	left:0;
+	bottom: 0;
+}
+.buton2{
+	width:45px;
+	height:45px;
+	background-color: red;
+	overflow: hidden;
+	background: url(redo.png);
+	background-size: 45px 45px;
+	position: absolute;
+	left:0;
+	bottom: 0;
+}
+.buton3{
+	width:45px;
+	height:45px;
+	background-color: red;
+	overflow: hidden;
+	background: url(redo.png);
+	background-size: 45px 45px;
+	position: absolute;
+	left:0;
+	bottom: 0;
+}
+.plane_area{
+	width:200px;
+	float:left;
+	margin-left:20px;
+}
+.bovina{
+	margin-top: 10px;
+	float:right;
+}
+.grid {
+  position: relative;
+}
+.airplane{
+	position:absolute;
+}
+.x{
+	position:relative;
+	float:left;
+	height:200px;
+	width: 200px;
+}
+.mark{
+	height:40px;
+	width:40px;
+	float:left;
+}
+.top_mark{
+	width:440px;
+	height:40px;
+	line-height: 40px;
+	text-align: center;
+	font-size: 24px;
+	font-family: "Scris", Verdana, Sans-serif;
+}
+.left_mark{
+	width:40px;
+	height:400px;
+	float:left;
+	line-height: 40px;
+	font-size: 24px;
+	text-align: center;
+	font-family: "Scris", Verdana, Sans-serif;
+}
+.content{
+	margin-top: 20px;
+}
+#main_grid1{
+	float:left;
+}
+#main_grid2{
+	float:left;
+	margin-left:100px;
+}
+.hit-1{
+	background:url(lovit.png) no-repeat;
+  width: 38px;
+  height: 38px;
+  position: relative;
+  z-index: 5;
+}
+.hit-2{
+	background: url(cap.png) no-repeat;
+  width: 38px;
+  height: 38px;
+  position: relative;
+  z-index: 5;
+}
+.hit-0{
+	background: url(miss.png) no-repeat;
+  width: 38px;
+  height: 38px;
+  position: relative;
+  z-index: 5;
+}
+}

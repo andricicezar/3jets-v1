@@ -1,0 +1,14 @@
+%header
+  .container
+    .col.alignright
+      .col
+        %a.btn.btn-medium{:href => home_path} Back
+      .col
+        %a.btn.btn-medium.btn-danger{:href => game_exit_path} Exit
+#wait{:game => params[:id]}
+  .sonicx
+  .sonicx
+    %h3 
+      Please wait 
+      %br
+      (We're searching an opponent)
