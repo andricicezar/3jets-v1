@@ -1,4 +1,4 @@
-%html{"ng-app" => "MyModule"}
+%html
   %head
     %title Airplanes
     = stylesheet_link_tag    "application", :media => "all"
@@ -49,5 +49,5 @@
         = yield
     - else
       = yield
-    = javascript_include_tag "application"
+    = javascript_include_tag "application", "data-turbolinks-eval" => false
 

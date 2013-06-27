@@ -1,4 +1,4 @@
-%html{"ng-app" => true}
+%html
   %head
     %title Airplanes
     = csrf_meta_tags
@@ -11,4 +11,4 @@
     = render "layouts/navbar"
     .invelis
       = yield
-    = javascript_include_tag "application"
+    = javascript_include_tag "application", "data-turbolinks-eval" => false

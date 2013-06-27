@@ -1,4 +1,4 @@
-.nnavbar#users_panel{:channel => current_user.special_key, "ng-controller" => "OnlineCtrl"}
+.nnavbar#users_panel{:channel => current_user.special_key, "ng-controller" => "OnlineCtrl", "turbolinks-eval" => false}
   %a{:href => user_profile_path(current_user.id)}
     .nrow
       .ricon
@@ -25,7 +25,7 @@
   .ntitle
     Notifications
   %div{"ng-repeat" => "notification in notifications"}
-    .nrow{"onClick" => "expandNotif($(this))"}
+    .nrow.expandable 
       .asdfasdf
         .ricon
           %img{"ng-src" => "{{notification.user_pic}}?s=24"}
@@ -44,7 +44,7 @@
   .ntitle
     Friends
   %div{"ng-repeat" => "friend in friends | filter: verify"}
-    .nrow{"onClick" => "expandNotif($(this))"}
+    .nrow.expandable
       .asdfasdf
         .ricon
           %img{"ng-src" => "{{friend.img}}?s=24"}

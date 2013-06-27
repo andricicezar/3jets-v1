@@ -20,7 +20,7 @@ class GameSerializer < ActiveModel::Serializer
   end
 
   def enemy_name
-    return current_user.name if object.user2.id == 0
+    return current_user.name if !object.user2
     if object.user1.id == current_user.id
       object.user2.name
     else
@@ -29,7 +29,7 @@ class GameSerializer < ActiveModel::Serializer
   end
 
   def enemy_pic
-    return current_user.image_url if object.user2.id == 0
+    return current_user.image_url if !object.user2
     if object.user1.id == current_user.id
       object.user2.image_url
     else

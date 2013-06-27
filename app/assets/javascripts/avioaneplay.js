@@ -1,12 +1,13 @@
-$(function() {
+readyGame = function() {
   if (typeof faye == "undefined") {
-    connect_to_faye(ready);
+    connect_to_faye(game_ready);
   } else {
-    ready();
+    game_ready();
   }
-});
-
-function ready() {
+}
+$(document).ready(readyGame);
+$(document).on("page:load", readyGame);
+function game_ready() {
   if ($("#wait").length > 0) {
     s = "/game/"+$("#wait").attr("game")+"/add_user";
     faye.subscribe(s, function(data) {

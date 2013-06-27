@@ -6,7 +6,7 @@
 
 var m;
 var k;
-$(document).ready(function(){
+readyDragDrop = function(){
 	$("#plane1").attr("rot", 1);
 	$("#plane2").attr("rot", 1);
 	$("#plane3").attr("rot", 1);
@@ -122,4 +122,7 @@ $(document).ready(function(){
 			window.location = "../match/"+cr
 	});
 
-});
+}
+$(document).ready(readyDragDrop);
+$(document).on("page:load", readyDragDrop);
+

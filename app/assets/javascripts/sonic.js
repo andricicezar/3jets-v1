@@ -316,46 +316,47 @@
 
 }());
 
-$(document).ready(function() {
+sonicReady = function() {
 	var cerc = new Sonic({
+      
+    width: 400,
+    height: 400,
 
-		
-	width: 400,
-	height: 400,
+    stepsPerFrame: 2,
+    trailLength: 1,
+    pointDistance: 0.03,
 
-	stepsPerFrame: 2,
-	trailLength: 1,
-	pointDistance: 0.03,
+    strokeColor: '#4DEAFF',
 
-	strokeColor: '#4DEAFF',
+    fps: 25,
 
-	fps: 25,
+    setup: function() {
+      this._.lineWidth = 6;
+    },
+    step: function(point, index) {
 
-	setup: function() {
-		this._.lineWidth = 6;
-	},
-	step: function(point, index) {
+      var cx = this.padding + 200,
+        cy = this.padding + 200,
+        _ = this._,
+        angle = (Math.PI/180) * (point.progress * 360);
 
-		var cx = this.padding + 200,
-			cy = this.padding + 200,
-			_ = this._,
-			angle = (Math.PI/180) * (point.progress * 360);
+      _.beginPath();
+      _.moveTo(point.x, point.y);
+      _.lineTo(
+        (Math.cos(angle) * 25) + cx,
+        (Math.sin(angle) * 25) + cy
+      );
+      _.closePath();
+      _.stroke();
 
-		_.beginPath();
-		_.moveTo(point.x, point.y);
-		_.lineTo(
-			(Math.cos(angle) * 25) + cx,
-			(Math.sin(angle) * 25) + cy
-		);
-		_.closePath();
-		_.stroke();
-
-	},
-	path: [
-		['arc', 200, 200, 200, 0, 360]
-	]
-});
-cerc.play();
-if ($(".sonicx").length > 0)
-	$(".sonicx")[0].appendChild(cerc.canvas);
-});
+    },
+    path: [
+      ['arc', 200, 200, 200, 0, 360]
+    ]
+  });
+  cerc.play();
+  if ($(".sonicx").length > 0)
+    $(".sonicx")[0].appendChild(cerc.canvas);
+}
+$(document).ready(sonicReady);
+$(document).on("page:load", sonicReady);

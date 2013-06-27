@@ -22,8 +22,9 @@ gem 'thin'
 gem 'faye'
 gem 'angularjs-rails'
 gem 'active_model_serializers'
+gem 'turbolinks'
 # gem 'closure-compiler'
-gem 'rack-mini-profiler'
+# gem 'rack-mini-profiler'
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
