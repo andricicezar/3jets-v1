@@ -22,6 +22,8 @@ gem 'thin'
 gem 'faye'
 gem 'angularjs-rails'
 gem 'active_model_serializers'
+
+gem 'rack-pjax'
 gem 'turbolinks'
 # gem 'closure-compiler'
 # gem 'rack-mini-profiler'

@@ -7,11 +7,15 @@ class Game < ActiveRecord::Base
   attr_accessible :num_players, :fst_user, :scd_user, :finished, :validated, :countable
 
   def first_user
-    game_users.first
+    game_users.each do |gu|
+      return gu if gu.user_id == user1.id
+    end
   end
 
   def second_user
-    game_users.last
+    game_users.each do |gu|
+      return gu if gu.user_id == user2.id
+    end
   end
 
   def user_turn
