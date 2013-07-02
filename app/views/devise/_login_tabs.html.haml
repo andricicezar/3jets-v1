@@ -1,0 +1,9 @@
+.tabs
+  .m-btn-group
+    %a.m-btn.blue
+      Guest
+    %a.m-btn.blue{:href => new_user_session_url, :class => (request.fullpath == "/users/sign_in")?"active":""}
+      Log in
+    %a.m-btn.blue{:href => new_user_registration_url, :class => (request.fullpath == "/users/sign_up")?"active":""}
+      Register
+

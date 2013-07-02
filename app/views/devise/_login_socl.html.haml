@@ -1,0 +1,9 @@
+.m-btn-group.socl
+  %a.m-btn.disabled
+    Sign in with:
+  %a.m-btn.icn-only.btn-facebook{:href => user_omniauth_authorize_url(:facebook)}
+    %i.icon-facebook
+  %a.m-btn.icn-only.btn-twitter{:href => user_omniauth_authorize_url(:twitter)}
+    %i.icon-twitter
+  %a.m-btn.icn-only.btn-google{:href => user_omniauth_authorize_url(:google)}
+    %i.icon-google-plus
