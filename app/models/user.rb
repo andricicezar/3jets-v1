@@ -1,32 +1,45 @@
 class User < ActiveRecord::Base
-  # Include default devise modules. Others available are:
-  # :token_authenticatable, :confirmable,
-  # :lockable, :timeoutable and :omniauthable
-  
   include ApplicationHelper
 
-  devise :database_authenticatable, :registerable,
-         :rememberable, :validatable
+  devise :database_authenticatable, :registerable, :omniauthable, :trackable,
+         :rememberable, :validatable, :authentication_keys => [:login]
 
-  attr_accessible :nickname, :elo, :email, :password, :password_confirmation, :remember_me, :deleted, :created_at, :last_sign_in_at
+  attr_accessible :nickname, :elo, :email, :password, :password_confirmation,
+                  :veteran, :remember_me, :deleted, :last_sign_in_at, :login,
+                  :twitter_uid, :facebook_uid, :google_uid, :image_link
+  attr_accessor :login
 
   has_many :relations
   has_many :game_users
   has_many :games
+  has_many :user_metas
+
+  validates_uniqueness_of :nickname
+  validates_uniqueness_of :email, :allow_blank => true, :allow_nil => true
+  validates_uniqueness_of :twitter_uid, :unless => Proc.new { |user| user.twitter_uid == '0' }
+  validates_uniqueness_of :facebook_uid, :unless => Proc.new { |user| user.facebook_uid == '0' }
+  validates_uniqueness_of :google_uid, :unless => Proc.new { |user| user.google_uid == '0' }
+
   default_scope where(:deleted => false)
+  scope :veterans, where(:veteran => true)
 
   def soft_delete
     update_attribute(:deleted, true)
   end
 
   def image_url
+    return image_link if image_link
+    gravatar_url
+  end
+
+  def gravatar_url
     require 'digest/md5'
     hash = Digest::MD5.hexdigest(email.downcase)
     "http://gravatar.com/avatar/#{hash}"
   end
 
   def name
-    if nickname.to_s.length > 5
+    if nickname
       nickname
     else
       email_splited
@@ -61,10 +74,6 @@ class User < ActiveRecord::Base
     Result.where(:user_id => id, :result => 0).count
   end
 
-  def ratio
-    (wins+1)/(losses+1)
-  end
-
   def online
     update_attribute(:last_sign_in_at, Time.now)
     User.unscoped do
@@ -72,14 +81,26 @@ class User < ActiveRecord::Base
         user = val.user
         if (Time.now.to_i - user.last_sign_in_at.to_i).to_i < 300
           broadcast("/channel/" + user.special_key.to_s, 
-                    '{"type":1, "name" : "'+name+'", "id" : '+id.to_s+', "url": "/user/'+id.to_s+'", "invite":"/user/'+id.to_s+'/invite"}' )
+                    '{"type":1, 
+                      "time": 10,
+                      "img": "'+image_url+'",
+                      "name" : "'+name+'", 
+                      "id" : '+id.to_s+', 
+                      "url": "/user/'+id.to_s+'", 
+                      "invite":"/user/'+id.to_s+'/invite"}' )
         end
       end
       Relation.where(:user_id => id, :validated => true).includes(:friend).each do |val|
         user = val.friend
         if (Time.now.to_i - user.last_sign_in_at.to_i).to_i < 300
           broadcast("/channel/" + user.special_key.to_s, 
-                    '{"type":1, "name" : "'+name+'", "id" : '+id.to_s+', "url": "/user/'+id.to_s+'", "invite":"/user/'+id.to_s+'/invite"}' )
+                    '{"type":1, 
+                      "time": 10,
+                      "img": "'+image_url+'",
+                      "name" : "'+name+'", 
+                      "id" : '+id.to_s+', 
+                      "url": "/user/'+id.to_s+'", 
+                      "invite":"/user/'+id.to_s+'/invite"}' )
         end
       end
     end
@@ -88,4 +109,61 @@ class User < ActiveRecord::Base
   def special_key
     id * 10000000000 + created_at.to_i
   end
+
+  # OMNIAUTH
+  def self.from_omniauth(auth)
+    provider_col = auth.provider + "_uid"
+
+    if auth.info.email
+      if user = where(:email => auth.info.email).first
+        user[provider_col] = auth.uid
+        user.save
+        return user
+      end
+    end
+
+    where(provider_col => auth.uid).first_or_create do |user|
+      user.nickname = auth.info.nickname || auth.info.name
+      user.email = auth.info.email || ""
+      user[provider_col] = auth.uid
+    end
+  end
+
+  def self.new_with_session(params, session)
+    if session["devise.user_attributes"]
+      new(session["devise.user_attributes"], without_protection: true) do |user|
+        user.attributes = params
+        user.valid?
+      end
+    else
+      super
+    end
+  end
+
+  # DEVISE
+  def self.find_for_database_authentication(warden_conditions)
+    conditions = warden_conditions.dup
+    if login = conditions.delete(:login)
+      where(conditions).where(["nickname = :value OR lower(email) = :value", { :value => login }]).first
+    else
+      where(conditions).first
+    end
+  end
+
+  def password_required?
+    super && twitter_uid == '0' && facebook_uid == '0' && google_uid == '0'
+  end
+
+  def email_required?
+    super && twitter_uid.blank? && facebook_uid.blank? && google_uid.blank?
+  end
+
+  def update_with_password(params, *options)
+    if encrypted_password.blank?
+      update_attributes(params, *options)
+    else
+      super
+    end
+  end
+
 end

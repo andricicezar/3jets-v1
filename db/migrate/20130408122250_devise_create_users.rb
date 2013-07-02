@@ -2,11 +2,19 @@ class DeviseCreateUsers < ActiveRecord::Migration
   def change
     create_table(:users) do |t|
       ## Database authenticatable
-      t.string :email,              :null => false, :default => ""
+      t.string :email,              :default => ""
       t.string :encrypted_password, :null => false, :default => ""
-      t.integer :elo, :default => 1400
-      t.string :nickname, :unique => true
-      t.boolean :deleted, :default => false
+      t.integer :elo,               :default => 1400
+      t.string :nickname,           :null => false, :unique => true
+      t.boolean :deleted,           :default => false
+      t.boolean :veteran,           :default => false
+
+      ## OmniAuth
+      t.string :facebook_uid,     :default => "0"
+      t.string :twitter_uid,      :default => "0"
+      t.string :google_uid,       :default => "0"
+
+      t.string  :image_link,       :default => ""
 
       ## Recoverable
       t.string   :reset_password_token
@@ -40,7 +48,8 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index :users, :email,                :unique => true
+    add_index :users, :email
+    add_index :users, :nickname,             :unique => true
     add_index :users, :reset_password_token, :unique => true
     # add_index :users, :confirmation_token,   :unique => true
     # add_index :users, :unlock_token,         :unique => true

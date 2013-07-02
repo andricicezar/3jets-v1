@@ -45,7 +45,9 @@
         ok = true
         return
     if (!ok)
-      $scope.friends.shift(value)
+      $scope.$apply( ->
+        $scope.friends.push(value)
+      )
 
   $scope.addGame = (value) ->
     ok = false
@@ -63,7 +65,9 @@
         ok = true
         return
     if (!ok)
-      location.reload()
+      $scope.$apply( ->
+        $scope.games.push(value)
+      )
   $scope.acceptNotif = (ev) ->
     $.get(ev.accept_url)
     angular.forEach $scope.notifications, (notif, index) ->

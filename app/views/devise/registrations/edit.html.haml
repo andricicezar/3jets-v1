@@ -1,38 +1,70 @@
-.login
-  %h2 Edit
+.window
+  .content
+    %h2 Edit
 
-  = form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f|
-    = devise_error_messages!
+    = form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f|
+      = devise_error_messages!
 
-    %p
-      Change your profile picture on
-      %a{:href => "http://gravatar.com"}
-        Gravatar
+      %p
+        = f.text_field :image_link, :id => "image_link", :style => "display: none;"
+        .profile_images
+          %img.active{:src => current_user.image_url}
+          - if ax = UserMeta.where(:key => "facebook_img", :user_id => current_user.id).first
+            %img{:src => ax.value}
+          - if ax = UserMeta.where(:key => "twitter_img", :user_id => current_user.id).first
+            %img{:src => ax.value}
+          - if current_user.email
+            %img{:src => current_user.gravatar_url}
+          .m-btn.icn-only
+            %i.icon-ellipsis-vertical
 
-    = f.email_field :email, :placeHolder => "Email"
+      = f.email_field :email, :placeHolder => "Email"
 
-    = f.label :nickname
-    = f.text_field :nickname, :autofocus => true
+      = f.text_field :nickname, :placeHolder => "Nickname"
+      - if !current_user.encrypted_password.blank?
+        = f.password_field :current_password, :placeHolder => "Current password (required)"
 
-    = f.label :current_password
-    = f.password_field :current_password, :placeHolder => "Required"
+      - if devise_mapping.confirmable? && resource.pending_reconfirmation?
+        %div
+          Currently waiting confirmation for: 
+          = resource.unconfirmed_email
+      %h6 Leave it blank if you don't want to change it
+      = f.password_field :password, :placeHolder => "New password"
+      = f.password_field :password_confirmation, :placeHolder => "Password Confirmation"
+      
+      = f.submit "Update", :class => "m-btn blue btn-block"
 
+    %h3 Social
+    - if current_user.facebook_uid != '0' || current_user.twitter_uid != '0' || current_user.google_uid != '0'
+      .m-btn-group.socl
+        %a.m-btn.disabled
+          Signed with:
+        - if current_user.facebook_uid != '0'
+          %a.m-btn.icn-only.btn-facebook.cancellable{:href => user_omniauth_authorize_url(:facebook)}
+            %i.icon-facebook
+        - if current_user.twitter_uid != '0'
+          %a.m-btn.icn-only.btn-twitter.cancellable{:href => user_omniauth_authorize_url(:twitter)}
+            %i.icon-twitter
+        - if current_user.google_uid != '0'
+          %a.m-btn.icn-only.btn-google.cancellable{:href => user_omniauth_authorize_url(:google)}
+            %i.icon-google-plus
 
-    - if devise_mapping.confirmable? && resource.pending_reconfirmation?
-      %div
-        Currently waiting confirmation for: 
-        = resource.unconfirmed_email
+    - if current_user.facebook_uid == '0' || current_user.twitter_uid == '0' || current_user.google_uid == '0'
+      .m-btn-group.socl
+        %a.m-btn.disabled
+          Add:
+        - if current_user.facebook_uid == '0'
+          %a.m-btn.icn-only.btn-facebook{:href => user_omniauth_authorize_url(:facebook)}
+            %i.icon-facebook
+        - if current_user.twitter_uid == '0'
+          %a.m-btn.icn-only.btn-twitter{:href => user_omniauth_authorize_url(:twitter)}
+            %i.icon-twitter
+        - if current_user.google_uid == '0'
+          %a.m-btn.icn-only.btn-google{:href => user_omniauth_authorize_url(:google)}
+            %i.icon-google-plus
 
-    = f.label :password 
-    = f.password_field :password, :autocomplete => "off"
+    %h3 Cancel my account
 
-    = f.label :password_confirmation
-    = f.password_field :password_confirmation
-    
-    = f.submit "Update", :class => "btn btn-primary btn-block"
+    = button_to "Delete my account", registration_path(resource_name), :data => { :confirm => "Are you sure?" }, :method => :delete, :class => "m-btn red btn-block"
 
-  %h3 Cancel my account
-
-  = button_to "Delete my account", registration_path(resource_name), :data => { :confirm => "Are you sure?" }, :method => :delete, :class => "btn btn-block btn-danger"
-
-  = link_to "Back", :back, :class => "btn btn-info btn-block"
+    = link_to "Back", :back, :class => "m-btn blue btn-block"

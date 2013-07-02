@@ -22,22 +22,24 @@ class GameController < ApplicationController
       currentGame.validated = true
       currentGame.save
 
-      y = Notification.where(:title => "Game Request", 
-                             :user_id => currentGame.fst_user,
-                             :friend_id => currentGame.scd_user).first
-      if y
-        y.destroy
+      Notification.where(:title => "Game Request", :user_id => currentGame.fst_user, :friend_id => currentGame.scd_user).each do |notif|
+        notif.destroy
       end
       qasw = currentGame.user1
       broadcast("/channel/" + current_user.special_key.to_s,
                 '{"type":2, "turn":2, 
-                "game_id":'+qasw.id.to_s+',
+                "game_id":'+currentGame.id.to_s+',
+                "game_ur":"'+game_url(currentGame.id)+'",
+                "num_players":'+currentGame.num_players.to_s+',
                 "enemy_pic": "'+qasw.image_url+'",
                 "enemy_name": "'+qasw.name+'"}')
       v = 2
       v = 1 if Airplane.where(:game_id => currentGame.id, :user_id => qasw.id).count > 0
       broadcast("/channel/" + qasw.special_key.to_s,
-                '{"type":2, "turn":'+v.to_s+', "game_id":'+currentGame.id.to_s+',
+                '{"type":2, "turn":'+v.to_s+', 
+                "game_id":'+currentGame.id.to_s+',
+                "game_ur":"'+game_url(currentGame.id)+'",
+                "num_players":'+currentGame.num_players.to_s+',
                 "enemy_pic": "'+current_user.image_url+'",
                 "enemy_name": "'+current_user.name+'"}')
 
@@ -48,22 +50,55 @@ class GameController < ApplicationController
   end
     
   def finish
-    if currentGame.first_user.num_airplanes == 0
-      @winner = currentGame.user2
-      @loser = currentGame.user1
-    else
-      if currentGame.second_user.num_airplanes == 0
-        @winner = currentGame.user1
-        @loser = currentGame.user2
-      else
-        redirect_to game_wait_path(params[:id])
-        return
-      end
+    @winner = currentGame.winner
+    @loser = currentGame.loser
+    if !@winner
+      redirect_to game_wait_url(params[:id])
+      return
     end
 
-    if Result.where(:game_id => currentGame.id).count == 0
+    Notification.where(:view_url => game_victory_url(currentGame.id), :friend_id => current_user.id).each do |notif|
+      notif.destroy
+    end
+
+    if !currentGame.finished
       currentGame.finished = true
       currentGame.save
+
+
+      if current_user.id == currentGame.user1.id
+        s = "You've won!"
+        if @winner == currentGame.user1
+          s = "You've lost!"
+        end
+        notif = Notification.create(
+                  :notf_type => 3,
+                  :title => s,
+                  :special_class => "",
+                  :user_id => current_user.id,
+                  :friend_id => currentGame.user2.id,
+                  :accept_url => "",
+                  :view_url => game_victory_url(currentGame.id))
+        broadcast("/channel/" + currentGame.user2.special_key.to_s,
+              render_notif3(notif, current_user))
+      else
+        if current_user.id == currentGame.user2.id
+          s = "You've won!"
+          if @winner == currentGame.user2
+            s = "You've lost!"
+          end
+          notif = Notification.create(
+                    :notf_type => 3,
+                    :title => s,
+                    :special_class => "",
+                    :user_id => current_user.id,
+                    :friend_id => currentGame.user1.id,
+                    :accept_url => "",
+                    :view_url => game_victory_url(currentGame.id))
+          broadcast("/channel/" + currentGame.user1.special_key.to_s,
+                render_notif3(notif, current_user))
+        end
+      end
 
       return if !currentGame.countable
 
@@ -89,14 +124,33 @@ class GameController < ApplicationController
                     :game_id => currentGame.id,
                     :result => 0)
     end
+
+    if !currentGame.user1.veteran
+      if Result.where(:user_id => currentGame.user1.id).count > 5
+        v = currentGame.user1
+        v.veteran = true
+        v.save
+      end
+    end
+
+    if !currentGame.user2.veteran
+      if Result.where(:user_id => currentGame.user2.id).count > 5
+        v = currentGame.user2
+        v.veteran = true
+        v.save
+      end
+    end
   end
 
   def exit
     ok = false
 
     if currentGame.game_users.count < 2
+      Notification.where(:accept_url => game_validate_url(currentGame.id)).each do |notf|
+        notf.destroy
+      end
       currentGame.destroy
-      redirect_to home_path
+      redirect_to home_url
       return
     end
 
@@ -115,24 +169,24 @@ class GameController < ApplicationController
     end
 
     if ok
-      broadcast_game(params[:id], "move", "4")
-      redirect_to game_victory_path(params[:id])
+      currentGame.finish_it
+      redirect_to game_victory_url(params[:id])
       return
     end
-    redirect_to play_path(params[:id])
+    redirect_to play_url(params[:id])
   end
 
   def play
     # verific daca sunt setate avioanele
     if Airplane.where(:user_id => current_user.id, :game_id => currentGame.id).count < 3
-      redirect_to play_path + "?game=" + currentGame.id.to_s
+      redirect_to play_url + "?game=" + currentGame.id.to_s
       return
     end
 
 
     # verificam daca are oponent
     if currentGame.num_players == 1
-      redirect_to game_wait_path(params[:id])
+      redirect_to game_wait_url(params[:id])
       return
     end
 
@@ -148,7 +202,7 @@ class GameController < ApplicationController
                 '{"type":2, "turn":1, "game_id":'+currentGame.id.to_s+',
                 "enemy_pic": "'+current_user.image_url+'",
                 "enemy_name": "'+current_user.name+'"}')
-     redirect_to game_path(params[:id])
+     redirect_to game_url(params[:id])
     end
   end
 
@@ -176,13 +230,13 @@ class GameController < ApplicationController
     # adaug ca a mai intrat o persoana in joc
     currentGame.num_players += 1
     currentGame.save
-    redirect_to game_wait_path(currentGame.id)
+    redirect_to game_wait_url(currentGame.id)
   end
 
   def asdf
     # verific daca e tura lui, daca nu, returnez 3
     if currentGame.user_turn.id != current_user.id
-      broadcast_game(currentGame.id.to_s, "move", "3")
+      # broadcast_game(currentGame.id.to_s, "move", "3")
       respond_to do |format|
         format.json { render :json => 3 }
       end
@@ -228,13 +282,11 @@ class GameController < ApplicationController
       aux.num_airplanes -= 1
       aux.save
     end
-    x = 1
-    x = 0 if message == 1 || message == 2
 
     broadcast("/channel/" + currentGame.enemy.special_key.to_s, 
-              '{"type":2, "turn":'+x.to_s+', "game_id":'+currentGame.id.to_s+'}')
+              '{"type":2, "turn":1, "game_id":'+currentGame.id.to_s+'}')
     broadcast("/channel/" + current_user.special_key.to_s,
-              '{"type":2, "turn":'+(1-x).to_s+', "game_id":'+currentGame.id.to_s+'}')
+              '{"type":2, "turn":0, "game_id":'+currentGame.id.to_s+'}')
 
     # inregistrez miscarea
     Move.create(:user_id => current_user.id,
@@ -248,13 +300,7 @@ class GameController < ApplicationController
     broadcast_game(currentGame.id.to_s, "move", data)
     # daca inamicul nu mai are nici un avion
     # trimit mesaj ca jocul s-a terminat
-    if currentGame.enemyTurn.num_airplanes == 0
-      broadcast_game(currentGame.id.to_s, "move", "4")
-      broadcast("/channel/" + currentGame.user1.special_key.to_s, 
-                '{"type":2, "turn": 3, "game_id":'+currentGame.id.to_s+'}')
-      broadcast("/channel/" + currentGame.user2.special_key.to_s, 
-                '{"type":2, "turn": 3, "game_id":'+currentGame.id.to_s+'}')
-    end
+    currentGame.finish_it if currentGame.winner
 
     respond_to do |format|
       format.json { render :json => message }
@@ -267,14 +313,14 @@ class GameController < ApplicationController
     if games.count > 0
       games.each do |game|
         if game.fst_user != current_user.id
-          redirect_to game_adduser_path(games.first.id, params[:conf])
+          redirect_to game_adduser_url(games.first.id, params[:conf])
           return
         end
       end
     end
 
     newGame = Game.create(:num_players => 0)
-    redirect_to game_adduser_path(newGame.id, params[:conf])
+    redirect_to game_adduser_url(newGame.id, params[:conf])
   end
 
   def match
@@ -286,17 +332,17 @@ class GameController < ApplicationController
     for i in 0..9 do
       for j in 0..9 do
         if harta[i][j] > 1
-          redirect_to play_path + "/?error=fail" + x
+          redirect_to play_url + "/?error=fail" + x
 	        return
         end
       end
     end
     
     if params.has_key? :game
-      redirect_to game_adduser_path(params[:game].to_i, params[:conf])
+      redirect_to game_adduser_url(params[:game].to_i, params[:conf])
       return
     end
 
-    redirect_to search_game_path(params[:conf])
+    redirect_to search_game_url(params[:conf])
   end
 end

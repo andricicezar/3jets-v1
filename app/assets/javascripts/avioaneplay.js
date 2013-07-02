@@ -8,6 +8,7 @@ readyGame = function() {
 $(document).ready(readyGame);
 $(document).on("page:load", readyGame);
 function game_ready() {
+  console.log("wtf");
   if ($("#wait").length > 0) {
     s = "/game/"+$("#wait").attr("game")+"/add_user";
     faye.subscribe(s, function(data) {
@@ -17,21 +18,22 @@ function game_ready() {
   }
   init_grid();
   if ($("#main_grid2").length > 0) {
+    var game = $("#main_grid1").attr("game");
     s = "/game/"+$("#main_grid1").attr("game")+"/move";
     faye.subscribe(s, function(data) {
-      if (data == "4") {
-        window.location += "/victory";
-      }
-      qtop = data[data.length-3];
-      qleft = data[data.length-2];
-      qhit = data[data.length-1];
-      data = data.slice(0, data.length-3);
-      if (data == $("#main_grid1").attr("user")) {
-        $("#main_grid2 .casuta"+qtop+"-"+qleft+"").addClass("hit-"+qhit).addClass("basic-sprite");
-      } else {
-        $("#main_grid1 .casuta"+qtop+"-"+qleft).addClass("hit-"+qhit).addClass("basic-sprite");
-      }
-      if (qhit == 0) {
+      if ($("#main_grid1").attr("game") == game) {
+        if (data == "4") {
+          window.location = "/game/"+game+"/victory";
+        }
+        qtop = data[data.length-3];
+        qleft = data[data.length-2];
+        qhit = data[data.length-1];
+        data = data.slice(0, data.length-3);
+        if (data == $("#main_grid1").attr("user")) {
+          $("#main_grid2 .casuta"+qtop+"-"+qleft+"").addClass("hit-"+qhit).addClass("basic-sprite");
+        } else {
+          $("#main_grid1 .casuta"+qtop+"-"+qleft).addClass("hit-"+qhit).addClass("basic-sprite");
+        }
         schimba_rolurile();
       }
     });

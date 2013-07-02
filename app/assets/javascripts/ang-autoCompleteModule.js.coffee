@@ -14,7 +14,7 @@ $.extend proto,
       initSource.call this
 
   _renderItem: (ul, item) ->
-    $("<li></li>").data("item.autocomplete", item).append($("<a href='" + item.invite + "'></a>")[(if @options.html then "html" else "text")](item.label)).appendTo ul
+    $("<li></li>").data("item.autocomplete", item).append($("<a href='" + (if item.invite then item.invite else (if item.veteran then item.position_url else item.profile_url)) + "'></a>")[(if @options.html then "html" else "text")](item.label)).appendTo ul
 
 angular.module("MyModule", []).directive "autoComplete", () ->
   (scope, elm, attrs) ->

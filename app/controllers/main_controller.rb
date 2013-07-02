@@ -20,11 +20,17 @@ class MainController < ApplicationController
     if id > 1
       @prev = id-1
     end
-    @users = User.order('elo DESC').offset((id-1)*7).limit(7)
+    @users = User.veterans.order('elo DESC').offset((id-1)*7).limit(7)
 
     if User.offset(id*7).first
       @next = id+1
     end
+  end
+
+  def search_users
+    prefix = params[:term] + "_%"
+    render json: User.where("(nickname like ?) or (email like ?)", prefix, prefix)
+                     .limit(10), root: false
   end
 
 end

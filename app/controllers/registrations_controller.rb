@@ -7,10 +7,10 @@ class RegistrationsController < Devise::RegistrationsController
       cookies[:nr_afisari] = {:value => 1, :expires => 1.hour.from_now }
     end
 
-    if cookies[:nr_afisari].to_i > 7
-      redirect_to "http://google.com"
-      return
-    end
+#    if cookies[:nr_afisari].to_i > 7
+ #     redirect_to "http://google.com"
+  #    return
+  #  end
     build_resource({})
     respond_with self.resource
   end

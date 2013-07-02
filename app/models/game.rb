@@ -1,4 +1,8 @@
 class Game < ActiveRecord::Base
+  include GameHelper
+  include ApplicationHelper
+
+
   has_many :game_users
   has_many :moves
   belongs_to :user1, :class_name => "User", :foreign_key => "fst_user"
@@ -21,13 +25,9 @@ class Game < ActiveRecord::Base
   def user_turn
     last_move = moves.last
     if last_move
-      if (last_move.hit > 0)
-        User.find( last_move.user_id )
-      else
-        User.find( fst_user + scd_user - last_move.user_id )
-      end
+      User.find( fst_user + scd_user - last_move.user_id )
     else
-      User.find( fst_user )
+      user1
     end
   end
 
@@ -40,16 +40,15 @@ class Game < ActiveRecord::Base
   end
 
   def winner
-    return 0 if finished == false
-    if first_user.num_airplanes == 0
-      second_user.user_id
-    else
-      if second_user.num_airplanes == 0
-        first_user.user_id
-      else
-        0
-      end
-    end
+    return user2 if first_user.num_airplanes == 0
+    return user1 if second_user.num_airplanes == 0
+    false
+  end
+
+  def loser
+    return user1 if first_user.num_airplanes == 0
+    return user2 if second_user.num_airplanes == 0
+    false
   end
 
   def enemy
@@ -58,5 +57,13 @@ class Game < ActiveRecord::Base
 
   def enemyMap
     enemy.mapFromGame(id)
+  end
+
+  def finish_it
+    broadcast_game(id.to_s, "move", "4")
+    broadcast("/channel/" + user1.special_key.to_s, 
+              '{"type":2, "turn": 3, "game_id":'+id.to_s+'}')
+    broadcast("/channel/" + user2.special_key.to_s, 
+              '{"type":2, "turn": 3, "game_id":'+id.to_s+'}')
   end
 end

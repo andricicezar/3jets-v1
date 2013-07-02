@@ -1,14 +1,15 @@
-.login
-  %h2 Login
-  = form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f|
-    = f.email_field :email, :autofocus => true, :placeHolder => "Email"
+.window
+  = render "devise/login_tabs"
+  .content
+    = form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f|
+      = f.text_field :login, :autofocus => true, :placeHolder => "Nickname or Email"
 
-    = f.password_field :password, :placeHolder => "Password"
+      = f.password_field :password, :placeHolder => "Password"
 
-    - if devise_mapping.rememberable?
-      %label.checkbox
-        = f.check_box :remember_me
-        Remember me
+      - if devise_mapping.rememberable?
+        %label.checkbox
+          = f.check_box :remember_me
+          Remember me
 
-    = f.submit "Sign in", :class => "btn btn-primary btn-block"
-  = link_to "Sign Up", new_user_registration_path, :class => "btn btn-info btn-block"
+      = f.submit "Log in", :class => "m-btn blue btn-block"
+    = render "devise/login_socl"

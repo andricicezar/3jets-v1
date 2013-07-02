@@ -23,8 +23,12 @@ gem 'faye'
 gem 'angularjs-rails'
 gem 'active_model_serializers'
 
-gem 'rack-pjax'
+# gem 'rack-pjax'
 gem 'turbolinks'
+
+gem 'omniauth-twitter'
+gem 'omniauth-facebook'
+gem 'omniauth-openid'
 # gem 'closure-compiler'
 # gem 'rack-mini-profiler'
 # To use ActiveModel has_secure_password
@@ -34,7 +38,7 @@ gem 'turbolinks'
 # gem 'jbuilder'
 
 # Use unicorn as the app server
-gem 'unicorn'
+# gem 'unicorn'
 
 # Deploy with Capistrano
 gem 'capistrano'

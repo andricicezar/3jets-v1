@@ -8,10 +8,14 @@
           - else
             VS Random player
     .col.alignright
+      - if params.has_key? :game
+        .col
+          %a.m-btn.red{:href => game_exit_url(params[:game])} Exit
+      - else
+        .col
+          %a.m-btn{:href => home_url} Back
       .col
-        %a.btn.btn-medium{:href => home_path} Back
-      .col
-        %a#send-button.btn.btn-primary.btn-medium Done
+        %a#send-button.m-btn.blue Done
 .w2pac
   .content
     .main_grid

@@ -2,7 +2,7 @@
   %a{:href => user_profile_path(current_user.id)}
     .nrow
       .ricon
-        %img{:src => current_user.image_url + "?s=24"}
+        %img{:src => current_user.image_url}
       .rtitle
         = current_user.name
   %hr
@@ -12,7 +12,7 @@
     %a{:href => "{{game.game_ur}}"}
       .nrow{"ng-show" => "game.num_players>0||game.turn==2"}
         .ricon{"ng-class" => "{attention: (game.num_players==2&&game.turn==1)||game.turn==2}"}
-          %img{"ng-src" => "{{game.enemy_pic}}?s=24"}
+          %img{"ng-src" => "{{game.enemy_pic}}"}
         .rtitle{"ng-show" => "game.num_players==1&&game.turn<2"}
           Waiting for an opponent
         .rtitle{"ng-show" => "game.turn==1&&game.num_players==2"}
@@ -25,10 +25,10 @@
   .ntitle
     Notifications
   %div{"ng-repeat" => "notification in notifications"}
-    .nrow.expandable 
+    .nrow.expandable{"ng-show" => "notification.notf_type<=2"}
       .asdfasdf
         .ricon
-          %img{"ng-src" => "{{notification.user_pic}}?s=24"}
+          %img{"ng-src" => "{{notification.user_pic}}"}
         .rtitle
           {{notification.title}}
       .uname
@@ -40,6 +40,20 @@
           Accept
         %a.btn.btn-small.btn-inverse{:href=>"{{notification.decline_url}}", "ng-click" => "declineNotif(notification); $event.preventDefault();"}            
           Decline
+    .nrow.expandable{"ng-show" => "notification.notf_type==3"}
+      .asdfasdf
+        .ricon
+          %img{"ng-src" => "{{notification.user_pic}}"}
+        .rtitle
+          {{notification.title}}
+      .uname
+        vs {{notification.user_name}}
+      .buttons
+        %a.btn.btn-small.btn-primary{:href=>"{{notification.user_url}}"}
+          View
+        %a.btn.btn-small.btn-inverse{:href=>"{{notification.decline_url}}", "ng-click" => "declineNotif(notification); $event.preventDefault();"}            
+          Delete
+    
   %hr
   .ntitle
     Friends
@@ -47,7 +61,7 @@
     .nrow.expandable
       .asdfasdf
         .ricon
-          %img{"ng-src" => "{{friend.img}}?s=24"}
+          %img{"ng-src" => "{{friend.img}}"}
         .rtitle
           {{friend.name}}
       .buttons

@@ -1,19 +1,11 @@
-- fst_user = User.find(game.first_user.user_id)
-- scd_user = User.find(game.second_user.user_id)
+- fst_user = game.user1
+- scd_user = game.user2
 %h2
-  - if game.winner == fst_user.id
     %span.winner
-      = fst_user.email_splited
-  - else
-    %span
-      = fst_user.email_splited
+      = game.winner.name
   vs
-  - if game.winner == scd_user.id
-    %span.winner
-      = scd_user.email_splited
-  - else
-    %span
-      = scd_user.email_splited
+    %span.looser
+      = game.loser.name
 %div#game-show
   .content
     .play_grid#main_grid1{:av => fst_user.mapFromGame(game.id), :game => params[:id], :user => fst_user.id, :lov => fst_user.concatMovesVS(game.id, scd_user.id)}

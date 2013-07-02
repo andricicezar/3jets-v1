@@ -3,19 +3,17 @@ ActiveAdmin.register Game do
     column :id
     column "First User" do |game|
       User.unscoped {
-        if User.where(:id => game.fst_user).count == 1
-          fst_user = User.find(game.fst_user).email_splited
-
-          if game.winner == 0
-            fst_user
+        if game.user1
+          if !game.finished
+            game.user1.name
           else
-            if game.winner == game.fst_user
+            if game.winner.id == game.fst_user
               div :class => "winner" do
-                fst_user
+                game.user1.name
               end
             else
               div :class => "looser" do
-                fst_user
+                game.user1.name
               end
             end
           end
@@ -27,19 +25,17 @@ ActiveAdmin.register Game do
 
     column "Second User" do |game|
       User.unscoped {
-        if User.where(:id => game.scd_user).count == 1
-          scd_user = User.find(game.scd_user).email_splited
-
-          if game.winner == 0
-            scd_user
+        if game.user2
+          if !game.finished
+            game.user2.name
           else
-            if game.winner == game.scd_user
+            if game.winner.id == game.scd_user
               div :class => "winner" do
-                scd_user
+                game.user2.name
               end
             else
               div :class => "looser" do
-                scd_user
+                game.user2.name
               end
             end
           end
@@ -58,10 +54,10 @@ ActiveAdmin.register Game do
 
   show do |game|
     User.unscoped {
-      if User.where(:id => game.fst_user).count + User.where(:id => game.scd_user).count == 2
+      if game.num_players == 2
         render :partial => "show", :locals => {:game => game}
       else
-        h2 "Unul din conturi a fost sters"
+        h2 "Jocul inca nu a inceput"
       end
     }
   end

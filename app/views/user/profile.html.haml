@@ -5,40 +5,29 @@
         %img{:src => @user.image_url}
       .col
         = @user.name
-        - if current_user.id != @user.id
-          %br
-          - if is_user_friend_with(current_user.id, @user.id, true)
-            %button.follow-btn.btn.btn-success.active{:user => @user.id,
-                                             :type => "button", 
-                                             "data-toggle" => "button", 
-                                             "data-loading-text" => "Waiting..."}
-              %span
+        .m-btn-group
+          - if current_user.id != @user.id
+            %br
+            - if is_user_friend_with(current_user.id, @user.id, true)
+              %button.follow-btn.m-btn.green.cancellable{:user => @user.id}
                 %i.icon-ok-sign
                 Friend
-            - if Notification.where(:title => "Game Request", :user_id => current_user.id, :friend_id => @user.id).count == 0
-              %a.follow-btn.btn.btn-primary{:href => invite_user_path(@user.id)}
-                Invite
-          - else
-            - if is_user_friend_with(current_user.id, @user.id, false)
-              %button.follow-btn.btn{:user => @user.id,
-                                               :type => "button", 
-                                               "data-toggle" => "button",
-                                               "data-loading-text" => "Waiting..."}
-                %span
+              - if Notification.where(:title => "Game Request", :user_id => current_user.id, :friend_id => @user.id).count == 0
+                %a.follow-btn.m-btn.blue{:href => invite_user_path(@user.id)}
+                  Invite
+            - else
+              - if is_user_friend_with(current_user.id, @user.id, false)
+                %button.follow-btn.m-btn{:user => @user.id}
                   %i.icon-remove-sign
                   Waiting
-            - else
-              %button.follow-btn.btn.btn-primary{:user => @user.id,
-                                               :type => "button", 
-                                               "data-toggle" => "button",
-                                               "data-loading-text" => "Waiting..."}
-                %span
+              - else
+                %button.follow-btn.m-btn.blue{:user => @user.id}
                   %i.icon-plus-sign
                   Add friend
-        - else
-          %br
-          %a.btn.btn-primary{:href => edit_user_registration_path}
-            Edit
+          - else
+            %br
+            %a.m-btn.blue{:href => edit_user_registration_path}
+              Edit
   .clear
   %h4.results
     %a{:href => user_position_path(@user.id)} ELO: #{@user.elo}
@@ -48,31 +37,31 @@
       L: #{@user.losses}
   %hr
   - if is_user_friend_with(current_user.id, @user.id, true)
-    - matches = Game.where("((fst_user=? and scd_user=?) or (fst_user=? and scd_user=?)) and finished=true", current_user.id, @user.id, @user.id, current_user.id).order("id DESC").limit(5)
+    - matches = Game.where("((fst_user=? and scd_user=?) or (fst_user=? and scd_user=?)) and finished=true", current_user.id, @user.id, @user.id, current_user.id).includes(:user1).includes(:user2).order("id DESC").limit(5)
     - if matches.count > 0
       %h4 #{@user.name} vs you
       %table.table.table-striped.games-results
         %tbody
           - matches.each do |game|
             %tr
-              %td{:class => ("winner" if game.winner == game.fst_user)}
+              %td{:class => ("winner" if game.winner.id == game.fst_user)}
                 %a{:href => user_profile_path(game.fst_user)}
-                  = User.find(game.fst_user).name
-              %td{:class => ("winner" if game.winner == game.scd_user)}
+                  = game.user1.name
+              %td{:class => ("winner" if game.winner.id == game.scd_user)}
                 %a{:href => user_profile_path(game.scd_user)}
-                  = User.find(game.scd_user).name
+                  = game.user2.name
 
-  - matches = Game.where("(fst_user=? or scd_user=?) and finished=true", @user.id, @user.id).limit(7)
+  - matches = Game.where("(fst_user=? or scd_user=?) and finished=true", @user.id, @user.id).includes(:user1).includes(:user2).limit(7)
   - if matches.count > 0
     %h4 #{@user.name} vs random players
     %table.table.table-striped.games-results
       %tbody
         - matches.each do |game|
           %tr
-            %td{:class => ("winner" if game.winner == game.fst_user)}
+            %td{:class => ("winner" if game.winner.id == game.fst_user)}
               %a{:href => user_profile_path(game.fst_user)}
-                = User.find(game.fst_user).name
-            %td{:class => ("winner" if game.winner == game.scd_user)}
+                = game.user1.name
+            %td{:class => ("winner" if game.winner.id == game.scd_user)}
               %a{:href => user_profile_path(game.scd_user)}
-                = User.find(game.scd_user).name
+                = game.user2.name
 

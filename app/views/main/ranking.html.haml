@@ -1,5 +1,7 @@
 .container.colorfull-container
-  %h3 Ranking
+  %h3 
+    Ranking
+    %input#search_user_input{:type => "text", :placeHolder => "Search users"}
 
   %table.table.table-striped
     %thead
@@ -13,18 +15,15 @@
       - @users.each do |user|
         - if user != nil
           - v += 1
-          %tr
+          %tr{:class => (params[:user].to_i == user.id)?"highlight":""}
             %td
               = (params[:id].to_i-1)*7+v
             %td
-              - if current_user.id != user.id
-                %a{:href => user_profile_path(user.id)}
-                  = user.name
-              - else
+              - if current_user.id == user.id
                 %span.label.label-info
                   You
-                %a{:href => user_profile_path(user.id)}
-                  = user.name
+              %a{:href => user_profile_path(user.id)}
+                = user.name
             %td
               = user.elo
             %td 

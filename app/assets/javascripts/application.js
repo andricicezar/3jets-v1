@@ -11,11 +11,11 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require jquery
+//= require jquery_ujs
 //= require jquery.ui.core
 //= require jquery.ui.autocomplete
 //= require jquery.ui.draggable
 //= require jquery.ui.droppable
-//= require turbolinks
 //= require bootstrap-dropdown
 //= require bootstrap-button
 //= require faye_conn
@@ -23,7 +23,7 @@
 //= require ang-onlineCtrl
 //= require ang-autoCompleteModule
 //= require avioane
-
+//= require turbolinks
 $(document).on("click", ".follow-btn", function() {
   button = $(this);
   button.addClass("disabled");
@@ -58,6 +58,12 @@ $(document).on("click", "#search-friend-popover", function(event) {
   event.stopPropagation();
 });
 
+$(document).on("click", ".profile_images img", function(event) {
+  $(".profile_images img").removeClass("active");
+  $(this).addClass("active");
+  $("#image_link").attr("value", $(this).attr("src"));
+});
+
 
 readyApp = function() {
   angular.bootstrap(document, ['MyModule']);
@@ -71,7 +77,21 @@ readyApp = function() {
     .css("left", "50%")
     .css("margin-top", -mega_awesome_button.height()/2)
     .css("margin-left", -mega_awesome_button.width()/2);
-  console.log("come-on");
+  
+  $("#search_user_input").autocomplete({
+    source: "/search_users"
+  });
+  $("#search_user_input").keyup(function(e) {
+    var guy;
+    if (e.keyCode === 13) {
+      guy = $(this).val();
+      return $.each($(".ui-menu-item a"), function(i, v) {
+        if ($(v).text() === guy) {
+          window.location.assign($(v).attr("href"));
+        }
+      });
+    }
+  });
 }
 
 $(document).ready(readyApp);
