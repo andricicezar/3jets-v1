@@ -71,6 +71,62 @@ module GameHelper
     conf
   end
 
+  def check_achievement(user_id, key, value)
+    Achievement.where(:key_watched => key).each do |achievement|
+      if achievement.min_value.to_i <= value.to_i
+        unless UserAchievement.where(:achievement_id => achievement.id, :user_id => user_id).first
+          UserAchievement.create(:achievement_id => achievement.id, :user_id => user_id)
+          notif = Notification.create(
+                    :notf_type => 4,
+                    :title => achievement.name,
+                    :special_class => achievement.icon,
+                    :user_id => current_user.id,
+                    :friend_id => current_user.id,
+                    :accept_url => "",
+                    :view_url => "")
+          broadcast("/channel/" + current_user.special_key.to_s,
+                    render_notif4(notif, achievement))
+        end
+      end
+    end
+  end
+
+  def increase_value(user_id, name, need_to_reset)
+    meta = UserMeta.where(:user_id => user_id, :key => name).first
+    unless meta
+      meta = UserMeta.create(:user_id => user_id, :key => name, :value => '0')
+    end
+
+    if need_to_reset
+      meta.value = '0'
+    else
+      meta.value = (meta.value.to_i + 1).to_s
+    end
+    meta.save
+    check_achievement(user_id, meta.key, meta.value)
+  end
+
+  def increase_values(user, map)
+    user.user_metas.each do |meta|
+      if map.has_key? (meta.key.to_sym)
+        if map[meta.key.to_sym] == -1
+          meta.value = '0'
+        else
+          meta.value = (meta.value.to_i + 1).to_s
+        end
+        map[meta.key.to_sym] = 2
+        meta.save
+        check_achievement(user.id, meta.key, meta.value)
+      end
+    end
+
+    map.each do |k, v|
+      if v == 1
+        UserMeta.create(:user_id => user.id, :key => k.to_s, :value => '1')
+        check_achievement(user.id, k.to_s, 1)
+      end
+    end
+  end
 
   # FILTERS
   def is_game_finished

@@ -53,7 +53,17 @@
           View
         %a.btn.btn-small.btn-inverse{:href=>"{{notification.decline_url}}", "ng-click" => "declineNotif(notification); $event.preventDefault();"}            
           Delete
-    
+    .nrow.expandable{"ng-show" => "notification.notf_type==4"}
+      .asdfasdf
+        .ricon{"ng-class" => "notification.special_class"}
+        .rtitle
+          Achievement unlock!
+      .uname
+        {{notification.title}}
+      .buttons
+        %a.btn.btn-small.btn-inverse{:href=>"{{notification.decline_url}}", "ng-click" => "declineNotif(notification); $event.preventDefault();"}            
+          Delete
+   
   %hr
   .ntitle
     Friends

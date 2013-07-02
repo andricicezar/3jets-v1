@@ -102,6 +102,13 @@ class GameController < ApplicationController
 
       return if !currentGame.countable
 
+      increase_value(@winner.id, "combo_wins", false)
+      increase_value(@winner.id, "combo_losses", true)
+      increase_value(@loser.id,  "combo_losses", false)
+      increase_value(@loser.id, "combo_wins", true)
+      increase_value(@winner.id, "alltime_wins", false)
+      increase_value(@loser.id,  "alltime_losses", false)
+
       # ELO
       elo_constant = 32
         # elo winner
@@ -288,7 +295,45 @@ class GameController < ApplicationController
     broadcast("/channel/" + current_user.special_key.to_s,
               '{"type":2, "turn":0, "game_id":'+currentGame.id.to_s+'}')
 
+
+    if currentGame.countable
+      map = {}
+      case message
+      when 0
+        map[:combo_heads] = -1
+        map[:combo_hits] = -1
+        map[:combo_heads_hits] = -1
+
+        map[:combo_miss] = 1
+        map[:alltime_miss] = 1
+
+        increase_value(currentGame.enemy.id, "combo_heads_taken", true)
+      when 1
+        map[:combo_miss] = -1
+        map[:combo_heads] = -1
+
+        map[:combo_hits] = 1
+        map[:combo_heads_hits] = 1
+        map[:alltime_hits] = 1
+        map[:alltime_heads_hits] = 1
+
+        increase_value(currentGame.enemy.id, "combo_heads_taken", true)
+      when 2
+        map[:combo_miss] = -1
+        map[:combo_hits] = -1
+
+        map[:combo_heads] = 1
+        map[:combo_heads_hits] = 1
+        map[:alltime_heads] = 1
+        map[:alltime_heads_hits] = 1
+
+        increase_value(currentGame.enemy.id, "combo_heads_taken", false)
+      end
+      increase_values(current_user, map)
+    end
+
     # inregistrez miscarea
+    # de aici incolo .enemy si .enemyTurn sunt useless
     Move.create(:user_id => current_user.id,
                 :game_id => params[:id],
                 :top => topA.to_i,
