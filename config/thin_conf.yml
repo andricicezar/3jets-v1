@@ -1,0 +1,13 @@
+---
+chdir: /home/andrici/public_html/rails/airplanes/current
+environment: production
+timeout: 30
+log: /home/andrici/public_html/rails/airplanes/current/log/thin.log
+pid: /home/andrici/public_html/rails/airplanes/current/tmp/pids/thin.pid
+max_conns: 1024
+max_persistent_conns: 100
+require: []
+wait: 30
+servers: 3
+socket: /tmp/thin.sock
+daemonize: true

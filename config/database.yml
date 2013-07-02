@@ -1,0 +1,16 @@
+development:
+  adapter: postgresql
+  encoding: unicode
+  database: airplanes2_production
+  pool: 5
+  host: localhost
+  username: airplane
+  password: airplane
+production:
+  adapter: postgresql
+  encoding: unicode
+  database: airplanes2_production
+  pool: 5
+  host: localhost
+  username: airplanes2013
+  password: airplanes
