@@ -1,10 +1,11 @@
-%html
+%html{"ng-app" => "MyModule"}
   %head
     %title Airplanes
     = csrf_meta_tags
     = stylesheet_link_tag "application", :medial => "all"
   %body
     = render "layouts/navbar"
-    .invelis
-      = yield
+    .turbolinks-container
+      .invelis
+        = yield
     = javascript_include_tag "application", "data-turbolinks-eval" => false

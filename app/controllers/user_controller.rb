@@ -115,7 +115,25 @@ class UserController < ApplicationController
             "user_name": "'+current_user.name+'"}')
     redirect_to game_path(game.id)
   end
+  
+  def angular_info
+    info = []
+    User.unscoped do
+      info = [
+        Relation.where("(user_id = ? or friend_id = ?) AND validated = true", current_user.id, current_user.id).includes(:user)
+                                            .includes(:friend),
+        Game.where("(fst_user = (?) or scd_user = (?)) and finished = false and validated = true", current_user.id, current_user.id)
+                                            .includes(:user1).includes(:user2).includes(:moves),
+        Notification.where("friend_id = ?", current_user.id)
+      ]
+    end
 
+    respond_to do |format|
+      format.json { render :json => info, root: false }
+    end
+  end
+
+  # DEPRECATED
   def friends
     User.unscoped do
       respond_to do |format|
@@ -125,6 +143,7 @@ class UserController < ApplicationController
     end
   end
 
+  # DEPRECATED
   def games
     User.unscoped do
       respond_to do |format|
@@ -133,6 +152,8 @@ class UserController < ApplicationController
       end
     end
   end
+
+  # DEPRECATED
   def notifications
     respond_to do |format|
       format.json { render :json => Notification.where("friend_id = ?", current_user.id), root: false }

@@ -8,11 +8,12 @@
   %hr
   .ntitle
     Games
-  %div{"ng-repeat" => "game in games"}
+  %div{"ng-repeat" => "game in games | filter: verify"}
     %a{:href => "{{game.game_ur}}"}
       .nrow{"ng-show" => "game.num_players>0||game.turn==2"}
         .ricon{"ng-class" => "{attention: (game.num_players==2&&game.turn==1)||game.turn==2}"}
           %img{"ng-src" => "{{game.enemy_pic}}"}
+          .time{"ng-show" => "game.time > 0"} {{game.time}}
         .rtitle{"ng-show" => "game.num_players==1&&game.turn<2"}
           Waiting for an opponent
         .rtitle{"ng-show" => "game.turn==1&&game.num_players==2"}

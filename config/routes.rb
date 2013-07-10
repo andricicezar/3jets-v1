@@ -12,6 +12,7 @@ Airplanes::Application.routes.draw do
   get "friends" => "user#friends"
   get "games" => "user#games"
   get "notifications" => "user#notifications"
+  get "info" => "user#angular_info"
   
   get "user/:id/friend" => "user#friend", :as => "be_friend_with_user"
   get "user/:id/invite" => "user#invite", :as => "invite_user"
@@ -34,6 +35,7 @@ Airplanes::Application.routes.draw do
   get "game/:id/exit" => "game#exit", :as => "game_exit"
   get "game/:id/victory" => "game#finish", :as=> "game_victory"
   get "game/:id/validate" => "game#validatedm", :as => "game_validate"
+  get "game/:id/check" => "game#check", :as => "game_check"
 
   get "search_users" => "main#search_users", :as => "search_users"
 

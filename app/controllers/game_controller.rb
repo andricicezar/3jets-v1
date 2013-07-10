@@ -32,7 +32,8 @@ class GameController < ApplicationController
                 "game_ur":"'+game_url(currentGame.id)+'",
                 "num_players":'+currentGame.num_players.to_s+',
                 "enemy_pic": "'+qasw.image_url+'",
-                "enemy_name": "'+qasw.name+'"}')
+                "enemy_name": "'+qasw.name+'",
+                "time": "no"}')
       v = 2
       v = 1 if Airplane.where(:game_id => currentGame.id, :user_id => qasw.id).count > 0
       broadcast("/channel/" + qasw.special_key.to_s,
@@ -41,7 +42,8 @@ class GameController < ApplicationController
                 "game_ur":"'+game_url(currentGame.id)+'",
                 "num_players":'+currentGame.num_players.to_s+',
                 "enemy_pic": "'+current_user.image_url+'",
-                "enemy_name": "'+current_user.name+'"}')
+                "enemy_name": "'+current_user.name+'",
+                "time": "no"}')
 
     end
     respond_to do |format|
@@ -57,48 +59,41 @@ class GameController < ApplicationController
       return
     end
 
-    Notification.where(:view_url => game_victory_url(currentGame.id), :friend_id => current_user.id).each do |notif|
-      notif.destroy
-    end
-
     if !currentGame.finished
       currentGame.finished = true
       currentGame.save
 
-
-      if current_user.id == currentGame.user1.id
-        s = "You've won!"
-        if @winner == currentGame.user1
-          s = "You've lost!"
-        end
-        notif = Notification.create(
-                  :notf_type => 3,
-                  :title => s,
-                  :special_class => "",
-                  :user_id => current_user.id,
-                  :friend_id => currentGame.user2.id,
-                  :accept_url => "",
-                  :view_url => game_victory_url(currentGame.id))
-        broadcast("/channel/" + currentGame.user2.special_key.to_s,
-              render_notif3(notif, current_user))
+      if @loser.id == currentGame.fst_user
+        v = currentGame.first_user
+        v.num_airplanes = 0
+        v.save
       else
-        if current_user.id == currentGame.user2.id
-          s = "You've won!"
-          if @winner == currentGame.user2
-            s = "You've lost!"
-          end
-          notif = Notification.create(
-                    :notf_type => 3,
-                    :title => s,
-                    :special_class => "",
-                    :user_id => current_user.id,
-                    :friend_id => currentGame.user1.id,
-                    :accept_url => "",
-                    :view_url => game_victory_url(currentGame.id))
-          broadcast("/channel/" + currentGame.user1.special_key.to_s,
-                render_notif3(notif, current_user))
-        end
+        v = currentGame.second_user
+        v.num_airplanes = 0
+        v.save
       end
+
+      notif = Notification.create(
+                :notf_type => 3,
+                :title => "You've lost!",
+                :special_class => "",
+                :user_id => @winner.id,
+                :friend_id => @loser.id,
+                :accept_url => "",
+                :view_url => game_victory_url(currentGame.id))
+      broadcast("/channel/" + @loser.special_key.to_s,
+            render_notif3(notif, @winner))
+      
+      notif = Notification.create(
+                :notf_type => 3,
+                :title => "You've win!",
+                :special_class => "",
+                :user_id => @loser.id,
+                :friend_id => @winner.id,
+                :accept_url => "",
+                :view_url => game_victory_url(currentGame.id))
+      broadcast("/channel/" + @winner.special_key.to_s,
+            render_notif3(notif, @loser))
 
       return if !currentGame.countable
 
@@ -132,6 +127,10 @@ class GameController < ApplicationController
                     :result => 0)
     end
 
+    Notification.where(:view_url => game_victory_url(currentGame.id), :friend_id => current_user.id).each do |notif|
+      notif.destroy
+    end
+
     if !currentGame.user1.veteran
       if Result.where(:user_id => currentGame.user1.id).count > 5
         v = currentGame.user1
@@ -149,6 +148,17 @@ class GameController < ApplicationController
     end
   end
 
+  def check
+    if currentGame.winner
+      currentGame.finish_it
+      redirect_to game_victory_url(params[:id])
+      return
+    end
+    respond_to do |format|
+      format.json { render :json => 1 }
+    end
+  end
+
   def exit
     ok = false
 
@@ -156,6 +166,8 @@ class GameController < ApplicationController
       Notification.where(:accept_url => game_validate_url(currentGame.id)).each do |notf|
         notf.destroy
       end
+      broadcast("/channel/" + current_user.special_key.to_s, 
+                '{"type":2, "turn":3, "game_id":'+currentGame.id.to_s+'}')
       currentGame.destroy
       redirect_to home_url
       return
@@ -291,9 +303,9 @@ class GameController < ApplicationController
     end
 
     broadcast("/channel/" + currentGame.enemy.special_key.to_s, 
-              '{"type":2, "turn":1, "game_id":'+currentGame.id.to_s+'}')
+                            '{"type":2, "turn":1, "game_id":'+currentGame.id.to_s+', "time":'+(if currentGame.countable then '60' else '"no"' end)+'}')
     broadcast("/channel/" + current_user.special_key.to_s,
-              '{"type":2, "turn":0, "game_id":'+currentGame.id.to_s+'}')
+                            '{"type":2, "turn":0, "game_id":'+currentGame.id.to_s+', "time":'+(if currentGame.countable then '60' else '"no"' end)+'}')
 
 
     if currentGame.countable

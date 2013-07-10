@@ -42,13 +42,39 @@ class Game < ActiveRecord::Base
   def winner
     return user2 if first_user.num_airplanes == 0
     return user1 if second_user.num_airplanes == 0
+    if countable
+      last_move = moves.last
+      if last_move
+        if 59 - (Time.now - last_move.updated_at).to_i < 0
+          return user1 if last_move.user_id == fst_user
+          return user2 if last_move.user_id == scd_user
+        end
+      else
+        if 59 - (Time.now - created_at).to_i < 0
+          return user2
+        end
+      end
+    end
     false
   end
 
   def loser
     return user1 if first_user.num_airplanes == 0
     return user2 if second_user.num_airplanes == 0
-    false
+    if countable
+      last_move = moves.last
+      if last_move
+        if 59 - (Time.now - last_move.updated_at).to_i <= 0
+          return user2 if last_move.user_id == fst_user
+          return user1 if last_move.user_id == scd_user
+        end
+      else
+        if 59 - (Time.now - created_at).to_i <= 0
+          return user1
+        end
+      end
+    end
+   false
   end
 
   def enemy

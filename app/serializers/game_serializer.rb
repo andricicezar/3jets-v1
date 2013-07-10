@@ -1,5 +1,5 @@
 class GameSerializer < ActiveModel::Serializer
-  attributes :game_id, :game_ur, :num_players, :enemy_name, :enemy_pic, :turn
+  attributes :game_id, :game_ur, :num_players, :enemy_name, :enemy_pic, :turn, :time
 
   def turn
     if Airplane.where(:game_id => object.id, :user_id => current_user.id).count == 0
@@ -35,5 +35,22 @@ class GameSerializer < ActiveModel::Serializer
     else
       object.user1.image_url
     end
+  end
+
+  def time
+    if object.countable
+      if object.moves.last
+        return 60 - (Time.now - object.moves.last.created_at).to_i
+      else
+        if object.num_players == 2
+          if (Time.now - object.updated_at).to_i > 65
+            return -1
+          else
+            return 60 - (Time.now - object.updated_at).to_i
+          end
+        end
+      end
+    end
+    "no"
   end
 end

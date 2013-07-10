@@ -3,23 +3,13 @@
   $scope.games = []
   $scope.notifications = []
   if ($scope.friends.length == 0)
-      jQuery.get("/friends", "json").done( (data) ->
+      jQuery.get("/info", "json").done( (data) ->
         $scope.$apply ( ->
-          $scope.friends = data
+          $scope.friends = data[0]
+          $scope.games = data[1]
+          $scope.notifications = data[2]
         )
       )
-  if ($scope.games.length == 0)
-    jQuery.get("/games", "json").done( (data) ->
-      $scope.$apply ( ->
-        $scope.games = data
-      )
-    )
-  if ($scope.notifications.length == 0)
-    jQuery.get("/notifications", "json").done( (data) ->
-      $scope.$apply ( ->
-        $scope.notifications = data
-      )
-    )
 
   $scope.keepTracking = ->
     s = "/channel/" + $("#users_panel").attr("channel")
@@ -61,6 +51,7 @@
           if (value.turn == 3)
             game.num_players = 0
           game.turn = value.turn
+          game.time = value.time
         )
         ok = true
         return
@@ -89,10 +80,23 @@
 
   $scope.timer = ->
     angular.forEach $scope.friends, (friend) ->
-      --friend.time if friend.time
+      $scope.$apply ( ->
+        --friend.time if friend.time
+      )
     $timeout($scope.timer, 5000)
   $timeout($scope.timer, 5000)
 
+  $scope.gameTimer = ->
+    angular.forEach $scope.games, (game) ->
+      $scope.$apply( ->
+        --game.time if game.time > -20
+      )
+      if game.time == 0
+       $.get(game.game_ur + "/check")
+    $timeout($scope.gameTimer, 1000)
+  $timeout($scope.gameTimer, 1000)
+
   $scope.verify = (item) ->
+    return true if typeof item.time == "string"
     item.time > 0
 ]
