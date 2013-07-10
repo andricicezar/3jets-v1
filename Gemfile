@@ -28,7 +28,7 @@ gem 'turbolinks'
 
 gem 'omniauth-twitter'
 gem 'omniauth-facebook'
-gem 'omniauth-openid'
+gem 'omniauth-google-oauth2'
 # gem 'closure-compiler'
 # gem 'rack-mini-profiler'
 # To use ActiveModel has_secure_password

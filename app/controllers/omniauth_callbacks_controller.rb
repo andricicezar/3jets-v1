@@ -2,18 +2,35 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   before_filter :authenticate_user!
   def all
     auth = request.env["omniauth.auth"]
-    if user_signed_in?
+    # doar o modificare
+    if auth.provider == "google_oauth2"
+      auth.provider = "google"
+    end
 
-      aux = auth.provider + "_uid"
-      aux2 = auth.provider + "_img"
-      if current_user[aux] == auth.uid.to_s
-        current_user[aux] = '0'
+    # verificam daca exista deja un user logat
+    # daca da, conectam contul cu a lui
+    if user_signed_in?
+      provider = auth.provider + "_uid"
+      img = auth.provider + "_img"
+
+      # daca deja este conectat contul, 
+      # inseamna ca userul vrea sa-l deconecteze
+      if current_user[ provider ] == auth.uid.to_s
+        current_user[ provider ] = '0'
       else
-        current_user[aux] = auth.uid.to_s
+        # conectam contul
+        current_user[ provider ] = auth.uid.to_s
+
+        # salvam imaginea
         if auth.info.image
-          UserMeta.where(:user_id => current_user.id, :key => aux2).first_or_create do |meta|
+          UserMeta.where(:user_id => current_user.id, :key => img).first_or_create do |meta|
             meta.value = auth.info.image
           end
+        end
+
+        # salvam adresa de email
+        if current_user.email == "" && auth.info.email
+          current_user["email"] = auth.info.email
         end
       end
       current_user.save
@@ -34,5 +51,5 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   alias_method :twitter, :all
   alias_method :facebook, :all
-  alias_method :google, :all
+  alias_method :google_oauth2, :all
 end

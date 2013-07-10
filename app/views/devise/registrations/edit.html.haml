@@ -13,6 +13,8 @@
             %img{:src => ax.value}
           - if ax = UserMeta.where(:key => "twitter_img", :user_id => current_user.id).first
             %img{:src => ax.value}
+          - if ax = UserMeta.where(:key => "google_img", :user_id => current_user.id).first
+            %img{:src => ax.value}
           - if current_user.email
             %img{:src => current_user.gravatar_url}
           .m-btn.icn-only
@@ -46,7 +48,7 @@
           %a.m-btn.icn-only.btn-twitter.cancellable{:href => user_omniauth_authorize_url(:twitter)}
             %i.icon-twitter
         - if current_user.google_uid != '0'
-          %a.m-btn.icn-only.btn-google.cancellable{:href => user_omniauth_authorize_url(:google)}
+          %a.m-btn.icn-only.btn-google.cancellable{:href => user_omniauth_authorize_url(:google_oauth2)}
             %i.icon-google-plus
 
     - if current_user.facebook_uid == '0' || current_user.twitter_uid == '0' || current_user.google_uid == '0'
@@ -60,7 +62,7 @@
           %a.m-btn.icn-only.btn-twitter{:href => user_omniauth_authorize_url(:twitter)}
             %i.icon-twitter
         - if current_user.google_uid == '0'
-          %a.m-btn.icn-only.btn-google{:href => user_omniauth_authorize_url(:google)}
+          %a.m-btn.icn-only.btn-google{:href => user_omniauth_authorize_url(:google_oauth2)}
             %i.icon-google-plus
 
     %h3 Cancel my account
