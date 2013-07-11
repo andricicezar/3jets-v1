@@ -9,7 +9,10 @@ class MainController < ApplicationController
   end
 
   def facebook_friends
-    return if current_user.facebook_uid == '0'
+    if current_user.facebook_uid == '0'
+      render :json => 2
+      return
+    end
 
     meta = UserMeta.where(:user_id => current_user.id, :key => "facebook_token").first
     user = FbGraph::User.me(meta.value)
@@ -22,12 +25,12 @@ class MainController < ApplicationController
     friends = User.where("facebook_uid in (?)", s)
     no = 0
     friends.each do |friend|
-      ++no
       rel = Relation.where("((user_id = :x and friend_id = :y) or (user_id = :x and friend_id = :y))", {:x => current_user.id, :y => friend.id}).first
       if rel
         rel.validated = true
         rel.save
       else
+        ++no
         Relation.create(:user_id => current_user.id,
                         :friend_id => friend.id,
                         :validated => true)
