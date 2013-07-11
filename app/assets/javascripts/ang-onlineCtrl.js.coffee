@@ -20,9 +20,7 @@
       else if (value.type == 2)
         $scope.addGame(value)
       else if (value.type == 3)
-        $scope.$apply( ->
-          $scope.notifications.push(value)
-        )
+        $scope.addNotifications(value)
     )
 
   $scope.addFriend = (value) ->
@@ -52,6 +50,7 @@
             game.num_players = 0
           game.turn = value.turn
           game.time = value.time
+          game.timestamp = Date.now()
         )
         ok = true
         return
@@ -59,6 +58,17 @@
       $scope.$apply( ->
         $scope.games.push(value)
       )
+  $scope.addNotifications = (value) ->
+    ok = false
+    angular.forEach $scope.notifications, (notif, index) ->
+      if (notif.notf_id == value.notf_id) 
+        $scope.notifications.splice(index, 1)
+        return
+    if (!ok)
+      $scope.$apply( ->
+        $scope.notifications.push(value)
+      )
+
   $scope.acceptNotif = (ev) ->
     $.get(ev.accept_url)
     angular.forEach $scope.notifications, (notif, index) ->
@@ -88,10 +98,13 @@
 
   $scope.gameTimer = ->
     angular.forEach $scope.games, (game) ->
-      $scope.$apply( ->
-        --game.time if game.time > -20
-      )
-      if game.time == 0
+      if (typeof game.timestamp == "undefined")
+        game.timestamp = Date.now()
+      if game.time > 0
+        now = Date.now()
+        game.time -= Math.floor((game.timestamp - now)/1000)
+        game.timestamp = now
+      if game.time == 0 || game.time == -1
        $.get(game.game_ur + "/check")
     $timeout($scope.gameTimer, 1000)
   $timeout($scope.gameTimer, 1000)

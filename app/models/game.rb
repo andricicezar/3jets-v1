@@ -2,13 +2,17 @@ class Game < ActiveRecord::Base
   include GameHelper
   include ApplicationHelper
 
-
   has_many :game_users
   has_many :moves
   belongs_to :user1, :class_name => "User", :foreign_key => "fst_user"
   belongs_to :user2, :class_name => "User", :foreign_key => "scd_user"
 
   attr_accessible :num_players, :fst_user, :scd_user, :finished, :validated, :countable
+
+  def time
+    return '60' if countable && num_players == 2
+    '"no"'
+  end
 
   def first_user
     game_users.each do |gu|
@@ -83,6 +87,12 @@ class Game < ActiveRecord::Base
 
   def enemyMap
     enemy.mapFromGame(id)
+  end
+
+  def the_other(user)
+    return user1 if scd_user == user.id
+    return user2 if fst_user == user.id && scd_user != 0
+    user
   end
 
   def finish_it

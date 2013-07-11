@@ -1,4 +1,5 @@
 module GameHelper
+  include NotificationHelper
 
   require File.expand_path('../../../config/initializers/faye_token.rb', __FILE__)
 
@@ -84,8 +85,7 @@ module GameHelper
                     :friend_id => current_user.id,
                     :accept_url => "",
                     :view_url => "")
-          broadcast("/channel/" + current_user.special_key.to_s,
-                    render_notif4(notif, achievement))
+          send_achievement(current_user, notif, achievement)
         end
       end
     end

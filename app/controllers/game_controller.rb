@@ -1,6 +1,7 @@
 class GameController < ApplicationController
   include GameHelper
   include ApplicationHelper
+  include NotificationHelper
 
   before_filter :authenticate_user!
   before_filter :user_online
@@ -26,31 +27,19 @@ class GameController < ApplicationController
         notif.destroy
       end
       qasw = currentGame.user1
-      broadcast("/channel/" + current_user.special_key.to_s,
-                '{"type":2, "turn":2, 
-                "game_id":'+currentGame.id.to_s+',
-                "game_ur":"'+game_url(currentGame.id)+'",
-                "num_players":'+currentGame.num_players.to_s+',
-                "enemy_pic": "'+qasw.image_url+'",
-                "enemy_name": "'+qasw.name+'",
-                "time": "no"}')
+
+      send_game(currentGame, 2, qasw, current_user)
+
       v = 2
       v = 1 if Airplane.where(:game_id => currentGame.id, :user_id => qasw.id).count > 0
-      broadcast("/channel/" + qasw.special_key.to_s,
-                '{"type":2, "turn":'+v.to_s+', 
-                "game_id":'+currentGame.id.to_s+',
-                "game_ur":"'+game_url(currentGame.id)+'",
-                "num_players":'+currentGame.num_players.to_s+',
-                "enemy_pic": "'+current_user.image_url+'",
-                "enemy_name": "'+current_user.name+'",
-                "time": "no"}')
 
+      send_game(currentGame, v, current_user, qasw)
     end
     respond_to do |format|
       format.json { render :json => 1 }
     end
   end
-    
+
   def finish
     @winner = currentGame.winner
     @loser = currentGame.loser
@@ -81,9 +70,8 @@ class GameController < ApplicationController
                 :friend_id => @loser.id,
                 :accept_url => "",
                 :view_url => game_victory_url(currentGame.id))
-      broadcast("/channel/" + @loser.special_key.to_s,
-            render_notif3(notif, @winner))
-      
+      send_notf(notif, @winner, @loser)
+
       notif = Notification.create(
                 :notf_type => 3,
                 :title => "You've win!",
@@ -92,8 +80,7 @@ class GameController < ApplicationController
                 :friend_id => @winner.id,
                 :accept_url => "",
                 :view_url => game_victory_url(currentGame.id))
-      broadcast("/channel/" + @winner.special_key.to_s,
-            render_notif3(notif, @loser))
+      send_notf(notif, @loser, @winner)
 
       return if !currentGame.countable
 
@@ -128,6 +115,7 @@ class GameController < ApplicationController
     end
 
     Notification.where(:view_url => game_victory_url(currentGame.id), :friend_id => current_user.id).each do |notif|
+      send_destroy_notf(current_user, notif)
       notif.destroy
     end
 
@@ -166,8 +154,9 @@ class GameController < ApplicationController
       Notification.where(:accept_url => game_validate_url(currentGame.id)).each do |notf|
         notf.destroy
       end
-      broadcast("/channel/" + current_user.special_key.to_s, 
-                '{"type":2, "turn":3, "game_id":'+currentGame.id.to_s+'}')
+
+      send_destroy_game(current_user, currentGame)
+
       currentGame.destroy
       redirect_to home_url
       return
@@ -217,11 +206,8 @@ class GameController < ApplicationController
     # in caz ca e al doilea, il anuntam pe primu ca are prieten
     if currentGame.num_players == 2
       broadcast_game(params[:id], "add_user", "succes")
-      broadcast("/channel/" + currentGame.user1.special_key.to_s,
-                '{"type":2, "turn":1, "game_id":'+currentGame.id.to_s+',
-                "enemy_pic": "'+current_user.image_url+'",
-                "enemy_name": "'+current_user.name+'"}')
-     redirect_to game_url(params[:id])
+      send_game(currentGame, 1, current_user, currentGame.user1)
+      redirect_to game_url(params[:id])
     end
   end
 
@@ -236,7 +222,7 @@ class GameController < ApplicationController
                       :left => params[:conf][i*4+2].to_i,
                       :rotation => params[:conf][i*4+3].to_i)
     end
-
+    
     # verific daca useri sunt setati dinainte
     if currentGame.scd_user == 0
       # daca nu setez
@@ -249,6 +235,9 @@ class GameController < ApplicationController
     # adaug ca a mai intrat o persoana in joc
     currentGame.num_players += 1
     currentGame.save
+
+    send_game(currentGame, 0, currentGame.the_other(current_user), current_user)
+
     redirect_to game_wait_url(currentGame.id)
   end
 
@@ -302,11 +291,8 @@ class GameController < ApplicationController
       aux.save
     end
 
-    broadcast("/channel/" + currentGame.enemy.special_key.to_s, 
-                            '{"type":2, "turn":1, "game_id":'+currentGame.id.to_s+', "time":'+(if currentGame.countable then '60' else '"no"' end)+'}')
-    broadcast("/channel/" + current_user.special_key.to_s,
-                            '{"type":2, "turn":0, "game_id":'+currentGame.id.to_s+', "time":'+(if currentGame.countable then '60' else '"no"' end)+'}')
-
+    send_game(currentGame, 1, current_user, currentGame.enemy)
+    send_game(currentGame, 0, currentGame.enemy, current_user)
 
     if currentGame.countable
       map = {}

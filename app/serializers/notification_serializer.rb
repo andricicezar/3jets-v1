@@ -1,5 +1,5 @@
 class NotificationSerializer < ActiveModel::Serializer
-  attributes :notf_type, :title, :special_class, :user_pic, :user_name, :user_url, :accept_url, :view_url, :decline_url
+  attributes :id, :notf_type, :title, :special_class, :user_pic, :user_name, :user_url, :accept_url, :view_url, :decline_url
   
   def user_pic
     User.find(object.user_id).image_url

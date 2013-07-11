@@ -8,29 +8,6 @@ module ApplicationHelper
     Net::HTTP.post_form(uri, :message => message.to_json)
   end
 
-  def render_notif3(notif, user)
-    '{"type":3, 
-      "notf_type": '+notif.notf_type.to_s+',
-      "title": "'+notif.title+'", 
-      "special_class": "'+notif.special_class+'",
-      "accept_url":"'+notif.accept_url+'",
-      "view_url":"'+notif.view_url+'",
-      "decline_url":"'+destroy_notification_url(notif.id)+'",
-      "user_url": "'+user_profile_url(user.id)+'",
-      "user_pic": "'+user.image_url+'",
-      "notf_name": "'+user.name+'"}'
-  end
-
-  def render_notif4(notif, achievement)
-    '{"type":3, 
-      "notf_type": '+notif.notf_type.to_s+',
-      "title": "'+achievement.name+'", 
-      "special_class": "'+notif.special_class+'",
-      "accept_url":"'+notif.accept_url+'",
-      "view_url":"'+notif.view_url+'",
-      "decline_url":"'+destroy_notification_url(notif.id)+'"}'
-  end
-
   def user_online
     if user_signed_in?
       current_user.online

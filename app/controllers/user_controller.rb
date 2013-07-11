@@ -1,5 +1,6 @@
 class UserController < ApplicationController
   include ApplicationHelper
+  include NotificationHelper
   before_filter :authenticate_user!
   before_filter :user_online, :except => [:friends, :games, :notifications]
 
@@ -22,27 +23,15 @@ class UserController < ApplicationController
     x = Relation.where(:user_id => user.id, :friend_id => current_user.id).first
     if x
       # valideaza prietenie
-    x.validated = true
+      x.validated = true
+      send_friend(current_user, user)
+      send_friend(user, current_user)
 
-    broadcast("/channel/" + current_user.special_key.to_s,
-              '{"type": 1,
-                "time": 10,
-                "img": "'+user.image_url+'",
-                "name": "'+user.name+'",
-                "id": '+user.id.to_s+',
-                "url": "/user/'+user.id.to_s+'",
-                "invite": "/user/'+user.id.to_s+'/invite"}')
-    broadcast("/channel/" + user.special_key.to_s,
-              '{"type": 1,
-                "time": 10,
-                "img": "'+current_user.image_url+'",
-                "name": "'+current_user.name+'",
-                "id" : '+current_user.id.to_s+',
-                "url": "/user/'+current_user.id.to_s+'",
-                "invite": "/user/'+current_user.id.to_s+'/invite"}')
-      Notification.where(:title => "Friend Request", :user_id => user.id, :friend_id => current_user.id).each do |y|
-        y.destroy
+      Notification.where(:title => "Friend Request", :user_id => user.id, :friend_id => current_user.id).each do |notf|
+        send_destroy_notf(current_user, notf)
+        notf.destroy
       end
+
       x.save
       return
     end
@@ -50,8 +39,9 @@ class UserController < ApplicationController
     x = Relation.where(:user_id => current_user.id, :friend_id => user.id).first
     if x
       # distruge request
-      Notification.where(:title => "Friend Request", :user_id => current_user.id, :friend_id => user.id).each do |y|
-        y.destroy
+      Notification.where(:title => "Friend Request", :user_id => current_user.id, :friend_id => user.id).each do |notf|
+        send_destroy_notf(current_user, notf)
+        notf.destroy
       end
       x.destroy
       return
@@ -67,17 +57,7 @@ class UserController < ApplicationController
                                 :accept_url => be_friend_with_user_url(current_user.id),
                                 :view_url => user_profile_url(current_user.id))
     # trimite request prin faye
-    broadcast("/channel/" + User.find(user.id).special_key.to_s,
-          '{"type":3,
-            "notf_type": '+notif.notf_type.to_s+', 
-            "title": "'+notif.title+'", 
-            "special_class": "'+notif.special_class+'",
-            "accept_url":"'+notif.accept_url+'",
-            "view_url":"'+notif.view_url+'",
-            "decline_url":"'+destroy_notification_url(notif.id)+'",
-            "user_url": "'+user_profile_url(current_user.id)+'",
-            "user_pic": "'+current_user.image_url+'",
-            "user_name": "'+current_user.name+'"}')
+    send_notf(notif, current_user, user)
   end
 
   def invite
@@ -102,17 +82,7 @@ class UserController < ApplicationController
               :friend_id => params[:id],
               :accept_url => game_validate_url(game.id),
               :view_url => user_profile_url(current_user.id))
-    broadcast("/channel/" + User.find(params[:id]).special_key.to_s,
-          '{"type":3, 
-            "notf_type": '+notif.notf_type.to_s+',
-            "title": "'+notif.title+'", 
-            "special_class": "'+notif.special_class+'",
-            "accept_url":"'+notif.accept_url+'",
-            "view_url":"'+notif.view_url+'",
-            "decline_url":"'+destroy_notification_url(notif.id)+'",
-            "user_url": "'+user_profile_url(current_user.id)+'",
-            "user_pic": "'+current_user.image_url+'",
-            "user_name": "'+current_user.name+'"}')
+    send_notf(notif, current_user, User.find(params[:id]))
     redirect_to game_path(game.id)
   end
   
