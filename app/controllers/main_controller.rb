@@ -1,7 +1,7 @@
 class MainController < ApplicationController
   include ApplicationHelper
-
-  before_filter :authenticate_user!
+  include NotificationHelper
+  before_filter :authenticate_user!, :unless => :guest_user
   before_filter :user_online
 
   def index
@@ -25,11 +25,13 @@ class MainController < ApplicationController
 
     no = 0
     friends.each do |friend|
-      no = 10000
       rel = Relation.where("((user_id = :x and friend_id = :y) or (user_id = :y and friend_id = :x))", {:x => current_user.id, :y => friend.id}).first
       if rel
-        rel.validated = true
-        rel.save
+        unless rel.validated
+          ++no
+          rel.validated = true
+          rel.save
+        end
       else
         ++no
         Relation.create(:user_id => current_user.id,

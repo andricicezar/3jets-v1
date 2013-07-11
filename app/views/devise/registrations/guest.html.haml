@@ -1,0 +1,10 @@
+.window
+  = render "devise/login_tabs"
+  .content
+    = form_for(resource, :as => resource_name, :url => guest_login_url) do |f|
+      .m-input-append
+        = f.text_field :nickname, :autofocus => true, :placeHolder => "Nickname", :class => "m-wrap"
+        = f.submit "Play", :class => "m-btn blue"
+      .input-error
+        = flash[:notice]
+    = render "devise/login_socl"

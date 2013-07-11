@@ -3,7 +3,7 @@ class GameController < ApplicationController
   include ApplicationHelper
   include NotificationHelper
 
-  before_filter :authenticate_user!
+  before_filter :authenticate_user!, :unless => :guest_user
   before_filter :user_online
   before_filter :is_game_finished, :only => [:validatem, :exit, :play, :wait, :adduser]
   before_filter :is_in_the_game, :only => [:init, :validatedm, :exit, :play, :wait, :adduser, :asdf]

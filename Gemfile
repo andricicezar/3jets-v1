@@ -24,7 +24,6 @@ gem 'angularjs-rails'
 gem 'active_model_serializers'
 gem 'fb_graph'
 
-# gem 'rack-pjax'
 gem 'turbolinks'
 
 gem 'omniauth-twitter'
@@ -46,3 +45,9 @@ gem 'capistrano'
 
 # To use debugger
 # gem 'debugger'
+
+group :development do
+  gem 'better_errors'
+  gem 'binding_of_caller'
+  gem 'meta_request'
+end

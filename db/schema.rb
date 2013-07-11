@@ -148,6 +148,7 @@ ActiveRecord::Schema.define(:version => 20130702160217) do
     t.string   "nickname",                                  :null => false
     t.boolean  "deleted",                :default => false
     t.boolean  "veteran",                :default => false
+    t.boolean  "is_guest",               :default => false
     t.string   "facebook_uid",           :default => "0"
     t.string   "twitter_uid",            :default => "0"
     t.string   "google_uid",             :default => "0"

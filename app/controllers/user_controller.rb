@@ -1,7 +1,7 @@
 class UserController < ApplicationController
   include ApplicationHelper
   include NotificationHelper
-  before_filter :authenticate_user!
+  before_filter :authenticate_user!, :unless => :guest_user
   before_filter :user_online, :except => [:friends, :games, :notifications]
 
   def profile

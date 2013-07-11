@@ -6,7 +6,10 @@ Airplanes::Application.routes.draw do
 
   devise_for :users, :controllers => {:registrations => "registrations", :omniauth_callbacks => "omniauth_callbacks"}
   ActiveAdmin.routes(self)
-
+  devise_scope :user do
+    get "users/guest" => "registrations#guest", :as => "login_like_guest"
+    post "users/guest" => "registrations#create_guest_user", :as => "guest_login"
+  end
   get "user/:id" => "user#profile", :as => "user_profile"
   
   get "friends" => "user#friends"

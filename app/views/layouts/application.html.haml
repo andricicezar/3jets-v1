@@ -34,8 +34,9 @@
                       %ul.dropdown-menu.pull-right{:role => "menu", "aria-labelledby" => "dLabel"}
                         %li
                           = link_to "Profile", user_profile_url(current_user.id)
-                        %li
-                          = link_to "Settings", edit_user_registration_url
+                        - unless current_user.is_guest
+                          %li
+                            = link_to "Settings", edit_user_registration_url
                         %li
                           = link_to "Logout", destroy_user_session_path, method: :delete
 

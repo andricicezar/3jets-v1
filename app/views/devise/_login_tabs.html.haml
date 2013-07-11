@@ -1,6 +1,6 @@
 .tabs
   .m-btn-group
-    %a.m-btn.blue
+    %a.m-btn.blue{:href => login_like_guest_url, :class => (request.fullpath == "/users/guest")?"active":""}
       Guest
     %a.m-btn.blue{:href => new_user_session_url, :class => (request.fullpath == "/users/sign_in")?"active":""}
       Log in

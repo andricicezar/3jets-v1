@@ -1,5 +1,21 @@
 class RegistrationsController < Devise::RegistrationsController
 
+  def guest
+    return redirect_to home_url if current_user
+    session.delete(:guest_user_id)
+    render "devise/registrations/guest"
+  end
+
+  def create_guest_user
+    User.delete_all("is_guest=true AND last_sign_in_at < (now() - interval '5 hours')")
+    return redirect_to login_like_guest_url, :notice => "This nickname is already taken!" if User.where(:nickname => params[:user][:nickname]).count > 0
+    u = User.create(:nickname => params[:user][:nickname], 
+                    :is_guest => true)
+    u.save(:validate => false)
+    session[:guest_user_id] = u.id
+    redirect_to home_url
+  end
+
   def new
     if cookies[:nr_afisari]
       cookies[:nr_afisari] = cookies[:nr_afisari].to_i + 1

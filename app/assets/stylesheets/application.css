@@ -86,3 +86,9 @@ h2 {
   font-size: 25px;
   font-weight: bold;
 }
+.input-error {
+  color: red;
+  margin-top: -7px;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
