@@ -16,17 +16,17 @@ class MainController < ApplicationController
 
     meta = UserMeta.where(:user_id => current_user.id, :key => "facebook_token").first
     user = FbGraph::User.me(meta.value)
-    debug = {}
     s = []
     user.friends.each do |friend|
       s.push friend.raw_attributes[:id].to_s
     end
 
     friends = User.where("facebook_uid in (?)", s)
-    debug[:friends] = friends
+
     no = 0
     friends.each do |friend|
-      rel = Relation.where("((user_id = :x and friend_id = :y) or (user_id = :x and friend_id = :y))", {:x => current_user.id, :y => friend.id}).first
+      no = 10000
+      rel = Relation.where("((user_id = :x and friend_id = :y) or (user_id = :y and friend_id = :x))", {:x => current_user.id, :y => friend.id}).first
       if rel
         rel.validated = true
         rel.save
@@ -50,7 +50,7 @@ class MainController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { render :json => debug }
+      format.html { render :json => no }
     end
   end
 
