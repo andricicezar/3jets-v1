@@ -5,7 +5,49 @@ class MainController < ApplicationController
   before_filter :user_online
 
   def index
-    "qqq"	
+    "qqq"
+  end
+
+  def facebook_friends
+    return if current_user.facebook_uid == '0'
+
+    meta = UserMeta.where(:user_id => current_user.id, :key => "facebook_token").first
+    user = FbGraph::User.me(meta.value)
+
+    s = []
+    user.friends.each do |friend|
+      s.push friend.raw_attributes[:id].to_s
+    end
+
+    friends = User.where("facebook_uid in (?)", s)
+    no = 0
+    friends.each do |friend|
+      ++no
+      rel = Relation.where("((user_id = :x and friend_id = :y) or (user_id = :x and friend_id = :y))", {:x => current_user.id, :y => friend.id}).first
+      if rel
+        rel.validated = true
+        rel.save
+      else
+        Relation.create(:user_id => current_user.id,
+                        :friend_id => friend.id,
+                        :validated => true)
+        send_friend(current_user, friend)
+
+        notf = Notification.create(
+                :notf_type => 5,
+                :title => "You've a new friend!",
+                :special_class => "",
+                :user_id => current_user.id,
+                :friend_id => friend.id,
+                :accept_url => "",
+                :view_url => user_profile_url(current_user.id))
+        send_notf(notf, current_user, friend)
+      end
+    end
+
+    respond_to do |format|
+      format.html { render :json => no }
+    end
   end
 
   def index2

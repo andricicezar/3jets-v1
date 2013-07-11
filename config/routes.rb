@@ -19,6 +19,7 @@ Airplanes::Application.routes.draw do
   get "user/:id/position" => "user#position", :as => "user_position"
   
   get "check" => "main#index2"
+  get "facebook_friends" => "main#facebook_friends"
   
   get "ranking/:id" => "main#ranking", :as => "ranking"
 

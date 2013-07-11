@@ -22,6 +22,7 @@ gem 'thin'
 gem 'faye'
 gem 'angularjs-rails'
 gem 'active_model_serializers'
+gem 'fb_graph'
 
 # gem 'rack-pjax'
 gem 'turbolinks'

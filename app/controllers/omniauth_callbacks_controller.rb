@@ -34,6 +34,12 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
         end
       end
       current_user.save
+      if auth.provider == "facebook"
+        UserMeta.where(:user_id => current_user.id, :key => "facebook_token").first_or_create do |meta|
+          meta.value = auth["credentials"]["token"]
+        end
+      end
+
 
       if auth
         redirect_to edit_user_registration_url
@@ -41,6 +47,12 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       end
     end
     user = User.from_omniauth(auth)
+    if auth.provider == "facebook"
+      UserMeta.where(:user_id => user.id, :key => "facebook_token").first_or_create do |meta|
+        meta.value = auth["credentials"]["token"]
+      end
+    end
+
     if user.persisted?
       sign_in_and_redirect user
     else

@@ -42,9 +42,9 @@ module NotificationHelper
                 "accept_url":"'     + notf.accept_url + '",
                 "view_url":"'       + notf.view_url + '",
                 "decline_url":"'    + destroy_notification_url(notf.id) + '",
-                "user_url": "'      + user_profile_url(receiver.id) + '",
-                "user_pic": "'      + receiver.image_url + '",
-                "user_name": "'     + receiver.name + '"}')
+                "user_url": "'      + user_profile_url(sender.id) + '",
+                "user_pic": "'      + sender.image_url + '",
+                "user_name": "'     + sender.name + '"}')
   end
 
   def send_destroy_notf(user, notf)

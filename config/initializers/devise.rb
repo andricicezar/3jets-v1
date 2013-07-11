@@ -215,7 +215,7 @@ Devise.setup do |config|
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', :scope => 'user,public_repo'
   config.omniauth :twitter, 'IppcrwAt7PrfdKQ1o92Q', 'jXXFqNiSfldtyIbd9lQNhAcWWgSLoQpqwIYO4r1TY'
-  config.omniauth :facebook, '212624635557132', '3d6713b342c069c380d1d039daceca9f'
+  config.omniauth :facebook, '415098648608410', '862b7c705b591d035c7ab1656e78344b'
   require "omniauth-google-oauth2"
   config.omniauth :google_oauth2, "481035417984.apps.googleusercontent.com", "MgZ25yXMCZX3Ki9GAm1sHmEU", { access_type: "offline", approval_prompt: "" }
   # ==> Warden configuration
