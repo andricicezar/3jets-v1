@@ -9,7 +9,7 @@ development:
 production:
   adapter: postgresql
   encoding: unicode
-  database: airplanes2_production
+  database: airplanes3_production
   pool: 5
   host: localhost
   username: airplanes2013
