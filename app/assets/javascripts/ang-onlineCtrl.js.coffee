@@ -102,7 +102,7 @@
         game.timestamp = Date.now()
       if game.time > 0
         now = Date.now()
-        game.time -= Math.floor((game.timestamp - now)/1000)
+        game.time -= Math.floor((now - game.timestamp)/1000)
         game.timestamp = now
       if game.time == 0 || game.time == -1
        $.get(game.game_ur + "/check")
