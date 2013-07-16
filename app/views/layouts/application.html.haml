@@ -23,32 +23,11 @@
                 .col.elo
                   %a{:href => user_position_url(current_user.id)}
                     ELO: #{current_user.elo}
-                .col
-                  .account
-                    .dropdown
-                      %a.dropdown-toggle{:href => home_path}
-                        %i.icon-home
-                .col
-                  .account
-                    .dropdown
-                      %a.dropdown-toggle{:id => "dLabel", :role => "button", "data-toggle" => "dropdown", "data-target" => "#"}
-                        %i.icon-user
-                      %ul.dropdown-menu.pull-right{:role => "menu", "aria-labelledby" => "dLabel"}
-                        %li
-                          = link_to "Profile", user_profile_url(current_user.id)
-                        - unless current_user.is_guest
-                          %li
-                            = link_to "Settings", edit_user_registration_url
-                        %li
-                          = link_to "Logout", destroy_user_session_path, method: :delete
-
-              -#  .col
-              -#    .settings
-              -#      .dropdown
-              -#        %a.dropdown-toggle{:id => "dLabel2", :role => "button", "data-toggle" => "dropdown", "data-target" => "#"}
-              -#          %i.icon-ellipsis-vertical
-              -#        %ul.dropdown-menu.pull-right{:role => "menu", "aria-labelledby" => "dLabel2"}
-              -#          %li
+                .col.links-group
+                  %a{:href => home_path}
+                    %i.icon-home
+                  %a{:href => destroy_user_session_path, "data-method" => "delete"}
+                    %i.icon-signout
 
           = yield
       - else

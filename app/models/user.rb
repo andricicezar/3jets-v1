@@ -79,6 +79,7 @@ class User < ActiveRecord::Base
     User.unscoped do
       Relation.where(:friend_id => id, :validated => true).includes(:user).each do |val|
         user = val.user
+        next unless user
         if (Time.now.to_i - user.last_sign_in_at.to_i).to_i < 300
           broadcast("/channel/" + user.special_key.to_s, 
                     '{"type":1, 
@@ -92,6 +93,7 @@ class User < ActiveRecord::Base
       end
       Relation.where(:user_id => id, :validated => true).includes(:friend).each do |val|
         user = val.friend
+        next unless user
         if (Time.now.to_i - user.last_sign_in_at.to_i).to_i < 300
           broadcast("/channel/" + user.special_key.to_s, 
                     '{"type":1, 

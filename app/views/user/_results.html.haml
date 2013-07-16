@@ -1,0 +1,7 @@
+%table.table.table-striped.games-results
+  %tbody
+    - matches.each do |game|
+      %tr
+        = render "user/row", :user => game.user1, :winner => game.winner
+        = render "user/row", :user => game.user2, :winner => game.winner
+

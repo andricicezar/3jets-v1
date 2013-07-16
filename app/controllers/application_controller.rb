@@ -3,10 +3,7 @@ class ApplicationController < ActionController::Base
   before_filter :mobile_device
   
   def mobile_device
-    @mobile_device = false
-    if request.user_agent =~ /Mobile|webOS/
-      @mobile_device = true
-    end
+    @mobile_device ||= request.env["HTTP_USER_AGENT"] && request.env["HTTP_USER_AGENT"][/(iPhone|iPad|iPod|BlackBerry|Android)/]
   end
 
   def current_user

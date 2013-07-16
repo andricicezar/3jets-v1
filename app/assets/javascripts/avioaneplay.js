@@ -11,12 +11,12 @@ $(document).ready(readyGame);
 $(document).on("page:load", readyGame);
 
 // HITS HITS
-$(document).on("click", "#main_grid2 .square", function() {
+$(document).on("click", "#main_grid2 td", function() {
   if (!$(this).hasClass("hit-0") && !$(this).hasClass("hit-1") && !$(this).hasClass("hit-2")) {
     cl =  $(this).attr("class");
     link = window.location + "/move";
-
-    $.get(link, {top: cl[13], left: cl[15]}, function (data) {
+    console.log(cl);
+    $.get(link, {top: cl[6], left: cl[8]}, function (data) {
       if (data == '3') alert("It's not your turn!");
    }).fail(function() {console.log("fail");});
   }
@@ -96,14 +96,17 @@ function init_grid() {
     // ADAUGAM AVIOANELE
     av = $(item).attr("av");
     $(item).removeAttr("av");
+    wid = $(".grid td").width() + parseInt($(".grid td").css("border-left-width")) + parseInt($(".grid td").css("border-right-width"));
+    hei = $(".grid td").height() + parseInt($(".grid td").css("border-top-width")) + parseInt($(".grid td").css("border-bottom-width"));
+
     if (av) {
       for (i = 0; i <= 2; ++i) {
         jQuery("<div/>")
-              .appendTo( $(item).children(".grid") )
+              .appendTo( $(item).children(".main_grid").children(".grid") )
               .addClass("airplane")
               .addClass("basic-sprite")
-              .css("top", av[i*4+1]*40)
-              .css("left", av[i*4+2]*40)
+              .css("top", av[i*4+1]*wid)
+              .css("left", av[i*4+2]*hei)
               .addClass("rotation"+av[i*4+3]);
       }
     }

@@ -3,6 +3,8 @@
     %title Airplanes
     = csrf_meta_tags
     = stylesheet_link_tag "application", :medial => "all"
+    - if @mobile_device
+      %meta{:name => "viewport", :content => "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"}
   %body
     = render "layouts/navbar"
     .turbolinks-container

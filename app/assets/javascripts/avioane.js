@@ -36,12 +36,16 @@ $(document).on("click", ".draggable-airplane", function() {
 // CAND PAGINa E INCARCATA
 readyDragDrop = function(){
 	$(".draggable-airplane").attr("rot", 1);
+  auxW = $(".grid td").width() + parseInt($(".grid td").css("border-left-width")) + parseInt($(".grid td").css("border-right-width"));
+  auxH = $(".grid td").height() + parseInt($(".grid td").css("border-top-width")) + parseInt($(".grid td").css("border-bottom-width"));
+  $(".plane_area").css("width",  auxW * 5)
+                 .css("height", auxH * 4);
 	$(".draggable-airplane").draggable({
-                            containment: ".grid",
+                            containment: ".grid table",
                             stop: function() {
                               verif_airplanes();
                             },
-                            snap: ".square"
+                            snap: ".grid td"
                           })
 	                        .droppable({
                         		activeClass:"ui-state-hover",
@@ -64,12 +68,12 @@ function verif_airplanes() {
   }
   $.each($(".draggable-airplane"),function(){
     var x   = $(this).offset();
-    x.left -= $(".grid").offset().left;
-    x.top  -= $(".grid").offset().top;
-    x.left  = x.left/40;
-    x.top  /= 40;
-
-    rot = $(this).attr("rot");
+    x.left -= $(".grid table").offset().left + parseInt($(".grid table").css("border-left-width"));
+    x.top  -= $(".grid table").offset().top + parseInt($(".grid table").css("border-top-width"));
+   
+    x.left /= $(".grid td").width() + parseInt($(".grid td").css("border-left-width")) + parseInt($(".grid td").css("border-right-width"));
+    x.top  /= $(".grid td").height() + parseInt($(".grid td").css("border-top-width")) + parseInt($(".grid td").css("border-bottom-width"));
+    rot = parseInt($(this).attr("rot"));
 
     if( ((rot == 1 || rot == 3) && x.top < 7 && x.left < 6) ||
         ((rot == 2 || rot == 4) && x.top < 6 && x.left < 7)) {
@@ -104,10 +108,10 @@ $(document).on("click", "#send-button", function() {
   $.each($(".draggable-airplane"), function() {
     // calculam pozitia pe grid
     var x   = $(this).offset();
-    x.left -= $(".grid").offset().left;
-    x.top  -= $(".grid").offset().top;
-    x.left  = x.left/40;
-    x.top  /= 40;
+    x.left -= $(".grid table").offset().left;
+    x.top  -= $(".grid table").offset().top;
+    x.left /= $(".grid td").width()+2;
+    x.top  /= $(".grid td").height()+2;
     rot     = $(this).attr("rot");
     cr      = cr + "1" + x.top + x.left + rot;
   });

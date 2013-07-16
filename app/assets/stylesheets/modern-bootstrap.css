@@ -18,11 +18,9 @@ label.m-wrap,input.m-wrap,button.m-wrap,select.m-wrap,textarea.m-wrap{font-size:
   filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#dd4b39',endColorstr='#d14836',GradientType=0);
 */
 
-.m-input-append input[type="text"] {
-  width: 215px !important;
-}
 .m-input-append input[type="submit"] {
   line-height: 20px;
+  margin-left: -55px;
 }
 
 .m-btn i {
@@ -101,4 +99,6 @@ label.m-wrap,input.m-wrap,button.m-wrap,select.m-wrap,textarea.m-wrap{font-size:
 margin-bottom: 0;
 border-radius: 0;
 }
-
+.m-btn.txt-icn i{
+  display: none;
+}

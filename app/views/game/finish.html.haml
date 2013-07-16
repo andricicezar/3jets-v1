@@ -1,4 +1,4 @@
-.container.finish
+.finish
   - if @winner && @loser
     %h1
       Winner is
@@ -6,7 +6,7 @@
     %h3
       Loser is
       = @loser.name
-    %a.btn.btn-primary.btn-block.btn-large{:href => home_url} Home
+    %a.m-btn.blue.btn-block{:href => home_url} Home
   - else
     :javascript
       $(document).ready(function() {

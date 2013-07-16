@@ -24,10 +24,10 @@ body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acr
 /* Sprites */
 .basic-sprite {display:inline-block; overflow:hidden; background-repeat: no-repeat;background-image:url(basic-sprite.png);}
 
-.rotation1 {width:200px; height:160px; background-position: -204px -606px;}
+/*.rotation1 {width:200px; height:160px; background-position: -204px -606px;}
 .rotation2 {width:160px; height:200px; background-position: -164px -404px;}
 .rotation3 {width:200px; height:160px; background-position: -2px -606px;}
-.rotation4 {width:160px; height:200px; background-position: -2px -404px;}
+.rotation4 {width:160px; height:200px; background-position: -2px -404px;}*/
 .hit-2 {width:40px; height:40px; background-position: -326px -488px;position: relative;z-index: 5;}
 .grid {width:400px; height:400px; background-position: -2px -2px;float:left;}
 .hit-1 {width:40px; height:40px; background-position: -326px -446px;position: relative;z-index: 5;}

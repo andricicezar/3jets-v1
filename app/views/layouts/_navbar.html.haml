@@ -1,5 +1,7 @@
+#nnavbar-toggle
+  %i.icon-reorder
 .nnavbar#users_panel{:channel => current_user.special_key, "ng-controller" => "OnlineCtrl", "turbolinks-eval" => false}
-  %a{:href => user_profile_path(current_user.id)}
+  %a.close-nnavbar{:href => user_profile_path(current_user.id)}
     .nrow
       .ricon
         %img{:src => current_user.image_url}
@@ -9,7 +11,7 @@
   .ntitle
     Games
   %div{"ng-repeat" => "game in games | filter: verify"}
-    %a{:href => "{{game.game_ur}}"}
+    %a.close-nnavbar{:href => "{{game.game_ur}}"}
       .nrow{"ng-show" => "game.num_players>0||game.turn==2"}
         .ricon{"ng-class" => "{attention: (game.num_players==2&&game.turn==1)||game.turn==2}"}
           %img{"ng-src" => "{{game.enemy_pic}}"}
@@ -35,7 +37,7 @@
       .uname
         From: {{notification.user_name}}
       .buttons
-        %a.btn.btn-small.btn-primary{:href=>"{{notification.user_url}}"}
+        %a.close-nnavbar.btn.btn-small.btn-primary{:href=>"{{notification.user_url}}"}
           View
         %a.btn.btn-small.btn-inverse{:href=>"{{notification.accept_url}}", "ng-click" => "acceptNotif(notification); $event.preventDefault();"}
           Accept
@@ -50,7 +52,7 @@
       .uname
         vs {{notification.user_name}}
       .buttons
-        %a.btn.btn-small.btn-primary{:href=>"{{notification.user_url}}"}
+        %a.close-nnavbar.btn.btn-small.btn-primary{:href=>"{{notification.user_url}}"}
           View
         %a.btn.btn-small.btn-inverse{:href=>"{{notification.decline_url}}", "ng-click" => "declineNotif(notification); $event.preventDefault();"}            
           Delete
@@ -73,7 +75,7 @@
       .uname
         {{notification.user_name}} is your friend now!
       .buttons
-        %a.btn.btn-small.btn-primary{:href=>"{{notification.user_url}}"}
+        %a.close-nnavbar.btn.btn-small.btn-primary{:href=>"{{notification.user_url}}"}
           View
         %a.btn.btn-small.btn-inverse{:href=>"{{notification.decline_url}}", "ng-click" => "declineNotif(notification); $event.preventDefault();"}            
           Delete
@@ -89,8 +91,8 @@
         .rtitle
           {{friend.name}}
       .buttons
-        %a.btn.btn-small.btn-primary{:href=>"{{friend.url}}"}
+        %a.close-nnavbar.btn.btn-small.btn-primary{:href=>"{{friend.url}}"}
           View
-        %a.btn.btn-small.btn-inverse{:href=>"{{friend.invite}}"}
+        %a.close-nnavbar.btn.btn-small.btn-inverse{:href=>"{{friend.invite}}"}
           Invite
 

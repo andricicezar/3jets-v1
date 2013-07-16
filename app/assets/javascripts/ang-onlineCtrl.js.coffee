@@ -42,14 +42,16 @@
     angular.forEach $scope.games, (game) ->
       if (game.game_id == value.game_id)
         $scope.$apply( ->
-          if (game.num_players == 1) 
-            game.num_players++
+          if (value.turn == 3)
+            game.turn = 0
+            game.num_players = 0
+            game.time = -2
+          else
+            game.turn = value.turn
+            game.num_players = value.num_players
             game.enemy_pic = value.enemy_pic
             game.enemy_name = value.enemy_name
-          if (value.turn == 3)
-            game.num_players = 0
-          game.turn = value.turn
-          game.time = value.time
+            game.time = value.time
           game.timestamp = Date.now()
         )
         ok = true
@@ -58,6 +60,7 @@
       $scope.$apply( ->
         $scope.games.push(value)
       )
+
   $scope.addNotifications = (value) ->
     ok = false
     angular.forEach $scope.notifications, (notif, index) ->

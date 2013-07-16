@@ -2,7 +2,7 @@ class NotificationController < ApplicationController
   include ApplicationHelper
 
   before_filter :authenticate_user!, :unless => :guest_user
-  before_filter :user_online
+  # before_filter :user_online
 
   def destroy
     notif = Notification.find(params[:id])

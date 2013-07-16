@@ -1,0 +1,10 @@
+- if winner == "Guest"
+  %td{:class => ("winner" unless user)}
+    %a{:href => (user_profile_path(user.id) if user)}
+      = if user then user.name else "Guest" end
+- if winner != "Guest"
+  %td{:class => ("winner" if user.id == winner.id)}
+    %a{:href => (user_profile_path(user.id))}
+      = user.name
+
+

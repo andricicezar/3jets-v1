@@ -1,9 +1,94 @@
-@media all and (orientation: portrait)
+@media only screen and (orientation: portrait), (max-width: 500px)
   .container-image-1
     background: none
-  .window
+  .window, .window.big
     width: 100%
     top: 0
     left: 0
     margin-left: 0
     box-shadow: none
+  .socl
+    width: 100%
+    .m-btn.disabled
+      display: none
+    .m-btn
+      width: 33.3333333%
+      padding-left: 0
+      padding-right: 0
+  .invelis
+    margin-left: 0
+  #nnavbar-toggle
+    display: block
+  .nnavbar
+    width: 0
+  .wrapper
+    width: 100%
+    padding: 0
+    .mega-super-awesome-button
+      position: normal
+      top: 40%
+      padding: 0 20px
+      left: 0
+      margin-top: 0
+      margin-left: 0
+      .colorfull-container
+        box-shadow: none
+        border: none
+        background: none
+        width: 100%
+        padding: 0
+  .colorfull-container
+    box-shadow: none
+    border: none
+    background: none
+    width: 100%
+    padding: 0
+  .ui-menu-item a
+    line-height: 2 !important
+  header
+    padding: 5px 20px
+    margin-left: -40px
+    .container > .col:first-child
+      margin-left: 80px
+    .container > .col.alignright
+      margin-left: 0
+    h3
+      font-size: 12px
+      line-height: 21px !important
+  .w2pac
+    width: 100%
+    .content
+      margin: 0
+    
+  .main_grid
+    width: 275px
+    height: 275px
+    margin: 0 10px
+  .plane_area
+    margin-top: 10px
+  .information
+    width: 120px
+    font-size: 12px
+    float: right
+    margin-left: 0
+    margin-top: 10px
+  .m-btn.txt-icn
+    i
+      display: block
+    span
+      display: none
+  #search_user_input
+    background: white
+    width: 120px
+  #search_user_input:focus
+    margin-top: 10px
+    width: 206px
+    position: fixed
+    top: 0
+    left: 74px
+    z-index: 998
+    padding: 13px 7px
+    font-size: 14px
+    line-height: 16px
+    border-radius: 4px 4px 0 0
+

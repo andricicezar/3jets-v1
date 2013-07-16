@@ -25,7 +25,7 @@ gem 'active_model_serializers'
 gem 'fb_graph'
 
 gem 'turbolinks'
-
+gem 'jquery-turbolinks'
 gem 'omniauth-twitter'
 gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'

@@ -13,148 +13,17 @@
           %a.m-btn.red{:href => game_exit_url(params[:game])} Exit
       - else
         .col
-          %a.m-btn{:href => home_url} Back
+          %a.m-btn.icn-only.txt-icn{:href => home_url}
+            %span Back
+            %i.icon-home.black
       .col
-        %a#send-button.m-btn.blue Done
+        %a#send-button.m-btn.blue.icn-only.txt-icn
+          %span Done
+          %i.icon-ok
 .w2pac
   .content
-    .main_grid
-      .top_mark
-        .mark
-        .mark A
-        .mark B
-        .mark C
-        .mark D
-        .mark E
-        .mark F
-        .mark G
-        .mark H
-        .mark I
-        .mark J
-      .clear
-      .left_mark
-        .mark 1
-        .mark 2
-        .mark 3
-        .mark 4
-        .mark 5
-        .mark 6
-        .mark 7
-        .mark 8
-        .mark 9
-        .mark 10
-      .grid.basic-sprite
-        .line
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-        .line
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-        .line
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-        .line
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-        .line
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-        .line
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-        .line
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-        .line
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-        .line
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-        .line
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-          .square
-			
+    = render "game/grid"
+
     .plane_area
       #plane1.rotation1.airplane.basic-sprite.draggable-airplane
       #plane2.rotation1.airplane.basic-sprite.draggable-airplane

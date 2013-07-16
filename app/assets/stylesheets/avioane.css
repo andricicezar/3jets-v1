@@ -32,21 +32,133 @@
 	opacity: 0.8;
 }
 
-.main_grid{
-	width:450px;
+.plane_area .rotation1 {
+  width: 100%;
+  height: 100%;
+  background-image: url(avion.png);
+  background-size: 100%;
+}
+.plane_area .rotation2 {
+  width: 80%;
+  height: 125%;
+  background-image: url(avion2.png);
+  background-size: 100%;
+}
+.plane_area .rotation3 {
+  width: 100%;
+  height: 100%;
+  background-image: url(avion3.png);
+  background-size: 100%;
+}
+.plane_area .rotation4 {
+  width: 80%;
+  height: 125%;
+  background-image: url(avion4.png);
+  background-size: 100%;
+}
+.grid > .rotation1 {
+  width: 50%;
+  height: 40%;
+  background-image: url(avion.png);
+  background-size: 100%;
+}
+.grid > .rotation2 {
+  width: 40%;
+  height: 50%;
+  background-image: url(avion2.png);
+  background-size: 100%;
+}
+.grid > .rotation3 {
+  width: 50%;
+  height: 40%;
+  background-image: url(avion3.png);
+  background-size: 100%;
+}
+.grid > .rotation4 {
+  width: 40%;
+  height: 50%;
+  background-image: url(avion4.png);
+  background-size: 100%;
+}
+
+
+.main_grid {
+	width: 440px;
+  height: 440px;
 	float:left;
 	margin-top: 25px;
 }
+.main_grid .grid {
+  width: 90.91%;
+  height: 90.91%;
+}
+.main_grid .top_mark{
+	width: 100%;
+	height: 9.090909%;
+	line-height: 40px;
+	text-align: center;
+	font-size: 24px;
+	font-family: "Scris", Verdana, Sans-serif;
+}
+.main_grid .top_mark .mark{
+	height: 100%;
+	width: 9.09090909%;
+	float:left;
+}
+.main_grid .left_mark{
+	width: 9.090909%;
+	height: 90.91%;
+	float: left;
+	line-height: 40px;
+	font-size: 24px;
+	text-align: center;
+	font-family: "Scris", Verdana, Sans-serif;
+}
+.main_grid .left_mark .mark {
+  height: 10%;
+  width: 100%;
+  float: left;
+}
+.main_grid table {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  width: calc(100% + 1px);
+  height: calc(100% + 1px);
+  width: -webkit-calc(100% + 1px);
+  height: -webkit-calc(100% + 1px);
+  max-width: calc(100% + 1px);
+  max-width: -webkit-calc(100% + 1px);
+}
+.main_grid tbody {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  width: 100%;
+  height: 100%;
+}
+.main_grid tr {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  width: 100%
+}
+.main_grid td {
+  width: 10%;
+  height: 10%;
+  border: 1px solid whiteSmoke;
+}
+
 .not-your-turn {
   opacity: 0.3;
 }
 
 .plane_area{
+  margin: 10px;
   margin-top: 70px;
 	width:200px;
 	float:left;
   position: relative;
-	margin-left:20px;
 }
 .plane_area .airplane{
   position: absolute
@@ -60,28 +172,6 @@
 }
 #main_grid1 .airplane{
 	position:absolute;
-}
-.mark{
-	height:40px;
-	width:40px;
-	float:left;
-}
-.top_mark{
-	width:440px;
-	height:40px;
-	line-height: 40px;
-	text-align: center;
-	font-size: 24px;
-	font-family: "Scris", Verdana, Sans-serif;
-}
-.left_mark{
-	width:40px;
-	height:400px;
-	float:left;
-	line-height: 40px;
-	font-size: 24px;
-	text-align: center;
-	font-family: "Scris", Verdana, Sans-serif;
 }
 .content{
   overflow: hidden;
@@ -120,7 +210,6 @@
 	left:50;
 }
 .sonicx{
-	width: 400px;
 	margin: 0 auto;
 	margin-top: 20px;
 	text-align: center;
@@ -130,8 +219,14 @@
 }
 .finish {
   margin-top: 70px !important;
-  width: 500px !important;
+  width: 100%;
+  max-width: 500px !important;
   margin: 0 auto;
+}
+.finish .m-btn {
+  margin-top: 50px;
+  line-height: 30px;
+  font-size: 18px;
 }
 .finish h1 {
   font-size: 50px !important;
@@ -144,7 +239,6 @@
   text-align: center;
 }
 .information {
-  margin-top: 200px;
   width: 200px;
   float: left;
   position: relative;

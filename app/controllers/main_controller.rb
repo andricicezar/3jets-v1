@@ -2,7 +2,7 @@ class MainController < ApplicationController
   include ApplicationHelper
   include NotificationHelper
   before_filter :authenticate_user!, :unless => :guest_user
-  before_filter :user_online
+  # before_filter :user_online
 
   def index
     "qqq"
@@ -68,10 +68,11 @@ class MainController < ApplicationController
     if id > 1
       @prev = id-1
     end
-    @users = User.veterans.order('elo DESC').offset((id-1)*7).limit(7)
+    @users = User.veterans.order('elo DESC').offset((id-1)*7).limit(8)
 
-    if User.offset(id*7).first
+    if @users.length == 8
       @next = id+1
+      @users.pop
     end
   end
 

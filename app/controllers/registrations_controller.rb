@@ -7,10 +7,11 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   def create_guest_user
-    User.delete_all("is_guest=true AND last_sign_in_at < (now() - interval '5 hours')")
+    User.delete_all("is_guest=true AND last_sign_in_at < (now() - interval '5 minutes')")
     return redirect_to login_like_guest_url, :notice => "This nickname is already taken!" if User.where(:nickname => params[:user][:nickname]).count > 0
     u = User.create(:nickname => params[:user][:nickname], 
-                    :is_guest => true)
+                    :is_guest => true,
+                    :last_sign_in_at => Time.now)
     u.save(:validate => false)
     session[:guest_user_id] = u.id
     redirect_to home_url

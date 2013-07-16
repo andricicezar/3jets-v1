@@ -11,13 +11,12 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require jquery
+// require jquery.turbolinks
 //= require jquery_ujs
 //= require jquery.ui.core
 //= require jquery.ui.autocomplete
 //= require jquery.ui.draggable
 //= require jquery.ui.droppable
-//= require bootstrap-dropdown
-//= require bootstrap-button
 //= require faye_conn
 //= require angular
 //= require ang-onlineCtrl
@@ -36,6 +35,17 @@ $(document).on("click", ".follow-btn", function() {
     });
 });
 
+$(document).on("click", "#nnavbar-toggle", function() {
+  $(".nnavbar").toggleClass("active").removeClass("closed");
+  $("#nnavbar-toggle").toggleClass("active");
+});
+
+function close_nnavbar() {
+  $(".nnavbar.active").removeClass("active").addClass("closed");
+  $("#nnavbar-toggle.active").removeClass("active");
+}
+$(document).on("click", ".nnavbar.active .close-nnavbar", close_nnavbar);
+
 $(document).on("click", ".expandable", function() {
   $(this).toggleClass("expanded");
 });
@@ -48,9 +58,14 @@ $(document).on("click", "#search-friend", function(event) {
 
   var button = $("#search-friend");
   button.parent().parent().addClass("active");
-  $("#search-friend-popover").addClass("active")
-                             .css("top", button.offset().top)
-                             .css("left", button.offset().left + button.width());
+  if (window.innerWidth <= 600) {
+    $("#search-friend-popover").addClass("active input-top");
+    $("#search-friend-popover .arrow").css("display", "none");
+  } else {
+    $("#search-friend-popover").addClass("active")
+                               .css("top", button.offset().top)
+                               .css("left", button.offset().left + button.width());
+  }
   event.stopPropagation();
 });
 
@@ -73,14 +88,14 @@ setInterval(function() {
 }, 30000);
 
 readyApp = function() {
-  mega_awesome_button = $(".mega-super-awesome-button");
-  mega_awesome_button
-    .css("position", "fixed")
-    .css("top", "40%")
-    .css("left", "50%")
-    .css("margin-top", -mega_awesome_button.height()/2)
-    .css("margin-left", -mega_awesome_button.width()/2);
+  // mega_awesome_button = $(".mega-super-awesome-button");
+  // mega_awesome_button
+  //  .css("position", "fixed")
+  //  .css("top", "40%")
+  //  .css("margin-top", -mega_awesome_button.height()/2)
+  //  .css("margin-left", -mega_awesome_button.width()/2);
   
+  $("#search_user_input").unbind("autocomplete");
   $("#search_user_input").autocomplete({
     source: "/search_users"
   });

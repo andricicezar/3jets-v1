@@ -43,7 +43,24 @@ class Game < ActiveRecord::Base
     end
   end
 
+  def user_or_guest(user)
+    return user if user
+    "Guest"
+  end
+
   def winner
+    unless user1 && user2
+      unless user1
+        return "Guest" if second_user.num_airplanes == 0
+        return user2
+      end
+
+      unless user2
+        return "Guest" if first_user.num_airplanes == 0
+        return user1
+      end
+    end
+
     return user2 if first_user.num_airplanes == 0
     return user1 if second_user.num_airplanes == 0
     if countable

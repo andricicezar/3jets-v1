@@ -1,36 +1,40 @@
-.container.colorfull-container
-  %h3 
-    Ranking
-    %input#search_user_input{:type => "text", :placeHolder => "Search users"}
+.window.big
+  .content
+    - if params[:message]
+      .alert
+        Just the players with more than 5 games played vs random persons will be in the ranking tables.
+    %h3 
+      Ranking
+      %input#search_user_input{:type => "text", :placeHolder => "Search users"}
 
-  %table.table.table-striped
-    %thead
-      %th #
-      %th Name
-      %th Elo
-      %th Wins
-      %th Looses
-    %tbody
-      - v = 0
-      - @users.each do |user|
-        - if user != nil
-          - v += 1
-          %tr{:class => (params[:user].to_i == user.id)?"highlight":""}
-            %td
-              = (params[:id].to_i-1)*7+v
-            %td
-              - if current_user.id == user.id
-                %span.label.label-info
-                  You
-              %a{:href => user_profile_path(user.id)}
-                = user.name
-            %td
-              = user.elo
-            %td 
-              = user.wins
-            %td
-              = user.losses
-  - if @prev
-    = link_to "<< Prev page", ranking_path(@prev), :class => "btn btn-link"
-  - if @next
-    = link_to "Next page >>", ranking_path(@next), :class => "btn btn-link"
+    %table.table.table-striped
+      %thead
+        %th #
+        %th Name
+        %th Elo
+        %th Wins
+        %th Looses
+      %tbody
+        - v = 0
+        - @users.each do |user|
+          - if user != nil
+            - v += 1
+            %tr{:class => (params[:user].to_i == user.id)?"highlight":""}
+              %td
+                = (params[:id].to_i-1)*7+v
+              %td
+                - if current_user.id == user.id
+                  %span.label.label-info
+                    You
+                %a{:href => user_profile_path(user.id)}
+                  = user.name
+              %td
+                = user.elo
+              %td 
+                = user.wins
+              %td
+                = user.losses
+    - if @prev
+      = link_to "<< Prev page", ranking_path(@prev), :class => "btn btn-link"
+    - if @next
+      = link_to "Next page >>", ranking_path(@next), :class => "btn btn-link"
