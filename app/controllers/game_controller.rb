@@ -48,6 +48,12 @@ class GameController < ApplicationController
       return
     end
 
+    Notification.where(:view_url => game_victory_url(currentGame.id), :friend_id => current_user.id).each do |notif|
+      send_destroy_notf(current_user, notif)
+      notif.destroy
+    end
+
+
     if !currentGame.finished
       currentGame.finished = true
       currentGame.save
@@ -61,30 +67,28 @@ class GameController < ApplicationController
         v.num_airplanes = 0
         v.save
       end
+      unless @loser != current_user
+        notif = Notification.create(
+                  :notf_type => 3,
+                  :title => "You've lost!",
+                  :special_class => "",
+                  :user_id => @winner.id,
+                  :friend_id => @loser.id,
+                  :accept_url => "",
+                  :view_url => game_victory_url(currentGame.id))
+        send_notf(notif, @winner, @loser)
+      end
 
-      notif = Notification.create(
-                :notf_type => 3,
-                :title => "You've lost!",
-                :special_class => "",
-                :user_id => @winner.id,
-                :friend_id => @loser.id,
-                :accept_url => "",
-                :view_url => game_victory_url(currentGame.id))
-      send_notf(notif, @winner, @loser)
-
-      notif = Notification.create(
-                :notf_type => 3,
-                :title => "You've won!",
-                :special_class => "",
-                :user_id => @loser.id,
-                :friend_id => @winner.id,
-                :accept_url => "",
-                :view_url => game_victory_url(currentGame.id))
-      send_notf(notif, @loser, @winner)
-      
-      Notification.where(:view_url => game_victory_url(currentGame.id), :friend_id => current_user.id).each do |notif|
-        send_destroy_notf(current_user, notif)
-        notif.destroy
+      unless @winner != current_user
+        notif = Notification.create(
+                  :notf_type => 3,
+                  :title => "You've won!",
+                  :special_class => "",
+                  :user_id => @loser.id,
+                  :friend_id => @winner.id,
+                  :accept_url => "",
+                  :view_url => game_victory_url(currentGame.id))
+        send_notf(notif, @loser, @winner)
       end
 
       return if !currentGame.countable
