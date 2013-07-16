@@ -74,13 +74,18 @@ class GameController < ApplicationController
 
       notif = Notification.create(
                 :notf_type => 3,
-                :title => "You've win!",
+                :title => "You've won!",
                 :special_class => "",
                 :user_id => @loser.id,
                 :friend_id => @winner.id,
                 :accept_url => "",
                 :view_url => game_victory_url(currentGame.id))
       send_notf(notif, @loser, @winner)
+      
+      Notification.where(:view_url => game_victory_url(currentGame.id), :friend_id => current_user.id).each do |notif|
+        send_destroy_notf(current_user, notif)
+        notif.destroy
+      end
 
       return if !currentGame.countable
 
@@ -112,11 +117,6 @@ class GameController < ApplicationController
       Result.create(:user_id => @loser.id,
                     :game_id => currentGame.id,
                     :result => 0)
-    end
-
-    Notification.where(:view_url => game_victory_url(currentGame.id), :friend_id => current_user.id).each do |notif|
-      send_destroy_notf(current_user, notif)
-      notif.destroy
     end
 
     if !currentGame.user1.veteran

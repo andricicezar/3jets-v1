@@ -108,10 +108,10 @@ $(document).on("click", "#send-button", function() {
   $.each($(".draggable-airplane"), function() {
     // calculam pozitia pe grid
     var x   = $(this).offset();
-    x.left -= $(".grid table").offset().left;
-    x.top  -= $(".grid table").offset().top;
-    x.left /= $(".grid td").width()+2;
-    x.top  /= $(".grid td").height()+2;
+    x.left -= $(".grid table").offset().left + parseInt($(".grid table").css("border-left-width"));
+    x.top  -= $(".grid table").offset().top + parseInt($(".grid table").css("border-top-width"));
+    x.left /= $(".grid td").width()+ parseInt($(".grid td").css("border-left-width")) + parseInt($(".grid td").css("border-right-width"));
+    x.top  /= $(".grid td").height()+ parseInt($(".grid td").css("border-top-width")) + parseInt($(".grid td").css("border-bottom-width"));
     rot     = $(this).attr("rot");
     cr      = cr + "1" + x.top + x.left + rot;
   });
