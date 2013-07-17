@@ -135,8 +135,8 @@
   margin: 0;
   padding: 0;
   border: 0;
-  width: 100%
-  height: 100%
+  width: 100%;
+  height: 100%;
   width: calc(100% + 1px);
   height: calc(100% + 1px);
   width: -webkit-calc(100% + 1px);
@@ -155,7 +155,7 @@
   margin: 0;
   padding: 0;
   border: 0;
-  width: 100%
+  width: 100%;
 }
 .main_grid td {
   width: 10%;
@@ -200,7 +200,7 @@
   position: relative;
 }
 .plane_area .airplane{
-  position: absolute
+  position: absolute;
 }
 .bovina{
 	margin-top: 10px;
