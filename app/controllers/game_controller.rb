@@ -204,6 +204,7 @@ class GameController < ApplicationController
 
     @curr_user = currentGame.user_turn
     @other_user = currentGame.enemy
+    @afg_user = currentGame.the_other(current_user)
   end
 
   def wait

@@ -33,24 +33,42 @@ $(document).on("click", ".draggable-airplane", function() {
 });
 
 
-// CAND PAGINa E INCARCATA
+// CAND PAGINA E INCARCATA
+var squareSize;
 readyDragDrop = function(){
+  squareSize = $(".grid td").width() + parseInt($(".grid td").css("border-left-width")) + parseInt($(".grid td").css("border-right-width"));
+  if (window.innerWidth <= 800 && window.innerWidth <= window.innerHeight) {
+    size = Math.floor((window.innerWidth - 30)/11)*11;
+    $(".main_grid").css({
+      "width": size,
+      "height": size,
+      "margin": "0 auto"
+    });
+    squareSize = $(".grid td").width() + parseInt($(".grid td").css("border-left-width")) + parseInt($(".grid td").css("border-right-width"));
+    $(".information").css("width", window.innerWidth - squareSize * 5 - 35);
+  }
+  $(".plane_area").css({
+    "width":  squareSize * 5,
+    "height": squareSize * 4,
+    "margin-bottom": squareSize
+  });
+  $(".mark").css({
+    "font-size": 0.5 * squareSize,
+    "line-height": squareSize + "px"
+  });
+  init_grid();
 	$(".draggable-airplane").attr("rot", 1);
-  auxW = $(".grid td").width() + parseInt($(".grid td").css("border-left-width")) + parseInt($(".grid td").css("border-right-width"));
-  auxH = $(".grid td").height() + parseInt($(".grid td").css("border-top-width")) + parseInt($(".grid td").css("border-bottom-width"));
-  $(".plane_area").css("width",  auxW * 5)
-                 .css("height", auxH * 4);
 	$(".draggable-airplane").draggable({
-                            containment: ".grid table",
-                            stop: function() {
-                              verif_airplanes();
-                            },
-                            snap: ".grid td"
-                          })
-	                        .droppable({
-                        		activeClass:"ui-state-hover",
-                        		hoverClass:"ui-state-active"
-                        	})
+    containment: ".grid table",
+    stop: function() {
+      verif_airplanes();
+    },
+    snap: ".grid td",
+    snapTolerance: squareSize-1
+  }).droppable({
+    activeClass:"ui-state-hover",
+    hoverClass:"ui-state-active"
+  });
 
 }
 $(document).ready(readyDragDrop);
@@ -71,8 +89,8 @@ function verif_airplanes() {
     x.left -= $(".grid table").offset().left + parseInt($(".grid table").css("border-left-width"));
     x.top  -= $(".grid table").offset().top + parseInt($(".grid table").css("border-top-width"));
    
-    x.left /= $(".grid td").width() + parseInt($(".grid td").css("border-left-width")) + parseInt($(".grid td").css("border-right-width"));
-    x.top  /= $(".grid td").height() + parseInt($(".grid td").css("border-top-width")) + parseInt($(".grid td").css("border-bottom-width"));
+    x.left /= squareSize;
+    x.top  /= squareSize;
     rot = parseInt($(this).attr("rot"));
 
     if( ((rot == 1 || rot == 3) && x.top < 7 && x.left < 6) ||
@@ -110,8 +128,8 @@ $(document).on("click", "#send-button", function() {
     var x   = $(this).offset();
     x.left -= $(".grid table").offset().left + parseInt($(".grid table").css("border-left-width"));
     x.top  -= $(".grid table").offset().top + parseInt($(".grid table").css("border-top-width"));
-    x.left /= $(".grid td").width()+ parseInt($(".grid td").css("border-left-width")) + parseInt($(".grid td").css("border-right-width"));
-    x.top  /= $(".grid td").height()+ parseInt($(".grid td").css("border-top-width")) + parseInt($(".grid td").css("border-bottom-width"));
+    x.left /= squareSize;
+    x.top  /= squareSize;
     rot     = $(this).attr("rot");
     cr      = cr + "1" + x.top + x.left + rot;
   });

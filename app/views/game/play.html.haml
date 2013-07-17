@@ -3,21 +3,30 @@
     .col
       .col.game-users
         %h3
-          %span.current_user
-            = @curr_user.name
-            vs
-          %span
-            = @other_user.name
+          %span{:class => ("active" if @curr_user.id == current_user.id)}
+            Your turn
+          %span{:class => ("active" if @curr_user.id != current_user.id)}
+            #{@afg_user.name}'s turn
+          %p
+            Hurry up!
     .col.alignright
       .col
-        %a.m-btn{:href => home_url} Back
+        %a.m-btn.icn-only.txt-icn{:href => home_url} 
+          %span Back
+          %i.icon-home
       .col
-        %a.m-btn.red{:href => game_exit_url} Exit
-
+        %a.m-btn.red.icn-only.txt-icn{:href => game_exit_url} 
+          %span Exit
+          %i.icon-remove
+#timer
 .w50cent
   .content
-    .play_grid#main_grid1{:av => current_user.mapFromGame(params[:id]), :game => params[:id], :user => current_user.id, :lov => current_user.concatMovesVS(params[:id], @curr_user.id + @other_user.id - current_user.id)}
+    .play_grid#main_grid1{:av => current_user.mapFromGame(params[:id]), 
+                          :game => params[:id], 
+                          :user => current_user.id, 
+                          :lov => current_user.concatMovesVS(params[:id], @curr_user.id + @other_user.id - current_user.id)}
       = render "game/grid"
-    .play_grid#main_grid2{:lov => current_user.concatMovesVS(params[:id], current_user.id), :class => ("not-your-turn" if current_user.id != @curr_user.id)}
+    .play_grid#main_grid2{:lov => current_user.concatMovesVS(params[:id], current_user.id), 
+                          :class => ("not-your-turn" if current_user.id != @curr_user.id)}
       = render "game/grid"
   .footer

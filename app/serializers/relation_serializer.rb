@@ -1,5 +1,5 @@
 class RelationSerializer < ActiveModel::Serializer
-  attributes :id, :url, :img, :name, :elo, :time, :invite, :label
+  attributes :id, :url, :img, :name, :time, :invite, :label
 
 
   def invite
@@ -20,9 +20,6 @@ class RelationSerializer < ActiveModel::Serializer
 
   def id
     asdf.id
-  end
-
-  def elo
   end
 
   def img

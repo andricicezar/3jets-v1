@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
   end
 
   def guest_user
-    @guest ||= User.find(session[:guest_user_id]) unless session[:guest_user_id].nil?
+    @guest ||= User.where(:id => session[:guest_user_id]).first unless session[:guest_user_id].nil?
   end
 
 end

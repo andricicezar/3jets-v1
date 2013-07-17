@@ -41,8 +41,6 @@ function game_ready() {
       Turbolinks.visit("../"+$("#wait").attr("game"));
     });
   }
-  // PUNEM AVIOANELE SI LOVITURILE PE GRID
-  init_grid();
 
   if ($("#main_grid2").length) {
     var game = $("#main_grid1").attr("game");
@@ -83,10 +81,21 @@ function game_ready() {
 }
 
 function schimba_rolurile() {
-  $("#main_grid2").toggleClass("not-your-turn");
-  $.each($(".game-users").find("span"), function(i, item) {
-      $(item).toggleClass("current_user");
-  });
+  if ($("#main_grid2").css("z-index") == 977) {
+    $("#wait-move").addClass("active");
+    $("#loading-bar").addClass("active");
+    setTimeout(schimb_rol, 1000);
+  } else {
+    schimb_rol();
+  }
+  function schimb_rol() {
+    $("#main_grid2").toggleClass("not-your-turn");
+    $.each($(".game-users").find("span"), function(i, item) {
+        $(item).toggleClass("active");
+    });
+    $("#wait-move").removeClass("active");
+    $("#loading-bar").removeClass("active");
+  }
 }
 
 function init_grid() {
@@ -96,17 +105,14 @@ function init_grid() {
     // ADAUGAM AVIOANELE
     av = $(item).attr("av");
     $(item).removeAttr("av");
-    wid = $(".grid td").width() + parseInt($(".grid td").css("border-left-width")) + parseInt($(".grid td").css("border-right-width"));
-    hei = $(".grid td").height() + parseInt($(".grid td").css("border-top-width")) + parseInt($(".grid td").css("border-bottom-width"));
-
     if (av) {
       for (i = 0; i <= 2; ++i) {
         jQuery("<div/>")
               .appendTo( $(item).children(".main_grid").children(".grid") )
               .addClass("airplane")
               .addClass("basic-sprite")
-              .css("top", av[i*4+1]*wid)
-              .css("left", av[i*4+2]*hei)
+              .css("top", av[i*4+1]*squareSize)
+              .css("left", av[i*4+2]*squareSize)
               .addClass("rotation"+av[i*4+3]);
       }
     }

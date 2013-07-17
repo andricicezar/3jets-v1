@@ -24,6 +24,16 @@
   color: green;
   font-weight: bold;
 }
+#timer {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: blue;
+  z-index: 978;
+  transition: linear 1s;
+}
 .square{
 	width:38px;
 	height:38px;
@@ -85,12 +95,14 @@
 .main_grid {
 	width: 440px;
   height: 440px;
-	float:left;
-	margin-top: 25px;
+  margin: 0 auto;
 }
 .main_grid .grid {
   width: 90.91%;
   height: 90.91%;
+  float: left;
+  background-image: url(cloud.png);
+  background-size: 100% 100%;
 }
 .main_grid .top_mark{
 	width: 100%;
@@ -123,6 +135,8 @@
   margin: 0;
   padding: 0;
   border: 0;
+  width: 100%
+  height: 100%
   width: calc(100% + 1px);
   height: calc(100% + 1px);
   width: -webkit-calc(100% + 1px);
@@ -148,9 +162,34 @@
   height: 10%;
   border: 1px solid whiteSmoke;
 }
-
-.not-your-turn {
+.main_grid td.hit-0, .main_grid td.hit-1, .main_grid td.hit-2 {
+  position: relative;
+  background-size: 100% 100%;
+  z-index: 5;
+}
+.main_grid td.hit-0 {
+  background-image: url(miss.png);
+}
+.main_grid td.hit-1 {
+  background-image: url(lovit.png);
+}
+.main_grid td.hit-2 {
+  background-image: url(cap.png);
+}
+.play_grid h5 {
+  height: 20px;
+  min-width: 1%;
+  line-height: 20px;
+  margin: 0;
+  text-align: right;
+  margin-top: 5px;
+  margin-right: 20px;
+}
+#main_grid2.not-your-turn {
   opacity: 0.3;
+}
+#main_grid2.not-your-turn h5 {
+  opacity: 0;
 }
 
 .plane_area{
@@ -178,9 +217,8 @@
   margin: 20px;
 }
 .w50cent{
-	width:1040px;
+	width: 1040px;
 	margin:0 auto;
-	margin-top:40px;
 }
 #main_grid1{
 	float:left;

@@ -3,9 +3,9 @@
 .losses
   color: red
 body > .container
-  margin-top: 50px
+  margin-top: 51px
 body
-  padding-top: 50px
+  padding-top: 51px
 .alignright
   float: right !important
 .alignleft
@@ -13,7 +13,7 @@ body
 .aligncenter
   margin: 0 auto
 .container
-  width: 100% !important
+  width: 80%
   max-width: 800px !important
 .container-image-1
   position: fixed
@@ -22,6 +22,58 @@ body
   z-index: -1
   width: 100%
   height: 100%
+@-webkit-keyframes gogogo
+  0% 
+    margin-left: 0
+  100%
+    margin-left: 100%
+.states
+  position: fixed
+  top: 0
+  left: 0
+  width: 100%
+  height: 0
+  text-align: center
+  z-index: 1000
+  color: blue
+  line-height: 20px
+  font-size: 16px
+  font-weight: bold
+  background: whiteSmoke
+  letter-spacing: 1.2
+  opacity: 0
+  transition: ease 0.5s
+  &.active
+    opacity: 1
+    line-height: 50px
+    height: 50px
+#loading-bar.active
+  position: fixed
+  top: 50px
+  left: 0
+  width: 100%
+  height: 3px
+  z-index: 1001
+  background-color: blue
+  #box1, #box2
+    width: 3px
+    height: 3px
+    background: white
+    float: left
+    // transition: ease 0.5s
+    animation-name: gogogo
+    animation-duration: 3s
+    animation-timing-function: ease
+    animation-iteration-count: infinite
+    animation-play-state: running
+    -webkit-animation-name: gogogo
+    -webkit-animation-duration: 3s
+    -webkit-animation-timing-function: ease
+    -webkit-animation-iteration-count: infinite
+    -wekit-animation-play-state: running
+
+  #box2
+    margin-left: 32%
 @media (max-width: 800px)
   .container-image-1
     background: url(background-3.jpg) no-repeat center center fixed

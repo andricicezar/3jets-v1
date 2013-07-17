@@ -1,4 +1,6 @@
 @media only screen and (orientation: portrait), (max-width: 500px)
+  .container
+    width: 100%
   .container-image-1
     background: none
   .window, .window.big
@@ -12,7 +14,7 @@
     .m-btn.disabled
       display: none
     .m-btn
-      width: 33.3333333%
+      width: 33.3334%
       padding-left: 0
       padding-right: 0
   .invelis
@@ -55,15 +57,29 @@
     h3
       font-size: 12px
       line-height: 21px !important
-  .w2pac
+  // .w2pac, .w50cent
     width: 100%
+    margin-top: 0
     .content
       margin: 0
+    .play_grid
+      width: 100%
+      background: white
+    #main_grid2
+      display: block
+      position: absolute
+      margin-left: 0
+      top: 0px
+      left: 0
+      z-index: 977
+    #main_grid2.not-your-turn
+      display: none
     
   .main_grid
-    width: 275px
-    height: 275px
-    margin: 0 10px
+    width: 440px
+    height: 440px
+    margin: 0
+    float: none
   .plane_area
     margin-top: 10px
   .information
@@ -92,3 +108,23 @@
     line-height: 16px
     border-radius: 4px 4px 0 0
 
+
+@media (max-width: 1039px)
+  .w2pac, .w50cent
+    width: 100%
+    margin-top: 0
+    .content
+      margin: 0
+    .play_grid
+      width: 100%
+      background: white
+    #main_grid2
+      display: block
+      position: absolute
+      margin-left: 0
+      top: 0px
+      left: 0
+      z-index: 977
+    #main_grid2.not-your-turn
+      display: none
+ 

@@ -1,6 +1,6 @@
 #nnavbar-toggle
   %i.icon-reorder
-.nnavbar#users_panel{:channel => current_user.special_key, "ng-controller" => "OnlineCtrl", "turbolinks-eval" => false}
+.nnavbar#users_panel{:channel => current_user.special_key, "ng-controller" => "OnlineCtrl"}
   %a.close-nnavbar{:href => user_profile_path(current_user.id)}
     .nrow
       .ricon

@@ -114,6 +114,15 @@ readyApp = function() {
 }
 $(document).ready(readyApp);
 $(document).on("page:load", readyApp);
+$(document).on("page:fetch", function() {
+  $("#wait-is-loading").addClass("active");
+  $("#loading-bar").addClass("active");
+});
+
+$(document).on("page:receive", function() {
+  $("#wait-is-loading").removeClass("active");
+  $("#loading-bar").removeClass("active");
+});
 
 function reqBtn(btn) {
   $.get($(btn).attr("href"));

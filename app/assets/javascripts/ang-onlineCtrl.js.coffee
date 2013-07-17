@@ -2,6 +2,7 @@
   $scope.friends = []
   $scope.games = []
   $scope.notifications = []
+  $scope.currentGame = {}
   if ($scope.friends.length == 0)
       jQuery.get("/info", "json").done( (data) ->
         $scope.$apply ( ->
@@ -10,6 +11,13 @@
           $scope.notifications = data[2]
         )
       )
+  $scope.setCurrentGame = ->
+    if ($("#main_grid1").length)
+      aux = parseInt($("#main_grid1").attr("game"))
+      angular.forEach $scope.games, (game) ->
+        if (game.game_id == aux)
+          $scope.currentGame = game
+
 
   $scope.keepTracking = ->
     s = "/channel/" + $("#users_panel").attr("channel")
@@ -109,6 +117,17 @@
         game.timestamp = now
       if game.time == 0 || game.time == -1
        $.get(game.game_ur + "/check")
+    $scope.setCurrentGame()
+    if ($scope.currentGame)
+      if ($scope.currentGame.time > 0)
+        $("#timer").css({
+          "width": (100*($scope.currentGame.time-2)/60)+"%",
+          "left": (50-(100*($scope.currentGame.time-2)/60)/2) + "%"
+        })
+      if ($scope.currentGame.time < 12 && $scope.currentGame.turn == 1)
+        $(".game-users p").css("display", "block")
+      else
+        $(".game-users p").css("display", "none")
     $timeout($scope.gameTimer, 1000)
   $timeout($scope.gameTimer, 1000)
 

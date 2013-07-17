@@ -10,12 +10,14 @@
     .col.alignright
       - if params.has_key? :game
         .col
-          %a.m-btn.red{:href => game_exit_url(params[:game])} Exit
+          %a.m-btn.red.icn-only.txt-icn{:href => game_exit_url(params[:game])} 
+            %span Exit
+            %i.icon-remove
       - else
         .col
           %a.m-btn.icn-only.txt-icn{:href => home_url}
             %span Back
-            %i.icon-home.black
+            %i.icon-home
       .col
         %a#send-button.m-btn.blue.icn-only.txt-icn
           %span Done
@@ -29,9 +31,13 @@
       #plane2.rotation1.airplane.basic-sprite.draggable-airplane
       #plane3.rotation1.airplane.basic-sprite.draggable-airplane
     .information
-      %p Drag & Drop 3 airplanes on grid
-      %p Click to rotate
-      %p Press Done when you're ready. Good luck!
+      %p Drag 3 airplanes
+      %p 
+        - unless @mobile_device
+          Click to rotate
+        - else
+          Tap to rotate
+      %p Good luck!
   .footer
 	
 
