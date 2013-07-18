@@ -22,6 +22,8 @@
 //= require ang-onlineCtrl
 //= require ang-autoCompleteModule
 //= require avioane
+// require hammer
+// require angular-hammer
 //= require turbolinks-edited
 
 $(document).on("click", ".follow-btn", function() {
@@ -35,10 +37,13 @@ $(document).on("click", ".follow-btn", function() {
     });
 });
 
-$(document).on("click", "#nnavbar-toggle", function() {
+//$(document).hammer().on("dragright", "body", toggle_nnavbar);
+$(document).on("click", "#nnavbar-toggle", toggle_nnavbar);
+
+function toggle_nnavbar() {
   $(".nnavbar").toggleClass("active").removeClass("closed");
   $("#nnavbar-toggle").toggleClass("active");
-});
+}
 
 function close_nnavbar() {
   $(".nnavbar.active").removeClass("active").addClass("closed");

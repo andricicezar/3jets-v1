@@ -9,9 +9,11 @@ class RegistrationsController < Devise::RegistrationsController
   def create_guest_user
     expired_guests = User.where("is_guest=true AND last_sign_in_at < (now() - interval '5 minutes')")
     Game.where("(fst_user in (?) or scd_user in (?)) and finished=false", expired_guests, expired_guests).delete_all
+    Notification.where("user_id in (?) or friend_id in (?)", expired_guests, expired_guests).delete_all
     Relation.where("user_id in (?) or friend_id in (?)", expired_guests, expired_guests).delete_all
     expired_guests.delete_all
     return redirect_to login_like_guest_url, :notice => "This nickname is already taken!" if User.where(:nickname => params[:user][:nickname]).count > 0
+    return redirect_to login_like_guest_url if params[:user][:nickname].length < 4
     u = User.create(:nickname => params[:user][:nickname], 
                     :is_guest => true,
                     :last_sign_in_at => Time.now)

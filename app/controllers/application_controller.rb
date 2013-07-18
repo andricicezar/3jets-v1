@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   before_filter :mobile_device
   
   def mobile_device
-    @mobile_device ||= request.env["HTTP_USER_AGENT"] && request.env["HTTP_USER_AGENT"][/(iPhone|iPad|iPod|BlackBerry|Android)/]
+    @mobile_device ||= request.env["HTTP_USER_AGENT"] && request.env["HTTP_USER_AGENT"][/(iPhone|iPad|iPod|BlackBerry|Android|Windows Phone 8)/]
   end
 
   def current_user

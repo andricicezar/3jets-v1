@@ -30,6 +30,10 @@
       else if (value.type == 3)
         $scope.addNotifications(value)
     )
+  $scope.visit = (link) ->
+    Turbolinks.visit(link)
+
+  # NROW-uri
 
   $scope.addFriend = (value) ->
     ok = false
@@ -68,6 +72,10 @@
       $scope.$apply( ->
         $scope.games.push(value)
       )
+  $scope.$watch('notifications.length', ->
+    $("#no-notifications").html($scope.notifications.length)
+    $("#no-notifications").css("display", if $scope.notifications.length > 0 then "block" else "none")
+  )
 
   $scope.addNotifications = (value) ->
     ok = false
@@ -80,12 +88,16 @@
         $scope.notifications.push(value)
       )
 
+
+  # NOTIFICATIONS
+
   $scope.acceptNotif = (ev) ->
     $.get(ev.accept_url)
     angular.forEach $scope.notifications, (notif, index) ->
       if notif == ev
         $scope.notifications.splice(index, 1)
         return
+
   $scope.declineNotif = (ev) ->
     $.get(ev.decline_url)
     angular.forEach $scope.notifications, (notif, index) ->
@@ -94,11 +106,15 @@
         return
 
 
+  # INITIALIZE
+
   if (typeof faye != "undefined")
     $scope.keepTracking()
   else
     connect_to_faye($scope.keepTracking)
 
+
+  # Timers
   $scope.timer = ->
     angular.forEach $scope.friends, (friend) ->
       $scope.$apply ( ->
