@@ -99,7 +99,12 @@ readyApp = function() {
   //  .css("top", "40%")
   //  .css("margin-top", -mega_awesome_button.height()/2)
   //  .css("margin-left", -mega_awesome_button.width()/2);
-  
+
+  $("#search_friend_input").unbind("autocomplete");
+  $("#search_friend_input").autocomplete({
+    source: "/search_friends"
+  });
+
   $("#search_user_input").unbind("autocomplete");
   $("#search_user_input").autocomplete({
     source: "/search_users"

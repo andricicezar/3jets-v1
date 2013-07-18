@@ -3,7 +3,7 @@
     %h3
       .col
         .col
-          %img{:src => @user.image_url}
+          %img.user-profile{:src => @user.image_url}
         .col
           = @user.name
           .m-btn-group
@@ -47,4 +47,7 @@
     - if matches.count > 0
       %h4 #{@user.name} vs random players
       = render "user/results", :matches => matches
+    .clear
+    .footer
+      = render "layouts/logo"
 

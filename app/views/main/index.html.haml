@@ -3,8 +3,7 @@
   .popover-content
     %input#search_friend_input{:type => "text",
                                :autofocus => "autofocus", 
-                               "auto-complete" => true,
-                               "ui-items" => "friends"}
+                               :placeHolder => "Search friends"}
 .wrapper
   .mega-super-awesome-button
     %ul.colorfull-container
@@ -22,4 +21,6 @@
       %li
         %a.btn.btn-block.btn-large{:href => ranking_path(1)}
           Ranking
-
+.clear
+.footer
+  = render "layouts/logo"

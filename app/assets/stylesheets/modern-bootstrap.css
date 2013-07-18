@@ -21,6 +21,8 @@ label.m-wrap,input.m-wrap,button.m-wrap,select.m-wrap,textarea.m-wrap{font-size:
 .m-input-append input[type="submit"] {
   line-height: 20px;
   margin-left: -55px;
+  position: relative;
+  z-index: 999;
 }
 
 .m-btn i {

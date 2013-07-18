@@ -77,9 +77,20 @@ class MainController < ApplicationController
   end
 
   def search_users
-    prefix = params[:term] + "_%"
-    render json: User.where("(nickname like ?) or (email like ?)", prefix, prefix)
+    prefix = params[:term] + "%"
+    render json: User.where("(lower(nickname) like lower(?)) or (lower(email) like lower(?))", prefix, prefix)
                      .limit(10), root: false
+  end
+
+  def search_friends
+    prefix = params[:term] + "%"
+    rel = Relation.where("(user_id=?)or(friend_id=?)", current_user.id, current_user.id)
+    aux = []
+    rel.each do |r|
+      aux.push r.user_id if r.user_id != current_user.id
+      aux.push r.friend_id if r.friend_id != current_user.id
+    end
+    render json: User.where("id in (?)", aux).limit(10), root: false
   end
 
 end

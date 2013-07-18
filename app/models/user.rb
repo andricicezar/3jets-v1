@@ -14,7 +14,8 @@ class User < ActiveRecord::Base
   has_many :games
   has_many :user_metas
 
-  validates_uniqueness_of :nickname
+  validates_uniqueness_of :nickname, :case_sensitive => false
+  validates_length_of     :nickname, :maximum => 20, :minimum => 5
   validates_uniqueness_of :email, :allow_blank => true, :allow_nil => true
   validates_uniqueness_of :twitter_uid, :unless => Proc.new { |user| user.twitter_uid == '0' }
   validates_uniqueness_of :facebook_uid, :unless => Proc.new { |user| user.facebook_uid == '0' }
@@ -146,7 +147,7 @@ class User < ActiveRecord::Base
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
     if login = conditions.delete(:login)
-      where(conditions).where(["nickname = :value OR lower(email) = :value", { :value => login }]).first
+      where(conditions).where(["lower(nickname) = :value OR lower(email) = :value", { :value => login }]).first
     else
       where(conditions).first
     end

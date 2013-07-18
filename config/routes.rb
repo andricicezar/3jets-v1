@@ -11,19 +11,19 @@ Airplanes::Application.routes.draw do
     post "users/guest" => "registrations#create_guest_user", :as => "guest_login"
   end
   get "user/:id" => "user#profile", :as => "user_profile"
-  
+
   get "friends" => "user#friends"
   get "games" => "user#games"
   get "notifications" => "user#notifications"
   get "info" => "user#angular_info"
-  
+
   get "user/:id/friend" => "user#friend", :as => "be_friend_with_user"
   get "user/:id/invite" => "user#invite", :as => "invite_user"
   get "user/:id/position" => "user#position", :as => "user_position"
-  
+
   get "check" => "main#index2"
   get "facebook_friends" => "main#facebook_friends"
-  
+
   get "ranking/:id" => "main#ranking", :as => "ranking"
 
   get "notification/:id/delete" => "notification#destroy", :as => "destroy_notification"
@@ -42,7 +42,7 @@ Airplanes::Application.routes.draw do
   get "game/:id/check" => "game#check", :as => "game_check"
 
   get "search_users" => "main#search_users", :as => "search_users"
-
+  get "search_friends" => "main#search_friends", :as => "search_friends"
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

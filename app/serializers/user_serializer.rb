@@ -1,5 +1,6 @@
 class UserSerializer < ActiveModel::Serializer
-  attributes :label, :profile_url, :position_url, :veteran
+  include ApplicationHelper
+  attributes :label, :profile_url, :game_invite, :online, :position_url, :veteran
 
   def label
     object.name
@@ -11,5 +12,15 @@ class UserSerializer < ActiveModel::Serializer
 
   def position_url
     user_position_url(object.id)
+  end
+  
+  def game_invite
+    invite_user_url(object.id)
+  end
+
+  def online
+    return false if is_user_friend_with(object.id, current_user.id, true)
+    return true if Time.now - object.last_sign_in_at < 30
+    false
   end
 end
