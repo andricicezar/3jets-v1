@@ -34,4 +34,6 @@
       - else
         = yield
     = javascript_include_tag "application", "data-turbolinks-eval" => false
+    - if @mobile_device
+      = javascript_include_tag "hammer-events", "data-turbolinks-eval" => false
 

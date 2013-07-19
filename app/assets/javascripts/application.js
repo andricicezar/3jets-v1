@@ -22,7 +22,6 @@
 //= require ang-onlineCtrl
 //= require ang-autoCompleteModule
 //= require avioane
-// require hammer
 // require angular-hammer
 //= require turbolinks-edited
 
@@ -38,8 +37,8 @@ $(document).on("click", ".follow-btn", function() {
 });
 
 //$(document).hammer().on("dragright", "body", toggle_nnavbar);
+//
 $(document).on("click", "#nnavbar-toggle", toggle_nnavbar);
-
 function toggle_nnavbar() {
   $(".nnavbar").toggleClass("active").removeClass("closed");
   $("#nnavbar-toggle").toggleClass("active");
@@ -122,13 +121,15 @@ readyApp = function() {
     }
   });
 }
+
+// TURBOLINKS SETTINGS
 $(document).ready(readyApp);
 $(document).on("page:load", readyApp);
+
 $(document).on("page:fetch", function() {
   $("#wait-is-loading").addClass("active");
   $("#loading-bar").addClass("active");
 });
-
 $(document).on("page:receive", function() {
   $("#wait-is-loading").removeClass("active");
   $("#loading-bar").removeClass("active");

@@ -22,7 +22,9 @@ var k = [{},
 		}];
 
 // FUNCTIA CARE ROTESTE AVIOANELE
-$(document).on("click", ".draggable-airplane", function() {
+$(document).on("click", ".draggable-airplane", rotate_airplane);
+function rotate_airplane(e) {
+  console.log(e);
   var rot = $(this).attr("rot");
   $(this).removeClass("rotation" + rot);
   ++rot;
@@ -30,13 +32,13 @@ $(document).on("click", ".draggable-airplane", function() {
   $(this).addClass("rotation"+rot);
   $(this).attr("rot", rot);
   verif_airplanes();
-});
+}
 
 
 // CAND PAGINA E INCARCATA
 var squareSize;
-readyDragDrop = function(){
-  squareSize = $(".grid td").width() + parseInt($(".grid td").css("border-left-width")) + parseInt($(".grid td").css("border-right-width"));
+readyDragDrop = function() {
+  // in caz ca dimensiunile sunt prea mici, dam resize
   if (window.innerWidth <= 800 && window.innerWidth <= window.innerHeight) {
     size = Math.floor((window.innerWidth - 30)/11)*11;
     $(".main_grid").css({
@@ -47,16 +49,31 @@ readyDragDrop = function(){
     squareSize = $(".grid td").width() + parseInt($(".grid td").css("border-left-width")) + parseInt($(".grid td").css("border-right-width"));
     $(".information").css("width", window.innerWidth - squareSize * 5 - 35);
   }
+
+  // resize table
+  $(".main_grid table").css({
+    "width": $(".main_grid .grid").width()+1,
+    "height": $(".main_grid .grid").height()+1
+  });
+  squareSize = $(".grid td").width() + parseInt($(".grid td").css("border-left-width")) + parseInt($(".grid td").css("border-right-width"));
+
+  // resize la avioane (modificam doar plane area)
   $(".plane_area").css({
     "width":  squareSize * 5,
     "height": squareSize * 4,
     "margin-bottom": squareSize
   });
+
+  // resize text grid
   $(".mark").css({
     "font-size": 0.5 * squareSize,
     "line-height": squareSize + "px"
   });
+
+  // adaug avioanele/loviturile
   init_grid();
+
+  // activam avioanele care au nevoie de drag and drop
 	$(".draggable-airplane").attr("rot", 1);
 	$(".draggable-airplane").draggable({
     containment: ".grid table",
