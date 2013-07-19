@@ -91,7 +91,9 @@
   background-size: 100%;
 }
 
-
+.w2pac .main_grid {
+  float: left
+}
 .main_grid {
 	width: 440px;
   height: 440px;
@@ -201,6 +203,11 @@
 }
 .plane_area .airplane{
   position: absolute;
+}
+.plane_area .draggable-airplane {
+  transition-property: top, left, bottom, right;
+  transition-timing-function: ease;
+  transition-duration: 0.1s;
 }
 .bovina{
 	margin-top: 10px;

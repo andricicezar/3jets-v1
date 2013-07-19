@@ -23,8 +23,7 @@ var k = [{},
 
 // FUNCTIA CARE ROTESTE AVIOANELE
 $(document).on("click", ".draggable-airplane", rotate_airplane);
-function rotate_airplane(e) {
-  console.log(e);
+function rotate_airplane() {
   var rot = $(this).attr("rot");
   $(this).removeClass("rotation" + rot);
   ++rot;
@@ -94,36 +93,38 @@ $(document).on("page:load", readyDragDrop);
 // VERIFICAM DACA AVIOANELE NU IES DIN GRID
 // VERIFICAM DACA AVIOANELE NU SUNT SUPRAPUSE
 function verif_airplanes() {
-  m=[];
-  for (i = 0; i < 10; ++i) {
-    m[i] = [];
-    for (j = 0; j < 10; ++j) {
-      m[i][j] = 0;
-    }
-  }
-  $.each($(".draggable-airplane"),function(){
-    var x   = $(this).offset();
-    x.left -= $(".grid table").offset().left + parseInt($(".grid table").css("border-left-width"));
-    x.top  -= $(".grid table").offset().top + parseInt($(".grid table").css("border-top-width"));
-   
-    x.left /= squareSize;
-    x.top  /= squareSize;
-    rot = parseInt($(this).attr("rot"));
-
-    if( ((rot == 1 || rot == 3) && x.top < 7 && x.left < 6) ||
-        ((rot == 2 || rot == 4) && x.top < 6 && x.left < 7)) {
-      for (i = 0; i < 10; ++i) {
-        if (++m[ x.top+k[rot].top[i] ][ x.left+k[rot].left[i] ] > 1) {
-          $(this).css("top", 0)
-                 .css("left", 0);
-          break;
-        }
+  setTimeout(function() {
+    m=[];
+    for (i = 0; i < 10; ++i) {
+      m[i] = [];
+      for (j = 0; j < 10; ++j) {
+        m[i][j] = 0;
       }
-    } else {
-      $(this).css("top", 0)
-             .css("left", 0);				
     }
-  });
+    $.each($(".draggable-airplane"),function(){
+      var x   = $(this).offset();
+      x.left -= $(".grid table").offset().left + parseInt($(".grid table").css("border-left-width"));
+      x.top  -= $(".grid table").offset().top + parseInt($(".grid table").css("border-top-width"));
+     
+      x.left /= squareSize;
+      x.top  /= squareSize;
+      rot = parseInt($(this).attr("rot"));
+
+      if( ((rot == 1 || rot == 3) && x.top < 7 && x.left < 6) ||
+          ((rot == 2 || rot == 4) && x.top < 6 && x.left < 7)) {
+        for (i = 0; i < 10; ++i) {
+          if (++m[ x.top+k[rot].top[i] ][ x.left+k[rot].left[i] ] > 1) {
+            $(this).css("top", 0)
+                   .css("left", 0);
+            break;
+          }
+        }
+      } else {
+        $(this).css("top", 0)
+               .css("left", 0);				
+      }
+    });
+  }, 100);
 }
 
 $(document).on("click", "#send-button", function() {
