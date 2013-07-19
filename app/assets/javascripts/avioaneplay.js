@@ -100,8 +100,8 @@ function schimba_rolurile() {
 
 function init_grid() {
   // LUAM FIECARE GRID IN PARTE
+  $(".play-airplane").remove();
   $.each($(".play_grid"), function(i, item) {
-
     // ADAUGAM AVIOANELE
     av = $(item).attr("av");
     $(item).removeAttr("av");
@@ -109,8 +109,7 @@ function init_grid() {
       for (i = 0; i <= 2; ++i) {
         jQuery("<div/>")
               .appendTo( $(item).children(".main_grid").children(".grid") )
-              .addClass("airplane")
-              .addClass("basic-sprite")
+              .addClass("airplane play-airplane")
               .css("top", av[i*4+1]*squareSize)
               .css("left", av[i*4+2]*squareSize)
               .addClass("rotation"+av[i*4+3]);

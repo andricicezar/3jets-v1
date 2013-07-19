@@ -22,7 +22,12 @@
 //= require ang-onlineCtrl
 //= require ang-autoCompleteModule
 //= require avioane
-//= hammer
-//= hammer-events
+//= require hammer
+//= require hammer-events
 // require angular-hammer
 //= require turbolinks-edited
+$(function() {
+  $(window).resize(function() {
+    paint_grids();
+  });
+});

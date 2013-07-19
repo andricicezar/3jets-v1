@@ -90,7 +90,7 @@ class MainController < ApplicationController
       aux.push r.user_id if r.user_id != current_user.id
       aux.push r.friend_id if r.friend_id != current_user.id
     end
-    render json: User.where("id in (?)", aux).limit(10), root: false
+    render json: User.where("id in (?) and lower(nickname) like lower(?)", aux, prefix).limit(10), root: false
   end
 
 end

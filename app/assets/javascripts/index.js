@@ -9,6 +9,7 @@ $(document).on("click", ".follow-btn", function() {
     });
 });
 
+
 //$(document).hammer().on("dragright", "body", toggle_nnavbar);
 //
 $(document).on("click", "#nnavbar-toggle", toggle_nnavbar);
@@ -27,7 +28,8 @@ $(document).on("click", ".expandable", function() {
   $(this).toggleClass("expanded");
 });
 
-$(document).on("click", "#search-friend", function(event) {
+$(document).on("click", "#search-friend", search_friend_fnc);
+function search_friend_fnc(event) {
   $(document).one("click", function() {
     $("#search-friend").parent().parent().removeClass("active");
     $("#search-friend-popover").removeClass("active");
@@ -44,7 +46,7 @@ $(document).on("click", "#search-friend", function(event) {
                                .css("left", button.offset().left + button.width());
   }
   event.stopPropagation();
-});
+}
 
 $(document).on("click", "#search-friend-popover", function(event) {
   $("#search-friend").parent().parent().addClass("active");

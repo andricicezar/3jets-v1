@@ -37,41 +37,7 @@ function rotate_airplane() {
 // CAND PAGINA E INCARCATA
 var squareSize;
 readyDragDrop = function() {
-  // in caz ca dimensiunile sunt prea mici, dam resize
-  if (window.innerWidth <= 800 && window.innerWidth <= window.innerHeight) {
-    size = Math.floor((window.innerWidth - 30)/11)*11;
-    $(".main_grid").css({
-      "width": size,
-      "height": size,
-      "margin": "0 auto"
-    });
-    squareSize = $(".grid td").width() + parseInt($(".grid td").css("border-left-width")) + parseInt($(".grid td").css("border-right-width"));
-    $(".information").css("width", window.innerWidth - squareSize * 5 - 35);
-  }
-
-  // resize table
-  $(".main_grid table").css({
-    "width": $(".main_grid .grid").width()+1,
-    "height": $(".main_grid .grid").height()+1
-  });
-  squareSize = $(".grid td").width() + parseInt($(".grid td").css("border-left-width")) + parseInt($(".grid td").css("border-right-width"));
-
-  // resize la avioane (modificam doar plane area)
-  $(".plane_area").css({
-    "width":  squareSize * 5,
-    "height": squareSize * 4,
-    "margin-bottom": squareSize
-  });
-
-  // resize text grid
-  $(".mark").css({
-    "font-size": 0.5 * squareSize,
-    "line-height": squareSize + "px"
-  });
-
-  // adaug avioanele/loviturile
-  init_grid();
-
+  paint_grids();
   // activam avioanele care au nevoie de drag and drop
 	$(".draggable-airplane").attr("rot", 1);
 	$(".draggable-airplane").draggable({
@@ -89,6 +55,45 @@ readyDragDrop = function() {
 }
 $(document).ready(readyDragDrop);
 $(document).on("page:load", readyDragDrop);
+
+// PAINT PAGE
+function paint_grids() {
+  if ($(".main_grid").length) {
+    // in caz ca dimensiunile sunt prea mici, dam resize
+    if (window.innerWidth <= 800 && window.innerWidth <= window.innerHeight) {
+      size = Math.floor((window.innerWidth - 30)/11)*11;
+      $(".main_grid").css({
+        "width": size,
+        "height": size,
+        "margin": "0 auto"
+      });
+      squareSize = $(".grid td").width() + parseInt($(".grid td").css("border-left-width")) + parseInt($(".grid td").css("border-right-width"));
+      $(".information").css("width", window.innerWidth - squareSize * 5 - 35);
+    }
+
+    // resize table
+    $(".main_grid table").css({
+      "width": $(".main_grid .grid").width()+1,
+      "height": $(".main_grid .grid").height()+1
+    });
+    squareSize = $(".grid td").width() + parseInt($(".grid td").css("border-left-width")) + parseInt($(".grid td").css("border-right-width"));
+
+    // resize la avioane (modificam doar plane area)
+    $(".plane_area").css({
+      "width":  squareSize * 5,
+      "height": squareSize * 4,
+      "margin-bottom": squareSize
+    });
+
+    // resize text grid
+    $(".mark").css({
+      "font-size": 0.5 * squareSize,
+      "line-height": squareSize + "px"
+    });
+
+    init_grid();
+  }
+}
 
 // VERIFICAM DACA AVIOANELE NU IES DIN GRID
 // VERIFICAM DACA AVIOANELE NU SUNT SUPRAPUSE
@@ -128,6 +133,7 @@ function verif_airplanes() {
 }
 
 $(document).on("click", "#send-button", function() {
+  verif_airplanes();
   // verificam daca toate avioanele sunt pe grid
   var ok = true;
   $.each($(".draggable-airplane"), function() {

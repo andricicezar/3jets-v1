@@ -23,6 +23,7 @@ label.m-wrap,input.m-wrap,button.m-wrap,select.m-wrap,textarea.m-wrap{font-size:
   margin-left: -55px;
   position: relative;
   z-index: 999;
+  height: 40px;
 }
 
 .m-btn i {

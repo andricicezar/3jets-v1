@@ -235,16 +235,20 @@ header
     .btn-medium
       margin-top: 5px
   .col.links-group
-    margin-left: 10px
+    width: 72px
     a
-      font-size: 23px
-      line-height: 38px
-      margin-right: 12px
-      color: black
+      div
+        float: left
+        width: 36px
+        height: 100%
+        text-align: center
+        cursor: pointer
+        i
+          font-size: 23px
+          line-height: 38px
+          color: black
       &:hover
         text-decoration: none
-    a:last-child
-      margin-right: 0
   .col.game-users
     span
       display: none
@@ -325,7 +329,7 @@ header
     height: 30%
     font-size: 62px
     font-family: Verdana
-  &.active, &:hover
+  &.active, &.noHammer:hover
     .text
       opacity: 0
       z-index: -1
@@ -334,6 +338,7 @@ header
       opacity: 1
     transition: all 0.5s ease
     background: #04c
+
 #friends-panel-container
   .arrow
     left: 55px
@@ -442,10 +447,16 @@ header
         font-size: 14px
         border-radius: 0
         border: 1px solid #dfdfdf
+        box-shadow: none
         &:hover
           border-color: #9e9e9e
+          box-shadow: none
+          border-color: #dfdfdf
+          box-shadow: none
         &:focus
           outline: 2px solid #66cde9
+          box-shadow: none
+          border-color: #dfdfdf
   .user-profile
     width: 80px
     height: 80px

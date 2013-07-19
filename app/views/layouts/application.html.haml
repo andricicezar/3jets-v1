@@ -1,6 +1,6 @@
 %html{"ng-app" => "MyModule"}
   %head
-    %title Airplanes
+    %title 3jets
     = stylesheet_link_tag    "application", :media => "all"
     = csrf_meta_tags
     - if @mobile_device
@@ -26,9 +26,11 @@
                     ELO: #{current_user.elo}
                 .col.links-group
                   %a{:href => home_path}
-                    %i.icon-home
+                    %div
+                      %i.icon-home
                   %a{:href => destroy_user_session_path, "data-method" => "delete"}
-                    %i.icon-signout
+                    %div
+                      %i.icon-signout
 
           = yield
       - else

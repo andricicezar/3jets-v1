@@ -13,7 +13,7 @@ class RegistrationsController < Devise::RegistrationsController
     Relation.where("user_id in (?) or friend_id in (?)", expired_guests, expired_guests).delete_all
     expired_guests.delete_all
     return redirect_to login_like_guest_url, :notice => "This nickname is already taken!" if User.where(:nickname => params[:user][:nickname]).count > 0
-    return redirect_to login_like_guest_url if params[:user][:nickname].length < 5 || params[:user][:nickname].length > 20
+    return redirect_to login_like_guest_url, :notice => "Incorect nickname! (5-20 characters)" if params[:user][:nickname].length < 5 || params[:user][:nickname].length > 20
     u = User.create(:nickname => params[:user][:nickname], 
                     :is_guest => true,
                     :last_sign_in_at => Time.now)
