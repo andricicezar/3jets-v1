@@ -1,8 +1,3 @@
-/*
- *=require bootstrap
- *=require index
- */
-
 @font-face{
 	font-family:"Scris";
 	scr: url("Nexa Bold.otf") format("opentype");
@@ -162,7 +157,7 @@
 .main_grid td {
   width: 10%;
   height: 10%;
-  border: 1px solid whiteSmoke;
+  border: 1px solid whiteSmoke !important;
 }
 .main_grid td.hit-0, .main_grid td.hit-1, .main_grid td.hit-2 {
   position: relative;

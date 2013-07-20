@@ -1,52 +1,33 @@
 ActiveAdmin.register Game do
   index do
     column :id
-    column "First User" do |game|
+    column "Winner" do |game|
       User.unscoped {
-        if game.user1
-          if !game.finished
-            game.user1.name
-          else
-            if game.winner.id == game.fst_user
-              div :class => "winner" do
-                game.user1.name
-              end
-            else
-              div :class => "looser" do
-                game.user1.name
-              end
-            end
-          end
-        else
-          "John Doe"
-        end
+        game.winnerName
       }
     end
 
-    column "Second User" do |game|
+    column "Loser" do |game|
       User.unscoped {
-        if game.user2
-          if !game.finished
-            game.user2.name
-          else
-            if game.winner.id == game.scd_user
-              div :class => "winner" do
-                game.user2.name
-              end
-            else
-              div :class => "looser" do
-                game.user2.name
-              end
-            end
-          end
-        else
-          "John Doe"
-        end
-      }
+        game.loserName
+    }
     end
 
     column "No Moves", :moves  do |game|
       game.moves.count
+    end
+    
+    column do |game|
+      if game.finished
+        span :class => "label label-success" do
+          "Finished"
+        end
+      end
+      if game.countable
+        span :class => "label label-info" do
+          "Countable"
+        end
+      end
     end
     default_actions
   end

@@ -16,13 +16,13 @@ class Game < ActiveRecord::Base
 
   def first_user
     game_users.each do |gu|
-      return gu if gu.user_id == user1.id
+      return gu if gu.user_id == fst_user
     end
   end
 
   def second_user
     game_users.each do |gu|
-      return gu if gu.user_id == user2.id
+      return gu if gu.user_id == scd_user
     end
   end
 
@@ -79,7 +79,27 @@ class Game < ActiveRecord::Base
     false
   end
 
+  def winnerName
+    value = "Guest"
+    value = user1.name if user1
+    value = winner.name if winner && winner != "Guest"
+    value = "Guest" if winner == "Guest"
+    value
+  end
+
   def loser
+    unless user1 && user2
+      unless user2
+        return "Guest" if second_user.num_airplanes == 0
+        return user1
+      end
+
+      unless user1
+        return "Guest" if first_user.num_airplanes == 0
+        return user2
+      end
+    end
+
     return user1 if first_user.num_airplanes == 0
     return user2 if second_user.num_airplanes == 0
     if countable
@@ -96,6 +116,14 @@ class Game < ActiveRecord::Base
       end
     end
    false
+  end
+
+  def loserName
+    value = "Guest"
+    value = user2.name if user2
+    value = loser.name if loser && loser != "Guest"
+    value = "Guest" if loser == "Guest"
+    value
   end
 
   def enemy

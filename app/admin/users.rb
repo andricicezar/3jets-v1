@@ -9,13 +9,13 @@ ActiveAdmin.register User do
 
   index do                            
     column :id
-    column :email do |user|
+    column :nickname do |user|
       if user.deleted
         div :class => "looser" do
-          user.email
+          user.nickname
         end
       else
-        user.email
+        user.nickname
       end
     end
     column :last_sign_in_at           

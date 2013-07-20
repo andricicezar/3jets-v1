@@ -9,6 +9,7 @@ module GameHelper
     Net::HTTP.post_form(uri, :message => message.to_json)
   end
 
+
   # GAME
   #
   def create_map(conf, ok = false)
