@@ -3,13 +3,13 @@ ActiveAdmin.register Game do
     column :id
     column "Winner" do |game|
       User.unscoped {
-        game.winnerName
+        game.winnerName if game.fst_user > 0
       }
     end
 
     column "Loser" do |game|
       User.unscoped {
-        game.loserName
+        game.loserName if game.scd_user > 0
     }
     end
 

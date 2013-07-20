@@ -6,12 +6,12 @@
     = game.loserName
 %div#game-show
   .content
-    .play_grid#main_grid1{:av => mapFromGame(game.fst_user, game.id), 
-                          :game => params[:id], 
-                          :user => game.fst_user, 
+    .play_grid#main_grid1{:av => mapFromGame(game.fst_user, game.id),
+                          :game => params[:id],
+                          :user => game.fst_user,
                           :lov => concatMovesVS(game.id, game.scd_user)}
       = render "game/grid"
-    .play_grid#main_grid2{:av => mapFromGame(game.scd_user, game.id), 
+    .play_grid#main_grid1{:av => mapFromGame(game.scd_user, game.id),
                           :lov => concatMovesVS(game.id, game.fst_user)}
       = render "game/grid"
 

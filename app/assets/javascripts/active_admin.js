@@ -12,7 +12,6 @@ function init_grid() {
   $.each($(".play_grid"), function(i, item) {
     // ADAUGAM AVIOANELE
     av = $(item).attr("av");
-    $(item).removeAttr("av");
     if (av) {
       for (i = 0; i <= 2; ++i) {
         jQuery("<div/>")
@@ -26,7 +25,6 @@ function init_grid() {
 
     // ADAUGAM LOVITURILE
     val = $(item).attr("lov");
-    $(item).removeAttr("lov");
     if (val) {
       for (i = 0; i < val.length; i += 3) {
         $(item).find(".casuta"+val[i]+"-"+val[i+1])
