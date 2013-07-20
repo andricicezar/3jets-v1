@@ -361,8 +361,17 @@ class GameController < ApplicationController
     if games.count > 0
       games.each do |game|
         if game.fst_user != current_user.id
-          redirect_to game_adduser_url(games.first.id, params[:conf])
-          return
+          if game.user1
+            if Time.now - game.user1.last_sign_in_at < 30
+              redirect_to game_adduser_url(games.first.id, params[:conf])
+              return
+            end
+          end
+        else 
+          if game.fst_user == current_user.id
+            redirect_to home_url + "?message=queue"
+            return
+          end
         end
       end
     end
