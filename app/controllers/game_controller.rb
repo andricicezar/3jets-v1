@@ -67,7 +67,7 @@ class GameController < ApplicationController
         v.num_airplanes = 0
         v.save
       end
-      unless @loser != current_user
+      if @loser.id != current_user.id
         notif = Notification.create(
                   :notf_type => 3,
                   :title => "You've lost!",
@@ -79,7 +79,7 @@ class GameController < ApplicationController
         send_notf(notif, @winner, @loser)
       end
 
-      unless @winner != current_user
+      if @winner.id != current_user.id
         notif = Notification.create(
                   :notf_type => 3,
                   :title => "You've won!",

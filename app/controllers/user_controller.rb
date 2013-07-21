@@ -28,7 +28,6 @@ class UserController < ApplicationController
       send_friend(user, current_user)
 
       Notification.where(:title => "Friend Request", :user_id => user.id, :friend_id => current_user.id).each do |notf|
-        send_destroy_notf(current_user, notf)
         notf.destroy
       end
 
@@ -40,7 +39,6 @@ class UserController < ApplicationController
     if x
       # distruge request
       Notification.where(:title => "Friend Request", :user_id => current_user.id, :friend_id => user.id).each do |notf|
-        send_destroy_notf(current_user, notf)
         notf.destroy
       end
       x.destroy

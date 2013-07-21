@@ -95,6 +95,11 @@
 
   $scope.acceptNotif = (ev) ->
     $.get(ev.accept_url)
+    angular.forEach $scope.notifications, (notif, index) ->
+      if notif == ev
+        $scope.notifications.splice(index, 1)
+        return
+
 
   $scope.declineNotif = (ev) ->
     $.get(ev.decline_url)
