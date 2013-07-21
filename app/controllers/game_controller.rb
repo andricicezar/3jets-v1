@@ -66,6 +66,7 @@ class GameController < ApplicationController
         v.num_airplanes = 0
         v.save
       end
+      
       notif = Notification.create(
                 :notf_type => 3,
                 :title => "You've lost!",
@@ -85,7 +86,6 @@ class GameController < ApplicationController
                 :accept_url => "",
                 :view_url => game_victory_url(currentGame.id))
       send_notf(notif, @loser, @winner)
-      end
 
       return if !currentGame.countable
 
