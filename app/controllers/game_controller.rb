@@ -66,26 +66,29 @@ class GameController < ApplicationController
         v.num_airplanes = 0
         v.save
       end
+      if @loser.id != current_user.id
+        notif = Notification.create(
+                  :notf_type => 3,
+                  :title => "You've lost!",
+                  :special_class => "",
+                  :user_id => @winner.id,
+                  :friend_id => @loser.id,
+                  :accept_url => "",
+                  :view_url => game_victory_url(currentGame.id))
+        send_notf(notif, @winner, @loser)
+      end
       
-      notif = Notification.create(
-                :notf_type => 3,
-                :title => "You've lost!",
-                :special_class => "",
-                :user_id => @winner.id,
-                :friend_id => @loser.id,
-                :accept_url => "",
-                :view_url => game_victory_url(currentGame.id))
-      send_notf(notif, @winner, @loser)
-
-      notif = Notification.create(
-                :notf_type => 3,
-                :title => "You've won!",
-                :special_class => "",
-                :user_id => @loser.id,
-                :friend_id => @winner.id,
-                :accept_url => "",
-                :view_url => game_victory_url(currentGame.id))
-      send_notf(notif, @loser, @winner)
+      if @winner.id != current_user.id
+        notif = Notification.create(
+                  :notf_type => 3,
+                  :title => "You've won!",
+                  :special_class => "",
+                  :user_id => @loser.id,
+                  :friend_id => @winner.id,
+                  :accept_url => "",
+                  :view_url => game_victory_url(currentGame.id))
+        send_notf(notif, @loser, @winner)
+      end
 
       return if !currentGame.countable
 
@@ -148,8 +151,8 @@ class GameController < ApplicationController
   end
 
   def exit
+    return redirect_to home_url unless currentGame
     ok = false
-
     if currentGame.game_users.count < 2
       Notification.where(:accept_url => game_validate_url(currentGame.id)).each do |notf|
         notf.destroy

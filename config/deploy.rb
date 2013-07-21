@@ -52,6 +52,7 @@ namespace :deploy do
       # run "/etc/init.d/unicorn_#{application} #{command}"
       run "cd #{shared_path} && thin #{command} -C config/thin_conf.yml"
     end
+    run "chmod -R 755 #{shared_path}/public"
   end
 
   task :setup_config, roles: :app do

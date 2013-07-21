@@ -51,9 +51,9 @@ module GameHelper
   def currentGame
     if !@current_game 
       if params.has_key? :game
-        @current_game = Game.find(params[:game].to_i)
+        @current_game = Game.where(:id => params[:game].to_i).first
       elsif params.has_key? :id
-        @current_game = Game.find(params[:id].to_i)
+        @current_game = Game.where(:id => params[:id].to_i).first
       end
     end
     @current_game
