@@ -73,13 +73,11 @@
         $scope.games.push(value)
       )
   $scope.$watch('notifications.length', ->
-    console.log($scope.notifications.length)
     $("#no-notifications").html($scope.notifications.length)
     $("#no-notifications").css("display", (if $scope.notifications.length > 0 then "block" else "none"))
   )
 
   $scope.addNotifications = (value) ->
-    console.log(value)
     ok = false
     angular.forEach $scope.notifications, (notif, index) ->
       if (notif.notf_id == value.notf_id)

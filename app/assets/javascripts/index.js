@@ -19,7 +19,7 @@ function toggle_nnavbar() {
 }
 
 function close_nnavbar() {
-  $(".nnavbar.active").addClass("closed").removeClass("active");
+  $(".nnavbar.active").removeClass("active").addClass("closed");
   $("#nnavbar-toggle.active").removeClass("active");
 }
 // $(document).on("click", ".nnavbar.active .close-nnavbar", close_nnavbar);
