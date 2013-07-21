@@ -51,7 +51,7 @@ namespace :deploy do
     task command, roles: :app, except: {no_release: true} do
       # run "/etc/init.d/unicorn_#{application} #{command}"
       run "cd #{shared_path} && thin #{command} -C config/thin_conf.yml"
-      run "chmod -R 755 #{shared_path}/public"
+      run "chmod -R 755 #{shared_path}/assets"
     end
   end
 
