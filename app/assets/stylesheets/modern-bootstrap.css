@@ -58,23 +58,23 @@ label.m-wrap,input.m-wrap,button.m-wrap,select.m-wrap,textarea.m-wrap{font-size:
   background-color:#009EED;
   background-image: none;
 }
-.m-btn.btn-facebook {
+.btn-facebook {
   color:white;
   text-shadow:none;
   background-color:#386DBC;
   background-image: none;
 }
-.m-btn.btn-facebook:hover,
-.m-btn.btn-facebook:focus,
-.m-btn.btn-facebook:active,
-.m-btn.btn-facebook.active,
-.m-btn.btn-facebook[disabled],
-.m-btn.btn-facebook.disabled {
+.btn-facebook:hover,
+.btn-facebook:focus,
+.btn-facebook:active,
+.btn-facebook.active,
+.btn-facebook[disabled],
+.btn-facebook.disabled {
   background-color:#2F67BC;
   background-image: none;
 }
-.m-btn.btn-facebook:active,
-.m-btn.btn-facebook.active {
+.btn-facebook:active,
+.btn-facebook.active {
   background-color:#0D55BA;
   background-image: none;
 }

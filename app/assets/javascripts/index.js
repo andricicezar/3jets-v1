@@ -19,10 +19,10 @@ function toggle_nnavbar() {
 }
 
 function close_nnavbar() {
-  $(".nnavbar.active").removeClass("active").addClass("closed");
+  $(".nnavbar.active").addClass("closed").removeClass("active");
   $("#nnavbar-toggle.active").removeClass("active");
 }
-$(document).on("click", ".nnavbar.active .close-nnavbar", close_nnavbar);
+// $(document).on("click", ".nnavbar.active .close-nnavbar", close_nnavbar);
 
 $(document).on("click", ".expandable", function() {
   $(this).toggleClass("expanded");
@@ -102,6 +102,7 @@ $(document).ready(readyApp);
 $(document).on("page:load", readyApp);
 
 $(document).on("page:fetch", function() {
+  close_nnavbar();
   $("#wait-is-loading").addClass("active");
   $("#loading-bar").addClass("active");
 });

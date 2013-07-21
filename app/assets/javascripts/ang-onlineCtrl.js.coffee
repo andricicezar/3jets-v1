@@ -73,30 +73,30 @@
         $scope.games.push(value)
       )
   $scope.$watch('notifications.length', ->
+    console.log($scope.notifications.length)
     $("#no-notifications").html($scope.notifications.length)
-    $("#no-notifications").css("display", if $scope.notifications.length > 0 then "block" else "none")
+    $("#no-notifications").css("display", (if $scope.notifications.length > 0 then "block" else "none"))
   )
 
   $scope.addNotifications = (value) ->
+    console.log(value)
     ok = false
     angular.forEach $scope.notifications, (notif, index) ->
-      if (notif.notf_id == value.notf_id) 
-        $scope.notifications.splice(index, 1)
+      if (notif.notf_id == value.notf_id)
+        $scope.$apply( ->
+          $scope.notifications.splice(index, 1)
+        )
+        ok = true
         return
-    if (!ok)
-      $scope.$apply( ->
-        $scope.notifications.push(value)
-      )
+    $scope.$apply( ->
+      $scope.notifications.push(value)
+    ) if !ok
 
 
   # NOTIFICATIONS
 
   $scope.acceptNotif = (ev) ->
     $.get(ev.accept_url)
-    angular.forEach $scope.notifications, (notif, index) ->
-      if notif == ev
-        $scope.notifications.splice(index, 1)
-        return
 
   $scope.declineNotif = (ev) ->
     $.get(ev.decline_url)

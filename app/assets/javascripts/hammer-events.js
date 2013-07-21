@@ -5,7 +5,11 @@ $(document).ready(function() {
     $(document).hammer().on("tap", ".draggable-airplane", rotate_airplane);
 
     // open nnavbar in landscape
-    $(document).hammer().on("tap", ".nnavbar", toggle_nnavbar);
+    $(document).hammer().on("tap", ".nnavbar", function() {
+      if ($(".nnavbar").width() < 60) {
+        toggle_nnavbar();
+      }
+    });
 
     // mega-super-awesome-buton
       // first button

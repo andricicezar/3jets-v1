@@ -5,10 +5,10 @@
     = csrf_meta_tags
     - if @mobile_device
       %meta{:name => "viewport", :content => "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"}
-    %meta{:property => "og:title", :content => "Airplanes"}
-    %meta{:property => "og:description", :content => "By Andrici Cezar & Stolniceanu Stefan"}
-    %meta{:property => "og:site_name", :content => "Airplanes"}
-    %meta{:property => "og:image", :content => "http://avioanele.androidul.com/assets/background-1.jpg"}
+    %meta{:property => "og:title", :content => "3jets"}
+    %meta{:property => "og:description", :content => "Take a friend and play it on PC, Android or iOS"}
+    %meta{:property => "og:site_name", :content => "3jets"}
+    %meta{:property => "og:image", :content => home_url + "assets/logo.png"}
 
   %body
     - if user_signed_in?
@@ -20,6 +20,9 @@
         .invelis
           %header
             .container
+              .col
+                %a{:href => home_url}
+                  %img.logo{:src => home_url + "assets/logoj.png"}
               .col.alignright
                 .col.elo
                   %a{:href => user_position_url(current_user.id)}
