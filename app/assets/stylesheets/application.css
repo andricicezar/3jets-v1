@@ -51,6 +51,14 @@ body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acr
   display: block;
   width: 100%;
 }
+.ui-menu-item .circle{
+  float:right;
+  margin-top: 5px;
+  font-size: 12px;
+  margin-right:10px;
+  color: #28AD00;
+  opacity:0.6;
+}
 .ui-state-focus {
   background: rgba(0, 0, 0, 0.24) !important;
   border: none !important;

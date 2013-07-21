@@ -53,7 +53,6 @@ class GameController < ApplicationController
       notif.destroy
     end
 
-
     if !currentGame.finished
       currentGame.finished = true
       currentGame.save
@@ -67,28 +66,25 @@ class GameController < ApplicationController
         v.num_airplanes = 0
         v.save
       end
-      if @loser.id != current_user.id
-        notif = Notification.create(
-                  :notf_type => 3,
-                  :title => "You've lost!",
-                  :special_class => "",
-                  :user_id => @winner.id,
-                  :friend_id => @loser.id,
-                  :accept_url => "",
-                  :view_url => game_victory_url(currentGame.id))
-        send_notf(notif, @winner, @loser)
-      end
+      notif = Notification.create(
+                :notf_type => 3,
+                :title => "You've lost!",
+                :special_class => "",
+                :user_id => @winner.id,
+                :friend_id => @loser.id,
+                :accept_url => "",
+                :view_url => game_victory_url(currentGame.id))
+      send_notf(notif, @winner, @loser)
 
-      if @winner.id != current_user.id
-        notif = Notification.create(
-                  :notf_type => 3,
-                  :title => "You've won!",
-                  :special_class => "",
-                  :user_id => @loser.id,
-                  :friend_id => @winner.id,
-                  :accept_url => "",
-                  :view_url => game_victory_url(currentGame.id))
-        send_notf(notif, @loser, @winner)
+      notif = Notification.create(
+                :notf_type => 3,
+                :title => "You've won!",
+                :special_class => "",
+                :user_id => @loser.id,
+                :friend_id => @winner.id,
+                :accept_url => "",
+                :view_url => game_victory_url(currentGame.id))
+      send_notf(notif, @loser, @winner)
       end
 
       return if !currentGame.countable

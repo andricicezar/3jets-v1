@@ -19,7 +19,7 @@ class UserSerializer < ActiveModel::Serializer
   end
 
   def online
-    return false if is_user_friend_with(object.id, current_user.id, true)
+    return false unless is_user_friend_with(object.id, current_user.id, true)
     return true if Time.now - object.last_sign_in_at < 30
     false
   end
