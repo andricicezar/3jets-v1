@@ -760,7 +760,7 @@ checked program was:
 "gcc -o conftest -I/home/pr/.rvm/rubies/ruby-1.9.3-p429/include/ruby-1.9.1/x86_64-linux -I/home/pr/.rvm/rubies/ruby-1.9.3-p429/include/ruby-1.9.1/ruby/backward -I/home/pr/.rvm/rubies/ruby-1.9.3-p429/include/ruby-1.9.1 -I.    -I/usr/include/postgresql  -O3 -ggdb -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC conftest.c  -L. -L/home/pr/.rvm/rubies/ruby-1.9.3-p429/lib -Wl,-R/home/pr/.rvm/rubies/ruby-1.9.3-p429/lib -L.  -rdynamic -Wl,-export-dynamic -L/usr/lib -Wl,-rpath,/usr/lib    -lpq  '-Wl,-rpath,/../lib' -Wl,-R -Wl,/home/pr/.rvm/rubies/ruby-1.9.3-p429/lib -L/home/pr/.rvm/rubies/ruby-1.9.3-p429/lib -lruby -lpq  -lpthread -lrt -ldl -lcrypt -lm   -lc"
 conftest.c: In function ‘t’:
 conftest.c:4:1: warning: implicit declaration of function ‘PQsetSingleRowMode’ [-Wimplicit-function-declaration]
-/tmp/ccbVUaMq.o: In function `t':
+/tmp/ccbGiFAj.o: In function `t':
 /home/pr/Dropbox/Work/Ruby/Current/Airplanes2/vendor/bundle/ruby/1.9.1/gems/pg-0.15.1/ext/conftest.c:4: undefined reference to `PQsetSingleRowMode'
 collect2: error: ld returned 1 exit status
 checked program was:
@@ -851,7 +851,7 @@ checked program was:
 "gcc -o conftest -I/home/pr/.rvm/rubies/ruby-1.9.3-p429/include/ruby-1.9.1/x86_64-linux -I/home/pr/.rvm/rubies/ruby-1.9.3-p429/include/ruby-1.9.1/ruby/backward -I/home/pr/.rvm/rubies/ruby-1.9.3-p429/include/ruby-1.9.1 -I.    -I/usr/include/postgresql  -O3 -ggdb -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC conftest.c  -L. -L/home/pr/.rvm/rubies/ruby-1.9.3-p429/lib -Wl,-R/home/pr/.rvm/rubies/ruby-1.9.3-p429/lib -L.  -rdynamic -Wl,-export-dynamic -L/usr/lib -Wl,-rpath,/usr/lib    -lpq  '-Wl,-rpath,/../lib' -Wl,-R -Wl,/home/pr/.rvm/rubies/ruby-1.9.3-p429/lib -L/home/pr/.rvm/rubies/ruby-1.9.3-p429/lib -lruby -lpq  -lpthread -lrt -ldl -lcrypt -lm   -lc"
 conftest.c: In function ‘t’:
 conftest.c:4:1: warning: implicit declaration of function ‘rb_enc_alias’ [-Wimplicit-function-declaration]
-/tmp/ccaLOIvQ.o: In function `t':
+/tmp/cclLG3vH.o: In function `t':
 /home/pr/Dropbox/Work/Ruby/Current/Airplanes2/vendor/bundle/ruby/1.9.1/gems/pg-0.15.1/ext/conftest.c:4: undefined reference to `rb_enc_alias'
 collect2: error: ld returned 1 exit status
 checked program was:
@@ -1009,7 +1009,7 @@ checked program was:
 "gcc -o conftest -I/home/pr/.rvm/rubies/ruby-1.9.3-p429/include/ruby-1.9.1/x86_64-linux -I/home/pr/.rvm/rubies/ruby-1.9.3-p429/include/ruby-1.9.1/ruby/backward -I/home/pr/.rvm/rubies/ruby-1.9.3-p429/include/ruby-1.9.1 -I.    -I/usr/include/postgresql  -O3 -ggdb -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC conftest.c  -L. -L/home/pr/.rvm/rubies/ruby-1.9.3-p429/lib -Wl,-R/home/pr/.rvm/rubies/ruby-1.9.3-p429/lib -L.  -rdynamic -Wl,-export-dynamic -L/usr/lib -Wl,-rpath,/usr/lib    -lpq  '-Wl,-rpath,/../lib' -Wl,-R -Wl,/home/pr/.rvm/rubies/ruby-1.9.3-p429/lib -L/home/pr/.rvm/rubies/ruby-1.9.3-p429/lib -lruby -lpq  -lpthread -lrt -ldl -lcrypt -lm   -lc"
 conftest.c: In function ‘t’:
 conftest.c:4:1: warning: implicit declaration of function ‘rb_w32_wrap_io_handle’ [-Wimplicit-function-declaration]
-/tmp/ccadb4iw.o: In function `t':
+/tmp/ccIhVOTk.o: In function `t':
 /home/pr/Dropbox/Work/Ruby/Current/Airplanes2/vendor/bundle/ruby/1.9.1/gems/pg-0.15.1/ext/conftest.c:4: undefined reference to `rb_w32_wrap_io_handle'
 collect2: error: ld returned 1 exit status
 checked program was:
