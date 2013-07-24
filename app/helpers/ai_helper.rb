@@ -113,8 +113,8 @@ module AiHelper
 
   def ai_turn(id, game)
     if (id == 4)
-      #AiWorker.perform_async(current_user.id, id, game.id)
-      aiMove4(current_user.id, id, game)
+      AiWorker.perform_async(current_user.id, id, game.id)
+      #aiMove4(current_user.id, id, game)
     end
   end
 
