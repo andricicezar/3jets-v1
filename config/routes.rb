@@ -52,7 +52,7 @@ Airplanes::Application.routes.draw do
   get "tutorial" => "main#tutorial", :as => "tutorial"
   get "settings" => "main#settings", :as => "settings"
 
-  mount Sidekiq::Web, at: '/sidekiq'
+  #  mount Sidekiq::Web, at: '/sidekiq'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
