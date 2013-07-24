@@ -6,7 +6,8 @@ class User < ActiveRecord::Base
 
   attr_accessible :nickname, :elo, :email, :password, :password_confirmation,
                   :veteran, :remember_me, :deleted, :last_sign_in_at, :login,
-                  :twitter_uid, :facebook_uid, :google_uid, :image_link, :is_guest
+                  :twitter_uid, :facebook_uid, :google_uid, :image_link, :is_guest,
+                  :facebook_finder, :is_ai
   attr_accessor :login
 
   has_many :relations

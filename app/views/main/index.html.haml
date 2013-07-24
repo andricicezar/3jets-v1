@@ -16,12 +16,16 @@
               VS Player
             %a.btn.btn-block.btn-default#search-friend
               VS Friend
-            = #%a.btn.btn-block.btn-info.disabled
-            = #  VS AI
+            %a.btn.btn-block.btn-default{:href => play_vs_ai_url(4)}
+              VS AI
       %li
         %a.btn.btn-block.btn-large{:href => ranking_path(1)}
           Ranking
       %li
-        %a.btn.btn-block.btn-large
-          %i.icon-facebook
-          Find friends
+        %a.btn.btn-block.btn-large{:href => tutorial_url}
+          Tutorial
+-#
+      - unless current_user.is_guest
+        %li
+          %a.btn.btn-block.btn-large#facebook-friends
+            Find friends with Facebook

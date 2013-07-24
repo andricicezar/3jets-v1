@@ -10,7 +10,7 @@ production:
   adapter: postgresql
   encoding: unicode
   database: airplanes3_production
-  pool: 5
+  pool: 25
   host: localhost
   username: airplanes2013
   password: airplanes

@@ -46,6 +46,18 @@ module GameHelper
 
     harta
   end
+  def check_map(harta)
+    ok = false
+    for i in 0..9 do
+      for j in 0..9 do
+        if harta[i][j] > 1
+          return false
+        end
+      end
+    end
+    return true
+  end
+
 
   @current_game = nil
   def currentGame

@@ -11,6 +11,7 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require jquery
+//= require cookie
 //= require jquery_ujs
 //= require jquery.ui.core
 //= require jquery.ui.autocomplete
@@ -22,8 +23,10 @@
 //= require ang-onlineCtrl
 //= require ang-autoCompleteModule
 //= require avioane
+//= require m-dropdown.min
 //= require hammer
 //= require hammer-events
+//= require settings
 // require angular-hammer
 //= require turbolinks-edited
 $(function() {

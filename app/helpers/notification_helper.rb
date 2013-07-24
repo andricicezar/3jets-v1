@@ -55,7 +55,8 @@ module NotificationHelper
 
   def send_achievement(user, notf, achievement)
     broadcast("/channel/" + user.special_key.to_s,
-              '{"type":              3, 
+              '{"type":              3,
+                "notf_id":'        + notf.id.to_s + ', 
                 "notf_type":'      + notf.notf_type.to_s + ',
                 "title":"'         + achievement.name + '", 
                 "special_class":"' + notf.special_class + '",

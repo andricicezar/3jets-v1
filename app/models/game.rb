@@ -18,12 +18,14 @@ class Game < ActiveRecord::Base
     game_users.each do |gu|
       return gu if gu.user_id == fst_user
     end
+    false
   end
 
   def second_user
     game_users.each do |gu|
       return gu if gu.user_id == scd_user
     end
+    false
   end
 
   def user_turn
@@ -49,6 +51,9 @@ class Game < ActiveRecord::Base
   end
 
   def winner
+    return false unless validated
+    return false unless first_user
+    return false unless second_user
     unless user1 && user2
       unless user1
         return "Guest" if second_user.num_airplanes == 0
@@ -60,7 +65,6 @@ class Game < ActiveRecord::Base
         return user1
       end
     end
-
     return user2 if first_user.num_airplanes == 0
     return user1 if second_user.num_airplanes == 0
     if countable
@@ -88,13 +92,18 @@ class Game < ActiveRecord::Base
   end
 
   def loser
+    return false unless validated
+    return false unless first_user
+    return false unless second_user
     unless user1 && user2
       unless user2
+        return "Guest" unless second_user
         return "Guest" if second_user.num_airplanes == 0
         return user1
       end
 
       unless user1
+        return "Guest" unless first_user
         return "Guest" if first_user.num_airplanes == 0
         return user2
       end

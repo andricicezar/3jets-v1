@@ -33,7 +33,8 @@ gem 'omniauth-google-oauth2'
 # gem 'rack-mini-profiler'
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
-
+gem 'sinatra', require: false
+gem 'slim'
 # To use Jbuilder templates for JSON
 # gem 'jbuilder'
 
@@ -45,7 +46,7 @@ gem 'capistrano'
 
 # To use debugger
 # gem 'debugger'
-
+gem 'sidekiq'
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller'

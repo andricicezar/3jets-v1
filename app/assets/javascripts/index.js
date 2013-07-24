@@ -28,6 +28,16 @@ $(document).on("click", ".expandable", function() {
   $(this).toggleClass("expanded");
 });
 
+$(document).on("click", "#facebook-friends", function() {
+  $.ajax({
+    url: "/facebook_friends",
+    dataType: "text",
+    success: function(data) {
+      alert(data);
+    }
+  });
+});
+
 $(document).on("click", "#search-friend", search_friend_fnc);
 function search_friend_fnc(event) {
   $(document).one("click", function() {

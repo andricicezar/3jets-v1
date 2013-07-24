@@ -29,7 +29,8 @@ ActiveAdmin.register User do
   form do |f|                         
     f.inputs "Update Details" do       
       f.input :email                  
-      f.input :deleted 
+      f.input :deleted
+      f.input :is_ai 
     end                               
     f.actions                         
   end 

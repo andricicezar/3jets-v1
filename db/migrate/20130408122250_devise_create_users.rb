@@ -9,6 +9,8 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.boolean :deleted,           :default => false
       t.boolean :veteran,           :default => false
       t.boolean :is_guest,          :default => false
+      t.boolean :facebook_finder,   :default => true
+      t.boolean :is_ai,             :default => false
 
       ## OmniAuth
       t.string :facebook_uid,     :default => "0"

@@ -2,6 +2,7 @@ class GameController < ApplicationController
   include GameHelper
   include ApplicationHelper
   include NotificationHelper
+  include AiHelper
 
   before_filter :authenticate_user!, :unless => :guest_user
   # before_filter :user_online
@@ -35,8 +36,12 @@ class GameController < ApplicationController
 
       send_game(currentGame, v, current_user, qasw)
     end
-    respond_to do |format|
-      format.json { render :json => 1 }
+    if currentGame.user1.is_ai
+      redirect_to play_url + "?game=" + currentGame.id.to_s
+    else
+      respond_to do |format|
+        format.json { render :json => 1 }
+      end
     end
   end
 
@@ -352,6 +357,10 @@ class GameController < ApplicationController
     respond_to do |format|
       format.json { render :json => message }
     end
+
+    if currentGame.user2.is_ai
+      ai_turn(currentGame.user2.id, currentGame)
+    end
   end
 
   def search
@@ -393,12 +402,42 @@ class GameController < ApplicationController
         end
       end
     end
-    
+
     if params.has_key? :game
       redirect_to game_adduser_url(params[:game].to_i, params[:conf])
       return
     end
 
     redirect_to search_game_url(params[:conf])
+  end
+
+  def init_ai
+    ai = User.where(:id => params[:id]).first
+    redirect_to home_url unless ai
+    redirect_to home_url unless ai.is_ai
+
+    # creare configuratie
+    conf = createConf
+
+    # creare joc
+    game = Game.create(:scd_user => params[:id], 
+                       :fst_user => current_user.id,
+                       :countable => false,
+                       :validated => true,
+                       :num_players => 1)
+
+    # salvare configuratie
+    GameUser.create(:user_id => params[:id], :game_id => game.id)
+    for i in 0..2 do
+      Airplane.create(:user_id => params[:id],
+                      :game_id => game.id,
+                      :shape => conf[i*4].to_i,
+                      :top => conf[i*4+1].to_i,
+                      :left => conf[i*4+2].to_i,
+                      :rotation => conf[i*4+3].to_i)
+    end
+    send_game(game, 2, User.find(params[:id]), current_user)
+
+    redirect_to play_url + "?game=" + game.id.to_s
   end
 end

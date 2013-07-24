@@ -8,9 +8,15 @@ class MainController < ApplicationController
     "qqq"
   end
 
+  def facebook_delete
+    current_user.facebook_finder = !current_user.facebook_finder
+    current_user.save
+    render :json => 1
+  end
+
   def facebook_friends
     if current_user.facebook_uid == '0'
-      render :json => 2
+      render :json => "You need to connect with a facebook account. For that you need to edit your profile."
       return
     end
 
@@ -52,7 +58,7 @@ class MainController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { render :json => no }
+      format.json { render :json => "You have #{no} new friends!" }
     end
   end
 
@@ -75,6 +81,16 @@ class MainController < ApplicationController
       @users.pop
     end
   end
+
+  def tutorial
+  end
+
+  def credits
+  end
+  
+  def settings
+  end
+
 
   def search_users
     prefix = params[:term] + "%"

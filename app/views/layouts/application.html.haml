@@ -28,12 +28,27 @@
                   %a{:href => user_position_url(current_user.id)}
                     ELO: #{current_user.elo}
                 .col.links-group
-                  %a{:href => home_path}
-                    %div
-                      %i.icon-home
-                  %a{:href => destroy_user_session_path, "data-method" => "delete"}
-                    %div
-                      %i.icon-signout
+                  %a{:href => play_url}
+                    .bf-icon
+                      %i.icon-play
+                  .m-btn-group
+                    .a.dropdown-toggle{"data-toggle" => "dropdown"}
+                      .bf-icon
+                        %i.icon-ellipsis-vertical
+                    %ul.m-dropdown-menu
+                      - unless current_user.is_guest
+                        %li
+                          %a{:href => edit_user_registration_url} 
+                            Edit profile
+                      %li
+                        %a{:href => settings_url} 
+                          Settings
+                      %li
+                        %a{:href => credits_url} 
+                          Credits
+                      %li.divider
+                      %li
+                        %a{:href => destroy_user_session_path, "data-method" => "delete"} Log out
 
           = yield
       - else

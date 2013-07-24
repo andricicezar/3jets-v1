@@ -1,0 +1,15 @@
+.window
+  .content
+    %h2 Settings
+
+    .alert.alert-info For this options you need to have cookies enabled
+    %label.checkbox#ajax-toggle
+      %input{:type => "checkbox"}
+      Ajax
+    %label.checkbox#transition-toggle
+      %input{:type => "checkbox"}
+      Transition & Animation
+    - unless current_user.is_guest
+      %label.checkbox#facebook-finder-toggle
+        %input{:type => "checkbox", :checked => current_user.facebook_finder}
+        People can find me with Facebook

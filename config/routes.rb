@@ -1,3 +1,5 @@
+require 'sidekiq/web'
+
 Airplanes::Application.routes.draw do
   root :to => "main#index", :as => "home"
 
@@ -23,12 +25,14 @@ Airplanes::Application.routes.draw do
 
   get "check" => "main#index2"
   get "facebook_friends" => "main#facebook_friends"
+  get "facebook_delete_option" => "main#facebook_delete"
 
   get "ranking/:id" => "main#ranking", :as => "ranking"
 
   get "notification/:id/delete" => "notification#destroy", :as => "destroy_notification"
 
   get "play/" => "game#init", :as => "play"
+  get "vsai/:id" => "game#init_ai", :as => "play_vs_ai"
   get "match/:conf" => "game#match", :as => "match"
   get "game/search/:conf" => "game#search", :as => "search_game"
 
@@ -43,6 +47,13 @@ Airplanes::Application.routes.draw do
 
   get "search_users" => "main#search_users", :as => "search_users"
   get "search_friends" => "main#search_friends", :as => "search_friends"
+
+  get "credits" => "main#credits", :as => "credits"
+  get "tutorial" => "main#tutorial", :as => "tutorial"
+  get "settings" => "main#settings", :as => "settings"
+
+  mount Sidekiq::Web, at: '/sidekiq'
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
