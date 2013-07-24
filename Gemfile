@@ -32,8 +32,8 @@ gem 'omniauth-google-oauth2'
 # gem 'closure-compiler'
 # gem 'rack-mini-profiler'
 
-# gem 'sinatra', require: false
-# gem 'slim'
+gem 'sinatra', require: false
+gem 'slim'
 
 gem 'capistrano'
 # gem 'rvm-capistrano'
