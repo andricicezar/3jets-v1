@@ -2,13 +2,19 @@
   .content
     %h2 Settings
 
-    .alert.alert-info For this options you need to have cookies enabled
+    .alert.alert-info If the game isn't working properly try activating Ajax or refresh the page.
+    %br
     %label.checkbox#ajax-toggle
       %input{:type => "checkbox"}
       Ajax
     %label.checkbox#transition-toggle
       %input{:type => "checkbox"}
-      Transition & Animation
+      Disable transition & animation
+
+    %br
+    %p For these options you need to have cookies enabled!
+    
+-#
     - unless current_user.is_guest
       %label.checkbox#facebook-finder-toggle
         %input{:type => "checkbox", :checked => current_user.facebook_finder}
