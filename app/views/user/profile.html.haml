@@ -37,6 +37,17 @@
         W: #{@user.wins} 
       %span
         L: #{@user.losses}
+    - v = UserAchievement.where(:user_id => current_user.id).includes(:achievement)
+    - if v.count > 0
+      %hr
+      %h4 Achievements unlocked
+      .profile-achievements
+        - v.each do |ach|
+          .achievement
+            %img{:src => ach.achievement.icon}
+            .title 
+              = ach.achievement.name
+      .clear
     %hr
     - if is_user_friend_with(current_user.id, @user.id, true)
       - matches = Game.where("((fst_user=? and scd_user=?) or (fst_user=? and scd_user=?)) and finished=true", current_user.id, @user.id, @user.id, current_user.id).includes(:user1).includes(:user2).order("id DESC").limit(5)

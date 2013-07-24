@@ -30,8 +30,9 @@ class User < ActiveRecord::Base
   end
 
   def image_url
-    return image_link if image_link
-    gravatar_url
+    return image_link if image_link.length > 5
+    return gravatar_url if email.length > 5
+    return "/assets/icons/default.png"
   end
 
   def gravatar_url

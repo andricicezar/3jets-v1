@@ -17,8 +17,11 @@
             %img{:src => ax.value}
           - if current_user.email
             %img{:src => current_user.gravatar_url}
-          .m-btn.icn-only
+          .m-btn.icn-only#profile_icons
             %i.icon-ellipsis-vertical
+          .profile_icons
+            - UserMeta.where(:user_id => current_user.id, :key => "achievement_img").each do |img|
+              %img{:src => img.value}
 
       = f.email_field :email, :placeHolder => "Email"
 

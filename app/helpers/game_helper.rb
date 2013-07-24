@@ -99,6 +99,11 @@ module GameHelper
                     :accept_url => "",
                     :view_url => "")
           send_achievement(current_user, notif, achievement)
+          if achievement.award_icon.length > 7
+            UserMeta.create(:user_id => current_user.id, 
+                            :key => "achievement_img", 
+                            :value => achievement.award_icon)
+          end
         end
       end
     end
