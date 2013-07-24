@@ -100,4 +100,6 @@ h2 {
 }
 .column img{
 	width:269px;
+  margin: 0 auto;
+  display: block;
 }
