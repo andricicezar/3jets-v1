@@ -40,11 +40,13 @@ $(document).on("click", "#facebook-friends", function() {
 
 $(document).on("click", "#search-friend", search_friend_fnc);
 function search_friend_fnc(event) {
+  setTimeout(function() {
   $(document).one("click", function() {
     $("#search-friend").parent().parent().removeClass("active");
     $("#search-friend-popover").removeClass("active").removeClass("input-top");
     $("header").removeClass("input-on");
   });
+  }, 500);
 
   var button = $("#search-friend");
   button.parent().parent().addClass("active");

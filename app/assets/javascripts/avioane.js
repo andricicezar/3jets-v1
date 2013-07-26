@@ -77,7 +77,7 @@ function paint_grids() {
         "margin": "0 auto"
       });
       squareSize = $(".grid td").width() + parseInt($(".grid td").css("border-left-width")) + parseInt($(".grid td").css("border-right-width"));
-      $(".information").css("width", window.innerWidth - squareSize * 5 - 35);
+      $(".information").css("width", 200);
    }
 
     // resize table

@@ -10,6 +10,7 @@ class AiWorker
   include AiHelper
 
   def perform(user_id, ai_id, game_id)
+    sleep(2)
     ai1_aiMove4(user_id, ai_id, Game.find(game_id))
   end
 end

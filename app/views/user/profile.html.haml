@@ -37,7 +37,7 @@
         W: #{@user.wins} 
       %span
         L: #{@user.losses}
-    - v = UserAchievement.where(:user_id => current_user.id).includes(:achievement)
+    - v = UserAchievement.where(:user_id => @user.id).includes(:achievement)
     - if v.count > 0
       %hr
       %h4 Achievements unlocked

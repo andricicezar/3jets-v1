@@ -23,15 +23,20 @@ $(document).ready(function() {
 
       // second button
       $(document).off("click","#search-friend",search_friend_fnc);
-      $(document).hammer().on("tap", ".buton.active #search-friend", function(e) {
-        setTimeout(function() {
-          search_friend_fnc(e);
-        }, 100);
-      });
-
     $(document).hammer().on("tap", ".buton", function() {
       setTimeout(function() {
         $(".buton").addClass("active");
+        
+        setTimeout(function() {
+          $(document).hammer().on("tap", ".buton.active #search-friend", function(e) {
+            setTimeout(function() {
+              search_friend_fnc(e);
+            }, 100);
+          });
+
+
+        }, 500);
+
       }, 100);
     });
   }
