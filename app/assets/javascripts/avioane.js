@@ -61,7 +61,7 @@ function paint_grids() {
   if ($(".main_grid").length) {
     // in caz ca dimensiunile sunt prea mici, dam resize
     if (window.innerWidth <= 800 && window.innerWidth <= window.innerHeight) {
-      size = Math.floor((window.innerWidth - 30)/11)*11;
+      size = Math.floor((window.innerWidth - 10)/11)*11;
       $(".main_grid").css({
         "width": size,
         "height": size,
@@ -69,7 +69,16 @@ function paint_grids() {
       });
       squareSize = $(".grid td").width() + parseInt($(".grid td").css("border-left-width")) + parseInt($(".grid td").css("border-right-width"));
       $(".information").css("width", window.innerWidth - squareSize * 5 - 35);
-    }
+    } else {
+      size = 440;
+      $(".main_grid").css({
+        "width": size,
+        "height": size,
+        "margin": "0 auto"
+      });
+      squareSize = $(".grid td").width() + parseInt($(".grid td").css("border-left-width")) + parseInt($(".grid td").css("border-right-width"));
+      $(".information").css("width", window.innerWidth - squareSize * 5 - 35);
+   }
 
     // resize table
     $(".main_grid table").css({

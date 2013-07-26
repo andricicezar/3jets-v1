@@ -6,9 +6,10 @@ class AiWorker
   include ApplicationHelper
   include NotificationHelper
   include GameHelper
+  include VlaicuHelper
   include AiHelper
 
   def perform(user_id, ai_id, game_id)
-    aiMove4(user_id, ai_id, Game.find(game_id))
+    ai1_aiMove4(user_id, ai_id, Game.find(game_id))
   end
 end

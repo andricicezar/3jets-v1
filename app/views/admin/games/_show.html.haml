@@ -10,6 +10,7 @@
                           :game => params[:id],
                           :user => game.fst_user,
                           :lov => concatMovesVS(game.id, game.scd_user)}
+
       = render "game/grid"
     .play_grid#main_grid1{:av => mapFromGame(game.scd_user, game.id),
                           :lov => concatMovesVS(game.id, game.fst_user)}

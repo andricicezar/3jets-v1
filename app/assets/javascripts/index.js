@@ -42,18 +42,22 @@ $(document).on("click", "#search-friend", search_friend_fnc);
 function search_friend_fnc(event) {
   $(document).one("click", function() {
     $("#search-friend").parent().parent().removeClass("active");
-    $("#search-friend-popover").removeClass("active");
+    $("#search-friend-popover").removeClass("active").removeClass("input-top");
+    $("header").removeClass("input-on");
   });
 
   var button = $("#search-friend");
   button.parent().parent().addClass("active");
   if (window.innerWidth <= 600) {
     $("#search-friend-popover").addClass("active input-top");
-    $("#search-friend-popover .arrow").css("display", "none");
+    $("header").addClass("input-on");
   } else {
     $("#search-friend-popover").addClass("active")
                                .css("top", button.offset().top)
-                               .css("left", button.offset().left + button.width());
+                               .css("left", button.offset().left)
+                               .css("width", button.width()-1)
+                               .css("max-width", button.width()-1);
+    $("#search-friend-popover input").css("width", button.width()-15);
   }
   event.stopPropagation();
 }
@@ -62,6 +66,16 @@ $(document).on("click", "#search-friend-popover", function(event) {
   $("#search-friend").parent().parent().addClass("active");
   $("#search-friend-popover").addClass("active");
   event.stopPropagation();
+});
+
+$(document).on("focus", "#search_user_input", function(event) {
+  $(document).one("click", function() {
+    $("header").removeClass("input-on");
+  });
+  console.log(window.innerWidth);
+  if (window.innerWidth <= 600) {
+    $("header").addClass("input-on");
+  }
 });
 
 $(document).on("click", ".profile_images img", function(event) {
@@ -73,16 +87,11 @@ $(document).on("click", ".profile_images img", function(event) {
 // SETAM UN INTERVAL CARE MARCHEAZA
 // USERUL CA FIIND ONLINE
 setInterval(function() {
-  $.get("/check");
+  if($(".nnavbar").length)
+    $.get("/check");
 }, 30000);
 
 readyApp = function() {
-  // mega_awesome_button = $(".mega-super-awesome-button");
-  // mega_awesome_button
-  //  .css("position", "fixed")
-  //  .css("top", "40%")
-  //  .css("margin-top", -mega_awesome_button.height()/2)
-  //  .css("margin-left", -mega_awesome_button.width()/2);
 
   $("#search_friend_input").unbind("autocomplete");
   $("#search_friend_input").autocomplete({

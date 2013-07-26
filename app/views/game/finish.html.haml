@@ -4,8 +4,7 @@
       Winner is
       = @winner.name
     %h3
-      Loser is
-      = @loser.name
+      vs #{@loser.name}
     %a.m-btn.blue.btn-block{:href => home_url} Home
   - else
     :javascript
