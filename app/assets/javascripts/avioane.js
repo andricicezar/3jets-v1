@@ -122,6 +122,7 @@ function verif_airplanes() {
      
       x.left /= squareSize;
       x.top  /= squareSize;
+
       rot = parseInt($(this).attr("rot"));
 
       if( ((rot == 1 || rot == 3) && x.top < 7 && x.left < 6) ||
@@ -156,6 +157,7 @@ $(document).on("click", "#send-button", function() {
 
   //memoram pozitia fiecarui avion
   var cr = "";
+  ok = false;
   $.each($(".draggable-airplane"), function() {
     // calculam pozitia pe grid
     var x   = $(this).offset();
@@ -163,10 +165,20 @@ $(document).on("click", "#send-button", function() {
     x.top  -= $(".grid table").offset().top + parseInt($(".grid table").css("border-top-width"));
     x.left /= squareSize;
     x.top  /= squareSize;
+
+    if (x.top != Math.floor(x.top) || x.left != Math.floor(x.left)) {
+      ok = true;
+      return;
+    }
+
     rot     = $(this).attr("rot");
     cr      = cr + "1" + x.top + x.left + rot;
   });
-
+  if (ok) {
+    alert("Is a problem with the airplanes");
+    Turbolinks.visit(window.location);
+    return;
+  }
   // redirectam catre queue
   if ($("#game-id").attr("game") != undefined) {
     Turbolinks.visit("../match/"+cr + "?game=" + $("#game-id").attr("game"));
