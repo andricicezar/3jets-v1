@@ -50,11 +50,11 @@
       .clear
     %hr
     - if is_user_friend_with(current_user.id, @user.id, true)
-      - matches = Game.where("((fst_user=? and scd_user=?) or (fst_user=? and scd_user=?)) and finished=true", current_user.id, @user.id, @user.id, current_user.id).includes(:user1).includes(:user2).order("id DESC").limit(5)
+      - matches = Game.where("((fst_user=? and scd_user=?) or (fst_user=? and scd_user=?)) and finished=true", current_user.id, @user.id, @user.id, current_user.id).order('id DESC').limit(7).includes(:user1).includes(:user2)
       - if matches.count > 0
         %h4 #{@user.name} vs you
         = render "user/results", :matches => matches
-    - matches = Game.where("(fst_user=? or scd_user=?) and finished=true", @user.id, @user.id).includes(:user1).includes(:user2).limit(7)
+    - matches = Game.where("(fst_user=? or scd_user=?) and finished=true", @user.id, @user.id).order('id DESC').limit(7).includes(:user1).includes(:user2)
     - if matches.count > 0
       %h4 #{@user.name} vs random players
       = render "user/results", :matches => matches
